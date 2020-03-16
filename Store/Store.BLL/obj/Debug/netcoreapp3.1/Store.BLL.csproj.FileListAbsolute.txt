@@ -1,0 +1,4 @@
+C:\Projects\EDU\Store\Store\Store.BLL\bin\Debug\netcoreapp3.1\Store.DAL.dll
+C:\Projects\EDU\Store\Store\Store.BLL\obj\Debug\netcoreapp3.1\Store.BLL.csprojAssemblyReference.cache
+C:\Projects\EDU\Store\Store\Store.BLL\obj\Debug\netcoreapp3.1\Store.BLL.AssemblyInfoInputs.cache
+C:\Projects\EDU\Store\Store\Store.BLL\obj\Debug\netcoreapp3.1\Store.BLL.AssemblyInfo.cs
