@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Store.DAL.Entities
+﻿namespace Store.DAL.Entities
 {
-    public class OrderItems:BaseEntity
+    public class OrderItems : BaseEntity
     {
         public decimal Amount { get; set; }
         public string Currency { get; set; }

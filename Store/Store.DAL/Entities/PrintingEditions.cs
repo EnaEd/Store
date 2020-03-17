@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Store.DAL.Entities
+﻿namespace Store.DAL.Entities
 {
-    public class PrintingEditions:BaseEntity
+    public class PrintingEditions : BaseEntity
     {
         public string Title { get; set; }
         public string Description { get; set; }

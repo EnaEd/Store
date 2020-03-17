@@ -9,7 +9,7 @@ namespace Store.DAL
         public static void Init(IServiceCollection services, IConfiguration configuration)
         {
             string connection = configuration.GetConnectionString("DefaultConnection");
-            
+
             services.AddDbContext<AppContext.AppContext>(options =>
                 options.UseSqlServer(connection));
         }

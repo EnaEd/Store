@@ -9,6 +9,6 @@ namespace Store.DAL.Entities
         public string Description { get; set; }
         public int UserId { get; set; }
         public DateTime Date { get; set; }
-        public int MyProperty { get; set; }
+        public int PaymentId { get; set; }
     }
 }

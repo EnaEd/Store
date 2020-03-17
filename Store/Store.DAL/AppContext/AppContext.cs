@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Store.DAL.Entities;
 
 namespace Store.DAL.AppContext
 {
-    public class AppContext:DbContext
+    public class AppContext : DbContext
     {
         public DbSet<Authors> Authors { get; set; }
         public DbSet<Users> Users { get; set; }
@@ -16,7 +15,7 @@ namespace Store.DAL.AppContext
         public DbSet<PrintingEditions> PrintingEditions { get; set; }
         public DbSet<Roles> Roles { get; set; }
 
-        public AppContext(DbContextOptions<AppContext> options):base(options)
+        public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
