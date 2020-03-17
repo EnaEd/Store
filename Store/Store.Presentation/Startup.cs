@@ -17,6 +17,7 @@ namespace Store.Presentation
 
         public void ConfigureServices(IServiceCollection services)
         {
+            
             BLL.Startup.Init(services, Configuration);
             services.AddControllers();
         }
