@@ -12,7 +12,7 @@ namespace Store.DataAccessLayer
         public static void Init(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(option =>
-            option.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Store.DataAccessLayer")));
 
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole>()
