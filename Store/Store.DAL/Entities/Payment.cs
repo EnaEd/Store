@@ -2,7 +2,7 @@
 
 namespace Store.DAL.Entities
 {
-    public class Payments : BaseEntity
+    public class Payment : BaseEntity
     {
         public Guid TransactionId { get; set; }
     }

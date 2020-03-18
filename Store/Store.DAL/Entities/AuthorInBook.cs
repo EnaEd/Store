@@ -2,7 +2,7 @@
 
 namespace Store.DAL.Entities
 {
-    public class AuthorInBooks : BaseEntity
+    public class AuthorInBook : BaseEntity
     {
         public int AuthorId { get; set; }
         public int PrintingEditionId { get; set; }

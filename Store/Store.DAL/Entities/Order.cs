@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Store.DAL.Entities
 {
-    public class Orders:BaseEntity
+    public class Order:BaseEntity
     {
         public string Description { get; set; }
         public int UserId { get; set; }

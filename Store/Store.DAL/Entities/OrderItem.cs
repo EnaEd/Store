@@ -1,6 +1,6 @@
 ﻿namespace Store.DAL.Entities
 {
-    public class OrderItems : BaseEntity
+    public class OrderItem : BaseEntity
     {
         public decimal Amount { get; set; }
         public string Currency { get; set; }

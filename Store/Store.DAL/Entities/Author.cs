@@ -1,6 +1,6 @@
 ﻿namespace Store.DAL.Entities
 {
-    public class Roles : BaseEntity
+    public class Author : BaseEntity
     {
         public string Name { get; set; }
     }

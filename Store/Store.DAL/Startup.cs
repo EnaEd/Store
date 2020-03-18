@@ -15,7 +15,7 @@ namespace Store.DAL
             services.AddDbContext<AppContext.AppContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentityCore<Users>()
+            services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppContext.AppContext>();
         }

@@ -1,6 +1,6 @@
 ﻿namespace Store.DAL.Entities
 {
-    public class PrintingEditions : BaseEntity
+    public class PrintingEdition : BaseEntity
     {
         public string Title { get; set; }
         public string Description { get; set; }
