@@ -17,7 +17,7 @@ namespace Store.Presentation
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             BLL.Startup.Init(services, Configuration);
             services.AddControllers();
         }
@@ -33,6 +33,7 @@ namespace Store.Presentation
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,10 +1,10 @@
-﻿namespace Store.DAL.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Store.DAL.Entities
 {
-    public class Users : BaseEntity
+    public class Users : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string PasswordHash { get; set; }
-        public string Email { get; set; }
     }
 }
