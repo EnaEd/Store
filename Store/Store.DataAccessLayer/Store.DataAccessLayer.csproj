@@ -5,8 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200318155658_Storedb.cs" />
+    <Compile Remove="Migrations\20200318155658_Storedb.Designer.cs" />
     <Compile Remove="Migrations\20200323082450_addOrderEntity.cs" />
     <Compile Remove="Migrations\20200323082450_addOrderEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200323083925_addOrderEntity.cs" />
+    <Compile Remove="Migrations\20200323083925_addOrderEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200323103703_addEntities.cs" />
+    <Compile Remove="Migrations\20200323103703_addEntities.Designer.cs" />
+    <Compile Remove="Migrations\20200323110044_Initial.cs" />
+    <Compile Remove="Migrations\20200323110044_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323111025_Initial.cs" />
+    <Compile Remove="Migrations\20200323111025_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323111555_Initial.cs" />
+    <Compile Remove="Migrations\20200323111555_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200323111751_Initial.cs" />
+    <Compile Remove="Migrations\20200323111751_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200324153133_AddInitializeAuthor.cs" />
+    <Compile Remove="Migrations\20200324153133_AddInitializeAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200325132544_InitWithInitializeAuthor.cs" />
+    <Compile Remove="Migrations\20200325132544_InitWithInitializeAuthor.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +37,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Store.Shared\Store.Shared.csproj" />
   </ItemGroup>
 
 </Project>

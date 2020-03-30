@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
+using System;
 
 namespace Store.DataAccessLayer
 {
@@ -16,7 +17,7 @@ namespace Store.DataAccessLayer
                                 optionsBuilder => optionsBuilder.MigrationsAssembly("Store.DataAccessLayer")));
 
             services.AddIdentityCore<User>()
-                .AddRoles<IdentityRole>()
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
         }
