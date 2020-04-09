@@ -27,6 +27,8 @@
     <Compile Remove="Migrations\20200325132544_InitWithInitializeAuthor.Designer.cs" />
     <Compile Remove="Migrations\20200409092656_InitUser.cs" />
     <Compile Remove="Migrations\20200409092656_InitUser.Designer.cs" />
+    <Compile Remove="Migrations\20200409130052_test.cs" />
+    <Compile Remove="Migrations\20200409130052_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

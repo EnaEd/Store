@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Store.Presentation.Extensions;
+using Store.Shared.Constants;
 
 namespace Store.Presentation
 {
@@ -24,21 +26,34 @@ namespace Store.Presentation
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            env.EnvironmentName = Configuration["Environments:Production"];
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            if (!env.IsDevelopment())
+            {
+                app.UseExceptionHandler(Constanst.ERROR_ROUTE);
+            }
 
             app.UseRouting();
 
+            //custom handler with logger
+            app.UseErrorHandler();
 
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.Map(Constanst.ERROR_ROUTE, async context =>
+                {
+                    await context.Response.WriteAsync($"something went wrong please see log file\n");
+                });
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    var x = 0;
+                    await context.Response.WriteAsync($"{10 / x}");
                 });
             });
         }
