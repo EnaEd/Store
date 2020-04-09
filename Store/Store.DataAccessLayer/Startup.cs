@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Initialization;
 using System;
 
 namespace Store.DataAccessLayer
@@ -19,6 +20,12 @@ namespace Store.DataAccessLayer
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            ServiceProvider provider = services.BuildServiceProvider();
+            var userManager = provider.GetRequiredService<UserManager<User>>();
+            var roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+            IdentityInitialization.InitializeAdmin(userManager, roleManager, configuration).Wait();
 
         }
     }

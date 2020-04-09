@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200409092316_InitRole")]
+    partial class InitRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,15 +51,15 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("975cf8b7-7cfd-42b9-849c-459ca94c9206"),
-                            ConcurrencyStamp = "614fd98d-2b57-4c47-9c82-0261d56b47d3",
+                            Id = new Guid("ddc55bd5-c882-479f-b00a-55a844762ce7"),
+                            ConcurrencyStamp = "0d389497-e3c7-453a-b2f2-2a3a6ef6ce06",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("dfb2b634-6848-43b9-9f65-0361aaa1f3d3"),
-                            ConcurrencyStamp = "6f745cb6-3ec2-45e4-9be7-e8513d4d27a1",
+                            Id = new Guid("c4a192bc-ef6f-41a9-876e-5dd56ac33147"),
+                            ConcurrencyStamp = "58079b3b-62b4-45a7-8918-762ea08a4d72",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -183,7 +185,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d89855df-bdbe-4761-baa8-587bc097f6a3"),
+                            Id = new Guid("664cc439-7c25-4dd6-a392-86334c0801bb"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -318,7 +320,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7f3ed78d-8e9a-4eee-a8b9-7018d7d67464"),
+                            Id = new Guid("ba198e1f-d81c-42d5-9b2f-4eb706449481"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

@@ -1,17 +1,30 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Store.DataAccessLayer.Entities;
+using Store.Shared.Enums;
 using System;
+using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Initialization
 {
     public class IdentityInitialization
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        public IdentityInitialization(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        public static async Task InitializeAdmin(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager,
+            IConfiguration configuration)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            if (!(await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]) is null))
+            {
+                return;
+            }
+
+            User admin = new User();
+            admin.Email = configuration["AdminData:AdminEmail"];
+            admin.UserName = configuration["AdminData:AdminEmail"];
+            IdentityResult result = await userManager.CreateAsync(admin, configuration["AdminData:Password"]);
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(admin, UserRole.Admin.ToString());
+            }
         }
     }
 }
