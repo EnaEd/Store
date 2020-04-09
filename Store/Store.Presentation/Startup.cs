@@ -33,7 +33,6 @@ namespace Store.Presentation
 
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

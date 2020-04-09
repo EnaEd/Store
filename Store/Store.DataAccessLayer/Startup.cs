@@ -13,13 +13,17 @@ namespace Store.DataAccessLayer
     {
         public static void Init(IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<ApplicationContext>(option =>
-            option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                                optionsBuilder => optionsBuilder.MigrationsAssembly("Store.DataAccessLayer")));
+                      option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                                          optionsBuilder => optionsBuilder.MigrationsAssembly("Store.DataAccessLayer")));
+
 
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddAuthentication();
 
             ServiceProvider provider = services.BuildServiceProvider();
             var userManager = provider.GetRequiredService<UserManager<User>>();
