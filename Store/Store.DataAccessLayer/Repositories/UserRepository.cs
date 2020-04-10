@@ -12,13 +12,10 @@ namespace Store.DataAccessLayer.Repositories
     {
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole<Guid>> _roleManager;
-        private SignInManager<User> _signInManager;
-        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager,
-            SignInManager<User> signInManager)
+        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _signInManager = signInManager;
         }
 
         public async Task<bool> CheckIsRoleExistAsync(string roleName)

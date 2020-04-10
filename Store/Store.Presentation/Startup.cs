@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +25,9 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             BusinessLogicLayer.Startup.Init(services, Configuration);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -52,15 +55,14 @@ namespace Store.Presentation
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.Map(Constanst.ERROR_ROUTE, async context =>
-                {
-                    await context.Response.WriteAsync($"something went wrong please see log file\n");
-                });
-                endpoints.MapGet("/", async context =>
-                {
-                    var x = 0;
-                    await context.Response.WriteAsync($"{10 / x}");
-                });
+                //endpoints.Map(Constanst.ERROR_ROUTE, async context =>
+                //{
+                //    await context.Response.WriteAsync($"something went wrong please see log file\n");
+                //});
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    );
             });
         }
     }
