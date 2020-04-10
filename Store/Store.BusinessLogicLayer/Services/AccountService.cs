@@ -13,10 +13,10 @@ namespace Store.BusinessLogicLayer.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<UserModel>> GetUsers()
         {
             var test = await _userRepository.GetAllAsync();
-            return test;
+            return null;
         }
     }
 }
