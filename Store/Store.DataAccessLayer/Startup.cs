@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Initialization;
+using Store.DataAccessLayer.Repositories;
+using Store.DataAccessLayer.Repositories.Interfaces;
 using System;
 
 namespace Store.DataAccessLayer
@@ -24,6 +26,10 @@ namespace Store.DataAccessLayer
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddAuthentication();
+
+
+            services.AddTransient<IUserRepository<User>, UserRepository>();
+
 
             ServiceProvider provider = services.BuildServiceProvider();
             var userManager = provider.GetRequiredService<UserManager<User>>();

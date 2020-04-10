@@ -1,0 +1,10 @@
+4/10/2020 12:38:57 PM:>An unhandled exception has occurred while executing the request.
+Source:Store.Presentation
+System.DivideByZeroException->Attempted to divide by zero.
+   at Store.Presentation.Startup.<>c.<<Configure>b__6_2>d.MoveNext() in C:\Projects\EDU\Store\Store\Store.Presentation\Startup.cs:line 62
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Store.Presentation.Middelwares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Projects\EDU\Store\Store\Store.Presentation\Middelwares\ErrorHandlingMiddleware.cs:line 17
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+
