@@ -1,4 +1,6 @@
-﻿using Store.BusinessLogicLayer.Interfaces;
+﻿using AutoMapper;
+using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System.Collections.Generic;
@@ -9,14 +11,15 @@ namespace Store.BusinessLogicLayer.Services
     public class AccountService : IAccountService
     {
         private IUserRepository<User> _userRepository;
-        public AccountService(IUserRepository<User> userRepository)
+        private IMapper _mapper;
+        public AccountService(IUserRepository<User> userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
-            var test = await _userRepository.GetAllAsync();
-            return null;
+            return _mapper.Map<IEnumerable<UserModel>>(await _userRepository.GetAllAsync()); ;
         }
     }
 }

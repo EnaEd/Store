@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Store.BusinessLogicLayer.Models.Users;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Interfaces

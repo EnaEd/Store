@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Users;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +18,10 @@ namespace Store.Presentation.Controller
         }
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<UserModel>> Get()
         {
 
-            return new string[] { "value1", "value2" };
+            return await _accountService.GetUsers();
         }
 
         // GET api/<controller>/5
