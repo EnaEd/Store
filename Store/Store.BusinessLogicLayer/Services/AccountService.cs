@@ -21,5 +21,10 @@ namespace Store.BusinessLogicLayer.Services
         {
             return _mapper.Map<IEnumerable<UserModel>>(await _userRepository.GetAllAsync()); ;
         }
+
+        public async Task<bool> Registration(UserModel userModel)
+        {
+            return await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password);
+        }
     }
 }

@@ -33,8 +33,10 @@ namespace Store.Presentation.Controller
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        //[ActionName("/Registration")]
+        public async Task Post([FromBody]UserModel value)
         {
+            await _accountService.Registration(value);
         }
 
         // PUT api/<controller>/5

@@ -11,6 +11,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<IdentityRole<Guid>> GetOneRoleAsync(string roleName);
         public Task<bool> CheckIsRoleExistAsync(string roleName);
         public Task<bool> CreateRoleAsync(IdentityRole<Guid> role);
+        public Task<bool> CreateAsync(T item, string password);
 
     }
 }

@@ -7,5 +7,6 @@ namespace Store.BusinessLogicLayer.Interfaces
     public interface IAccountService
     {
         public Task<IEnumerable<UserModel>> GetUsers();
+        public Task<bool> Registration(UserModel userModel);
     }
 }

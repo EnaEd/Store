@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +27,12 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<bool> CreateAsync(User item, string password)
         {
             IdentityResult result = await _userManager.CreateAsync(item, password);
+            if (!result.Succeeded)
+            {
+                return result.Succeeded;
+            }
+            result = await _userManager.AddToRoleAsync(item, UserRole.Client.ToString());
+
             return result.Succeeded;
         }
 
