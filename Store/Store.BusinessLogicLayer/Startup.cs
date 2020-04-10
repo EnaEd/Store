@@ -20,6 +20,7 @@ namespace Store.BusinessLogicLayer
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+            services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAccountService, AccountService>();
         }
     }

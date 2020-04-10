@@ -8,3 +8,95 @@ System.DivideByZeroException->Attempted to divide by zero.
    at Store.Presentation.Middelwares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Projects\EDU\Store\Store\Store.Presentation\Middelwares\ErrorHandlingMiddleware.cs:line 17
    at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
 
+4/10/2020 7:36:41 PM:>An unhandled exception has occurred while executing the request.
+Source:MailKit
+MailKit.Security.AuthenticationException->535: 5.7.3 Authentication unsuccessful [VI1PR0701CA0068.eurprd07.prod.outlook.com]
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, Boolean doAsync, CancellationToken cancellationToken)
+   at Store.BusinessLogicLayer.Services.EmailService.SendEmailAsync(String mail, String subject, String message) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\EmailService.cs:line 36
+   at Store.BusinessLogicLayer.Services.AccountService.Registration(UserModel userModel) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\AccountService.cs:line 36
+   at Store.Presentation.Controller.AccountController.Post(UserModel value) in C:\Projects\EDU\Store\Store\Store.Presentation\Controller\AccountController.cs:line 39
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Store.Presentation.Middelwares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Projects\EDU\Store\Store\Store.Presentation\Middelwares\ErrorHandlingMiddleware.cs:line 17
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+
+4/10/2020 7:40:52 PM:>An unhandled exception has occurred while executing the request.
+Source:MailKit
+MailKit.Net.Smtp.SmtpCommandException->5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message WASCL UserAction verdict is not None. Actual verdict is HipNotify, ShowTierUpgrade. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is HipNotify, ShowTierUpgrade. [Hostname=CH2PR18MB3143.namprd18.prod.outlook.com]
+   at MailKit.Net.Smtp.SmtpClient.DataAsync(FormatOptions options, MimeMessage message, Int64 size, Boolean doAsync, CancellationToken cancellationToken, ITransferProgress progress)
+   at MailKit.Net.Smtp.SmtpClient.SendAsync(FormatOptions options, MimeMessage message, MailboxAddress sender, IList`1 recipients, Boolean doAsync, CancellationToken cancellationToken, ITransferProgress progress)
+   at MailKit.Net.Smtp.SmtpClient.SendAsync(FormatOptions options, MimeMessage message, MailboxAddress sender, IList`1 recipients, Boolean doAsync, CancellationToken cancellationToken, ITransferProgress progress)
+   at Store.BusinessLogicLayer.Services.EmailService.SendEmailAsync(String mail, String subject, String message) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\EmailService.cs:line 41
+   at Store.BusinessLogicLayer.Services.AccountService.Registration(UserModel userModel) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\AccountService.cs:line 36
+   at Store.Presentation.Controller.AccountController.Post(UserModel value) in C:\Projects\EDU\Store\Store\Store.Presentation\Controller\AccountController.cs:line 39
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Store.Presentation.Middelwares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Projects\EDU\Store\Store\Store.Presentation\Middelwares\ErrorHandlingMiddleware.cs:line 17
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+
+4/10/2020 7:50:04 PM:>An unhandled exception has occurred while executing the request.
+Source:MailKit
+MailKit.Security.SslHandshakeException->An error occurred while attempting to establish an SSL or TLS connection.
+
+This usually means that the SSL certificate presented by the server is not trusted by the system for one or more of
+the following reasons:
+
+1. The server is using a self-signed certificate which cannot be verified.
+2. The local system is missing a Root or Intermediate certificate needed to verify the server's certificate.
+3. A Certificate Authority CRL server for one or more of the certificates in the chain is temporarily unavailable.
+4. The certificate presented by the server is expired or invalid.
+
+Another possibility is that you are trying to connect to a port which does not support SSL/TLS.
+
+It is also possible that the set of SSL/TLS protocols supported by the client and server do not match.
+
+See https://github.com/jstedfast/MailKit/blob/master/FAQ.md#SslHandshakeException for possible solutions.
+
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, Boolean doAsync, CancellationToken cancellationToken)
+   at Store.BusinessLogicLayer.Services.EmailService.SendEmailAsync(String mail, String subject, String message) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\EmailService.cs:line 31
+   at Store.BusinessLogicLayer.Services.AccountService.Registration(UserModel userModel) in C:\Projects\EDU\Store\Store\Store.BusinessLogicLayer\Services\AccountService.cs:line 36
+   at Store.Presentation.Controller.AccountController.Post(UserModel value) in C:\Projects\EDU\Store\Store\Store.Presentation\Controller\AccountController.cs:line 39
+   at lambda_method(Closure , Object )
+   at Microsoft.Extensions.Internal.ObjectMethodExecutorAwaitable.Awaiter.GetResult()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Store.Presentation.Middelwares.ErrorHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Projects\EDU\Store\Store\Store.Presentation\Middelwares\ErrorHandlingMiddleware.cs:line 17
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+

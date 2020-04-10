@@ -34,9 +34,11 @@ namespace Store.Presentation.Controller
         // POST api/<controller>
         [HttpPost]
         //[ActionName("/Registration")]
-        public async Task Post([FromBody]UserModel value)
+        public async Task<string> Post([FromBody]UserModel value)
         {
-            await _accountService.Registration(value);
+            var res = await _accountService.Registration(value);
+
+            return res ? "we are send you email for verification" : string.Empty;
         }
 
         // PUT api/<controller>/5
