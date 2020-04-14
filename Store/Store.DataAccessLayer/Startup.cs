@@ -23,17 +23,20 @@ namespace Store.DataAccessLayer
 
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole<Guid>>()
+                .AddSignInManager()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
-            services.AddAuthentication();
+            services.AddAuthentication()
+                .AddIdentityCookies();
 
 
+            //services.AddScoped<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<IUserRepository<User>, UserRepository>();
 
 
             ServiceProvider provider = services.BuildServiceProvider();
-            var userManager = provider.GetRequiredService<UserManager<User>>();
-            var roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+            UserManager<User> userManager = provider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole<Guid>> roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
             IdentityInitialization.InitializeAdmin(userManager, roleManager, configuration).Wait();
 

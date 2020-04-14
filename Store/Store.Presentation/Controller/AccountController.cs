@@ -16,7 +16,7 @@ namespace Store.Presentation.Controller
         {
             _accountService = accountService;
         }
-        // GET: api/<controller>
+
         [HttpGet]
         public async Task<IEnumerable<UserModel>> Get()
         {
@@ -24,32 +24,28 @@ namespace Store.Presentation.Controller
             return await _accountService.GetUsers();
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("signout")]
+        public async Task<string> SignOut()
         {
-            return "value";
+            await _accountService.SignOutAsync();
+            return "signout completed";
         }
 
-        // POST api/<controller>
         [HttpPost("signup")]
         public async Task<string> SignUp([FromBody]UserModel value)
         {
-            var res = await _accountService.Registration(value);
+            var res = await _accountService.SigUpAsync(value);
 
             return res ? "we are send you email for verification" : "signup not success";
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPost("signin")]
+        public async Task<string> SignIn([FromBody]UserModel value)
         {
+            var res = await _accountService.SignInAsync(value);
+
+            return res ? "signin success" : "signin not success";
         }
 
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

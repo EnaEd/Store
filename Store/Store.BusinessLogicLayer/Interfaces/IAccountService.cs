@@ -6,7 +6,13 @@ namespace Store.BusinessLogicLayer.Interfaces
 {
     public interface IAccountService
     {
+        //TODO EE: clarify this method
         public Task<IEnumerable<UserModel>> GetUsers();
-        public Task<bool> Registration(UserModel userModel);
+        public Task<bool> SigUpAsync(UserModel userModel);
+        public Task<bool> SignInAsync(UserModel userModel);
+        public Task SignOutAsync();
+        public Task ForgotPasswordAsync(UserModel userModel);
+
+
     }
 }
