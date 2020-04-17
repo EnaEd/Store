@@ -35,7 +35,7 @@ namespace Store.Presentation
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
             var logger = loggerFactory.CreateLogger("Logger");
 
-            env.EnvironmentName = Configuration["Environments:Production"];
+            //env.EnvironmentName = Configuration["Environments:Development"];
 
             if (env.IsDevelopment())
             {
@@ -55,10 +55,6 @@ namespace Store.Presentation
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.Map(Constanst.ERROR_ROUTE, async context =>
-                //{
-                //    await context.Response.WriteAsync($"something went wrong please see log file\n");
-                //});
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"

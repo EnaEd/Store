@@ -17,7 +17,7 @@ namespace Store.BusinessLogicLayer.MappingProfiles
     {
         public string Resolve(UserModel source, User destination, string destMember, ResolutionContext context)
         {
-            return $"{source.FirstName}_{source.LastName}";
+            return $"{source.Email}";
         }
     }
 }

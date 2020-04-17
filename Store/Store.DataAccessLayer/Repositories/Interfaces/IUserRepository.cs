@@ -12,6 +12,9 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<bool> CheckIsRoleExistAsync(string roleName);
         public Task<bool> CreateRoleAsync(IdentityRole<Guid> role);
         public Task<bool> CreateAsync(T item, string password);
+        public Task<string> GenerateEmailConfirmationTokenAsync(T item);
+        public Task<bool> ConfirmEmailAsync(T item, string code);
+        public Task<T> GetOneAsync(string email);
 
     }
 }

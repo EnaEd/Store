@@ -21,9 +21,13 @@ namespace Store.DataAccessLayer
                                           optionsBuilder => optionsBuilder.MigrationsAssembly("Store.DataAccessLayer")));
 
 
-            services.AddIdentityCore<User>()
+            services.AddIdentityCore<User>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            })
                 .AddRoles<IdentityRole<Guid>>()
                 .AddSignInManager()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddAuthentication()

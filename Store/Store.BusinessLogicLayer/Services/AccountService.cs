@@ -28,9 +28,35 @@ namespace Store.BusinessLogicLayer.Services
             _signInManager = signInManager;
         }
 
+        public async Task<bool> ConfirmEmailAsync(string email, string code)
+        {
+            if (email is null || code is null)
+            {
+                return false;
+            }
+            User user = await _userRepository.GetOneAsync(email);
+            if (user is null)
+            {
+                return false;
+            }
+            var isConfirmEmail = await _userRepository.ConfirmEmailAsync(user, code);
+            if (isConfirmEmail)
+            {
+                await _signInManager.SignInAsync(user, false);
+            }
+            return isConfirmEmail;
+        }
+
         public Task ForgotPasswordAsync(UserModel userModel)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel)
+        {
+            //for generate token need user with Id
+            User user = await _userRepository.GetOneAsync(_mapper.Map<User>(userModel));
+            return await _userRepository.GenerateEmailConfirmationTokenAsync(user);
         }
 
         public async Task<IEnumerable<UserModel>> GetUsers()
@@ -62,15 +88,7 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task<bool> SigUpAsync(UserModel userModel)
         {
-            //TODO EE:add link for confirm,add rollback if not send email
-            bool isSuccess = await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password);
-            if (isSuccess)
-            {
-                await _emailService.SendEmailAsync(userModel.Email,
-                    _configuration["RequestEmail:ThemeMail"],
-                    "click this link for confirm registration <br> <a> https://localhost:5001/<a/>");
-            }
-            return isSuccess;
+            return await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password);
         }
     }
 }

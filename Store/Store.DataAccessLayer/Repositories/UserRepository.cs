@@ -47,6 +47,12 @@ namespace Store.DataAccessLayer.Repositories
             return result.Succeeded;
         }
 
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User item)
+        {
+            var res = await _userManager.GenerateEmailConfirmationTokenAsync(item);
+            return res;
+        }
+
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _userManager.Users.ToListAsync();
@@ -60,6 +66,10 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<User> GetOneAsync(Guid id)
         {
             return await _userManager.FindByIdAsync(id.ToString());
+        }
+        public async Task<User> GetOneAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
         }
 
         public async Task<User> GetOneAsync(User item)
@@ -88,6 +98,12 @@ namespace Store.DataAccessLayer.Repositories
         public async Task UpdateAsync(User item)
         {
             await _userManager.UpdateAsync(item);
+        }
+
+        public async Task<bool> ConfirmEmailAsync(User item, string code)
+        {
+            var result = await _userManager.ConfirmEmailAsync(item, code);
+            return result.Succeeded;
         }
     }
 }
