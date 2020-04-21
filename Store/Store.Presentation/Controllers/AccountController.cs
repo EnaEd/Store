@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Users;
+using Store.Shared.Enums;
+using Store.Shared.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -74,6 +76,39 @@ namespace Store.Presentation.Controllers
             return await _accountService.ConfirmEmailAsync(email, code) ?
                 Content("verification success") :
                 Content("verification error");
+        }
+
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel forgotPasswordModel)
+        {
+            string resetToken = await _accountService.ForgotPasswordAsync(forgotPasswordModel);
+            if (resetToken is null)
+            {
+                //TODO EE: return correct error
+                throw new System.Exception(ErrorCode.BadRequest.GetAttribute<EnumDescriptor>().Description);
+            }
+            string callbackUrl = Url.Action(
+                "ResetPassword",
+                "Account",
+                 new { email = forgotPasswordModel.Email, code = resetToken },
+                 protocol: HttpContext.Request.Scheme);
+            await _emailService.SendEmailAsync(forgotPasswordModel.Email,
+                    _configuration["RequestEmail:ThemeMail"],
+                    $"for reset password go to link <br> <a href='{callbackUrl}'> Confirm mail <a/>");
+
+            return Content("we generated to u link for reset password");
+        }
+
+        [HttpGet("resetpassword")]
+        public async Task<IActionResult> ResetPassword(string email = null, string code = null)
+        {
+            //TODO EE:return correct error
+            if (email is null || code is null)
+            {
+                return Content(ErrorCode.BadRequest.GetAttribute<EnumDescriptor>().Description);
+            }
+            //TODO add signIn User and generate jwt for him
+            return Content("success");
         }
 
     }

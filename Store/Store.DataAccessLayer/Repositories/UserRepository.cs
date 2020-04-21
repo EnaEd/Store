@@ -105,5 +105,15 @@ namespace Store.DataAccessLayer.Repositories
             var result = await _userManager.ConfirmEmailAsync(item, code);
             return result.Succeeded;
         }
+
+        public async Task<bool> IsEmailConfirmedAsync(User item)
+        {
+            return await _userManager.IsEmailConfirmedAsync(item);
+        }
+
+        public async Task<string> GenerateResetPasswordTokenAsync(User item)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(item);
+        }
     }
 }

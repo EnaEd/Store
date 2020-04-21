@@ -47,9 +47,14 @@ namespace Store.BusinessLogicLayer.Services
             return isConfirmEmail;
         }
 
-        public Task ForgotPasswordAsync(UserModel userModel)
+        public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
-            throw new System.NotImplementedException();
+            User user = await _userRepository.GetOneAsync(forgotPasswordModel.Email);
+            if (user is null || !(await _userRepository.IsEmailConfirmedAsync(user)))
+            {
+                return null;
+            }
+            return await _userRepository.GenerateResetPasswordTokenAsync(user);
         }
 
         public async Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel)
