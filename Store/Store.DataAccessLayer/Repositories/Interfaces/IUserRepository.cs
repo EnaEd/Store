@@ -17,6 +17,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<T> GetOneAsync(string email);
         public Task<bool> IsEmailConfirmedAsync(T item);
         public Task<string> GenerateResetPasswordTokenAsync(T item);
+        public Task<bool> ResetPasswordAsync(T item, string resetToken, string password);
 
     }
 }

@@ -115,5 +115,11 @@ namespace Store.DataAccessLayer.Repositories
         {
             return await _userManager.GeneratePasswordResetTokenAsync(item);
         }
+
+        public async Task<bool> ResetPasswordAsync(User item, string resetToken, string password)
+        {
+            var result = await _userManager.ResetPasswordAsync(item, resetToken, password);
+            return result.Succeeded;
+        }
     }
 }

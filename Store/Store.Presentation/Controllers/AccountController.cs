@@ -87,6 +87,11 @@ namespace Store.Presentation.Controllers
                 //TODO EE: return correct error
                 throw new System.Exception(ErrorCode.BadRequest.GetAttribute<EnumDescriptor>().Description);
             }
+            string password = _accountService.GenerateTempPassword();
+            if (!await _accountService.ResetPasswordAsync(forgotPasswordModel.Email, resetToken, password))
+            {
+                return Content("reset password failed");
+            }
             string callbackUrl = Url.Action(
                 "ResetPassword",
                 "Account",
@@ -94,21 +99,9 @@ namespace Store.Presentation.Controllers
                  protocol: HttpContext.Request.Scheme);
             await _emailService.SendEmailAsync(forgotPasswordModel.Email,
                     _configuration["RequestEmail:ThemeMail"],
-                    $"for reset password go to link <br> <a href='{callbackUrl}'> Confirm mail <a/>");
+                    $"your new password <br> <div> {password} <div/>");
 
             return Content("we generated to u link for reset password");
-        }
-
-        [HttpGet("resetpassword")]
-        public async Task<IActionResult> ResetPassword(string email = null, string code = null)
-        {
-            //TODO EE:return correct error
-            if (email is null || code is null)
-            {
-                return Content(ErrorCode.BadRequest.GetAttribute<EnumDescriptor>().Description);
-            }
-            //TODO add signIn User and generate jwt for him
-            return Content("success");
         }
 
     }

@@ -5,7 +5,10 @@ using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Shared.Constants;
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Services
@@ -17,6 +20,8 @@ namespace Store.BusinessLogicLayer.Services
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<User> _signInManager;
+
+
 
         public AccountService(IUserRepository<User> userRepository, IMapper mapper,
             IEmailService emailService, IConfiguration configuration, SignInManager<User> signInManager)
@@ -64,6 +69,18 @@ namespace Store.BusinessLogicLayer.Services
             return await _userRepository.GenerateEmailConfirmationTokenAsync(user);
         }
 
+        public string GenerateTempPassword()
+        {
+            string pattern = @"(?=.*[0 - 9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{16,}";
+            string password = GeneratePassword();
+            while (Regex.IsMatch(password, pattern))
+            {
+                password = GeneratePassword();
+            }
+
+            return password;
+        }
+
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             return _mapper.Map<IEnumerable<UserModel>>(await _userRepository.GetAllAsync()); ;
@@ -94,6 +111,30 @@ namespace Store.BusinessLogicLayer.Services
         public async Task<bool> SigUpAsync(UserModel userModel)
         {
             return await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password);
+        }
+
+        public string GeneratePassword()
+        {
+            //TODO EE: make better generation password
+            string password = string.Empty;
+            int[] array = new int[Constanst.PASSWORD_LENGTH];
+            Random random = new Random();
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next(Constanst.COMMON_SIMBOLS_RANGE_START, Constanst.COMMON_SIMBOLS_RANGE_END);
+                password += (char)array[i];
+            }
+            return password;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email, string token, string password)
+        {
+            User user = await _userRepository.GetOneAsync(email);
+            if (user is null)
+            {
+                return false;
+            }
+            return await _userRepository.ResetPasswordAsync(user, token, password);
         }
     }
 }
