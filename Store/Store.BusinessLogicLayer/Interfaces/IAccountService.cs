@@ -14,7 +14,5 @@ namespace Store.BusinessLogicLayer.Interfaces
         public Task ForgotPasswordAsync(UserModel userModel);
         public Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel);
         public Task<bool> ConfirmEmailAsync(string id, string code);
-
-
     }
 }
