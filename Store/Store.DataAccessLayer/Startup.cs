@@ -41,6 +41,7 @@ namespace Store.DataAccessLayer
             UserManager<User> userManager = provider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole<Guid>> roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
+            IdentityInitialization.InitialazeRoles(roleManager).Wait();
             IdentityInitialization.InitializeAdmin(userManager, roleManager, configuration).Wait();
 
         }

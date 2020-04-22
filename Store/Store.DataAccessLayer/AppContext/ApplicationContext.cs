@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Extensions;
 using System;
@@ -27,6 +28,19 @@ namespace Store.DataAccessLayer.AppContext
             builder.Seed();
 
             base.OnModelCreating(builder);
+        }
+    }
+
+    //for create instance dbContext in migration. DBContaxt withoutParametr
+    public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
+    {
+        public ApplicationContext CreateDbContext(string[] args)
+        {
+            var builder = new DbContextOptionsBuilder<ApplicationContext>();
+            //TODO EE: delete hard connctionstring
+            builder.UseSqlServer("Server=DESKTOP-0R8765L\\SQLEXPRESS;Database=Storedb;Trusted_Connection=True;");
+            var context = new ApplicationContext(builder.Options);
+            return context;
         }
     }
 }

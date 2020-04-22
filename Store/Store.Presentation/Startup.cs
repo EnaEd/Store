@@ -46,9 +46,6 @@ namespace Store.Presentation
                     };
                 });
 
-
-
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200422083504_addRefreshToken")]
+    partial class addRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,6 +47,22 @@ namespace Store.DataAccessLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("09ba9855-825e-4411-a1f0-11f6a167d9f8"),
+                            ConcurrencyStamp = "1574612a-8c19-456b-a35d-c6b12959aa4f",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("a7473aed-3401-425a-aa18-a661eae7caf5"),
+                            ConcurrencyStamp = "e995cb81-5d41-4e28-806b-b5c0411d9610",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -167,7 +185,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("56e10cbd-0e4f-468c-b0bc-efe38a9f241a"),
+                            Id = new Guid("93982a8c-4200-4c3e-b664-8339aad40993"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -302,7 +320,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("68982f15-1ca3-4a35-9954-2f9a16f7acdb"),
+                            Id = new Guid("d3bc5004-55a3-4b28-8cd5-0bb5f973d036"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,
