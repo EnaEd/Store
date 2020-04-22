@@ -20,6 +20,7 @@ namespace Store.DataAccessLayer.Initialization
             User admin = new User();
             admin.Email = configuration["AdminData:AdminEmail"];
             admin.UserName = configuration["AdminData:AdminEmail"];
+            admin.EmailConfirmed = true;
             IdentityResult result = await userManager.CreateAsync(admin, configuration["AdminData:Password"]);
             if (result.Succeeded)
             {

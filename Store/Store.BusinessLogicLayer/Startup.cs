@@ -22,6 +22,7 @@ namespace Store.BusinessLogicLayer
             services.AddSingleton(mapper);
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IJWTService, JWTService>();
         }
     }
 }

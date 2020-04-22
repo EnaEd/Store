@@ -5,6 +5,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Enums;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories
@@ -120,6 +121,22 @@ namespace Store.DataAccessLayer.Repositories
         {
             var result = await _userManager.ResetPasswordAsync(item, resetToken, password);
             return result.Succeeded;
+        }
+
+        public async Task<IList<Claim>> GetUserClaimsAsync(User item)
+        {
+            return await _userManager.GetClaimsAsync(item);
+        }
+
+        public async Task<IList<Claim>> GetRoleClaimsAsync(IdentityRole<Guid> role)
+        {
+
+            return await _roleManager.GetClaimsAsync(role);
+        }
+
+        public async Task<IList<string>> GetUserRolesAsync(User item)
+        {
+            return await _userManager.GetRolesAsync(item);
         }
     }
 }

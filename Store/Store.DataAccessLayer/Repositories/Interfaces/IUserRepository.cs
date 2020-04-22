@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Interfaces
@@ -18,6 +19,9 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<bool> IsEmailConfirmedAsync(T item);
         public Task<string> GenerateResetPasswordTokenAsync(T item);
         public Task<bool> ResetPasswordAsync(T item, string resetToken, string password);
+        public Task<IList<Claim>> GetUserClaimsAsync(T item);
+        public Task<IList<Claim>> GetRoleClaimsAsync(IdentityRole<Guid> role);
+        public Task<IList<string>> GetUserRolesAsync(T item);
 
     }
 }

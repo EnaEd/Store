@@ -17,11 +17,14 @@ namespace Store.Presentation.Controllers
         private readonly IAccountService _accountService;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
-        public AccountController(IAccountService accountService, IEmailService emailService, IConfiguration configuration)
+        private readonly IJWTService _jWTService;
+        public AccountController(IAccountService accountService, IEmailService emailService, IConfiguration configuration,
+            IJWTService jWTService)
         {
             _accountService = accountService;
             _emailService = emailService;
             _configuration = configuration;
+            _jWTService = jWTService;
         }
 
         [HttpGet]
@@ -64,10 +67,14 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<string> SignIn([FromBody]UserModel value)
+        public async Task<IActionResult> SignIn([FromBody]UserModel value)
         {
             var res = await _accountService.SignInAsync(value);
-            return res ? "signin success" : "signin not success";
+            if (!res)
+            {
+                return BadRequest();
+            }
+            return Content(await _jWTService.GetTokenAsync(value));
         }
 
         [HttpGet("confirmemail")]

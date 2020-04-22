@@ -30,8 +30,7 @@ namespace Store.DataAccessLayer
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
-            services.AddAuthentication()
-                .AddIdentityCookies();
+            services.AddAuthentication().AddIdentityCookies();
 
 
             //services.AddScoped<SignInManager<User>, SignInManager<User>>();

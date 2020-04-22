@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogicLayer.Services;
 using Store.Presentation.Extensions;
 using Store.Shared.Constants;
 using Store.Shared.Extensions;
@@ -26,6 +28,27 @@ namespace Store.Presentation
         {
             BusinessLogicLayer.Startup.Init(services, Configuration);
 
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["AuthOptions:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["AuthOptions:Audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey = JWTService.GetSymmetricSecurityKey(Configuration["AuthOptions:Key"]),
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+
+
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
         }
@@ -34,8 +57,6 @@ namespace Store.Presentation
         {
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
             var logger = loggerFactory.CreateLogger("Logger");
-
-            //env.EnvironmentName = Configuration["Environments:Development"];
 
             if (env.IsDevelopment())
             {
@@ -52,6 +73,7 @@ namespace Store.Presentation
             app.UseErrorHandler();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
