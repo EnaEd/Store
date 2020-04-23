@@ -29,21 +29,25 @@ namespace Store.Presentation
             BusinessLogicLayer.Startup.Init(services, Configuration);
 
 
+            var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = Configuration["AuthOptions:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = Configuration["AuthOptions:Audience"],
+                ValidateLifetime = true,
+                IssuerSigningKey = JWTService.GetSymmetricSecurityKey(Configuration["AuthOptions:Key"]),
+                ValidateIssuerSigningKey = true
+            };
+
+            services.AddSingleton(tokenValidationParameters);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = Configuration["AuthOptions:Issuer"],
-                        ValidateAudience = true,
-                        ValidAudience = Configuration["AuthOptions:Audience"],
-                        ValidateLifetime = true,
-                        IssuerSigningKey = JWTService.GetSymmetricSecurityKey(Configuration["AuthOptions:Key"]),
-                        ValidateIssuerSigningKey = true
-                    };
+                    options.TokenValidationParameters = tokenValidationParameters;
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);

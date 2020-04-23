@@ -1,10 +1,10 @@
-﻿using Store.BusinessLogicLayer.Models.Users;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Store.BusinessLogicLayer.Interfaces
 {
     public interface IJWTService
     {
-        public Task<string> GetTokenAsync(UserModel user);
+        public Task<(string accessToken, string refreshToken)> GetTokensAsync(string userEmail);
+        public Task<(string accessToken, string refreshToken)> RefreshTokensAsync(string accessToken, string refreshToken);
     }
 }

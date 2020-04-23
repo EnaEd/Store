@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Store.DataAccessLayer\Store.DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Base\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Tokens;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.Shared.Enums;
 using Store.Shared.Extensions;
@@ -74,7 +75,8 @@ namespace Store.Presentation.Controllers
             {
                 return BadRequest();
             }
-            return Content(await _jWTService.GetTokenAsync(value));
+            var result = await _jWTService.GetTokensAsync(value.Email);
+            return Ok(new { accessToken = result.accessToken, refreshToken = result.refreshToken });
         }
 
         [HttpGet("confirmemail")]
@@ -109,6 +111,13 @@ namespace Store.Presentation.Controllers
                     $"your new password <br> <div> {password} <div/>");
 
             return Content("we generated to u link for reset password");
+        }
+
+        [HttpPost("refreshtoken")]
+        public async Task<IActionResult> RefreshToken([FromBody]TokenRequestModel tokenRequestModel)
+        {
+            var result = await _jWTService.RefreshTokensAsync(tokenRequestModel.AccessToken, tokenRequestModel.RefreshToken);
+            return Ok(new { accessToken = result.accessToken, refreshToken = result.refreshToken });
         }
 
     }

@@ -35,6 +35,8 @@
     <Compile Remove="Migrations\20200422081539_addRefreshToken.Designer.cs" />
     <Compile Remove="Migrations\20200422083342_addRefreshToken.cs" />
     <Compile Remove="Migrations\20200422083342_addRefreshToken.Designer.cs" />
+    <Compile Remove="Migrations\20200422090607_testWithoutFactory.cs" />
+    <Compile Remove="Migrations\20200422090607_testWithoutFactory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
