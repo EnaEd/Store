@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200428061743_Extens_UserModel")]
+    partial class Extens_UserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +169,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("33a2872d-ccf1-4af2-8c17-4dc35d93b483"),
+                            Id = new Guid("ff485b3f-7c8e-4e98-9938-0d74acc64311"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -302,7 +304,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("65f72df5-9701-4b06-ac83-177ed1fe6175"),
+                            Id = new Guid("75e41b75-2c1c-4ddc-9351-806336c9e0d4"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

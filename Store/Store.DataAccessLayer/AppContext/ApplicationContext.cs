@@ -16,9 +16,8 @@ namespace Store.DataAccessLayer.AppContext
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+        public ApplicationContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,18 +28,4 @@ namespace Store.DataAccessLayer.AppContext
             base.OnModelCreating(builder);
         }
     }
-
-    //for create instance dbContext in migration. DBContaxt withoutParametr
-
-    //public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
-    //{
-    //    public ApplicationContext CreateDbContext(string[] args)
-    //    {
-    //        var builder = new DbContextOptionsBuilder<ApplicationContext>();
-    //        //TODO EE: delete hard connctionstring
-    //        builder.UseSqlServer("Server=DESKTOP-0R8765L\\SQLEXPRESS;Database=Storedb;Trusted_Connection=True;");
-    //        var context = new ApplicationContext(builder.Options);
-    //        return context;
-    //    }
-    //}
 }

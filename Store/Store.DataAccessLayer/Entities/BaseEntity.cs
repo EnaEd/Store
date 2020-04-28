@@ -10,5 +10,6 @@ namespace Store.DataAccessLayer.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public bool IsRemoved { get; set; }
+
     }
 }

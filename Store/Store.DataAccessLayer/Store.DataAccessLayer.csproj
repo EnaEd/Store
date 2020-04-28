@@ -37,6 +37,10 @@
     <Compile Remove="Migrations\20200422083342_addRefreshToken.Designer.cs" />
     <Compile Remove="Migrations\20200422090607_testWithoutFactory.cs" />
     <Compile Remove="Migrations\20200422090607_testWithoutFactory.Designer.cs" />
+    <Compile Remove="Migrations\20200428061556_Extens_UserModel.cs" />
+    <Compile Remove="Migrations\20200428061556_Extens_UserModel.Designer.cs" />
+    <Compile Remove="Migrations\20200428062937_test.cs" />
+    <Compile Remove="Migrations\20200428062937_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
