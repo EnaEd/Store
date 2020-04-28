@@ -23,6 +23,7 @@ namespace Store.BusinessLogicLayer
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IJWTService, JWTService>();
+            services.AddTransient<IAdminService, AdminService>();
         }
     }
 }

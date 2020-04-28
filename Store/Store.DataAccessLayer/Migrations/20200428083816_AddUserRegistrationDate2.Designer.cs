@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20200428083816_AddUserRegistrationDate2")]
+    partial class AddUserRegistrationDate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +169,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("83bac4f0-e01f-4182-b9c3-ce01bec47bd6"),
+                            Id = new Guid("899a66e5-f191-4f9c-a37e-42c9ea3b404f"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -207,9 +209,6 @@ namespace Store.DataAccessLayer.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCanceled")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
@@ -305,7 +304,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3079d13c-5f29-4967-8b47-be460bf1f59d"),
+                            Id = new Guid("983897d2-d953-4782-9cd5-a95cf2d884de"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

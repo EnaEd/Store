@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Enums;
@@ -14,10 +16,15 @@ namespace Store.DataAccessLayer.Repositories
     {
         private UserManager<User> _userManager;
         private RoleManager<IdentityRole<Guid>> _roleManager;
-        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        private readonly ApplicationContext _context;
+        private readonly DbSet<User> _dbSet;
+        public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, ApplicationContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
+            _dbSet = _context.Set<User>();
+
         }
 
         public async Task<bool> CheckIsRoleExistAsync(string roleName)
@@ -137,6 +144,24 @@ namespace Store.DataAccessLayer.Repositories
         public async Task<IList<string>> GetUserRolesAsync(User item)
         {
             return await _userManager.GetRolesAsync(item);
+        }
+
+        public async Task<IEnumerable<UserProfileEntity>> GetFilteredUserProfilesAsync(UserFilterEntity filterEntity)
+        {
+
+
+            var Email = new SqlParameter("@Email", filterEntity?.Email ?? (object)DBNull.Value);
+            var FirstName = new SqlParameter("@FirstName", filterEntity?.FirstName ?? (object)DBNull.Value);
+            var LastActivity = new SqlParameter("@LastActivity", filterEntity?.LastActivity ?? (object)DBNull.Value);
+            var LastName = new SqlParameter("@LastName", filterEntity?.LastName ?? (object)DBNull.Value);
+            var LastOrderDate = new SqlParameter("@LastOrderDate", filterEntity?.LastOrderDate ?? (object)DBNull.Value);
+            var RegistrationDate = new SqlParameter("@RegistrationDate", filterEntity?.RegistrationDate ?? (object)DBNull.Value);
+            var Role = new SqlParameter("@Role", filterEntity?.Role ?? (object)DBNull.Value);
+
+            return await Task.Run(() => _context.Set<UserProfileEntity>().FromSqlRaw(
+               $"spGetFilteredUser @FirstName,@LastName,@Email,@LastActivity,@LastOrderDate,@RegistrationDate,@Role",
+               FirstName, LastName, Email, LastActivity, LastOrderDate, RegistrationDate, Role)
+               .ToListAsync());
         }
     }
 }

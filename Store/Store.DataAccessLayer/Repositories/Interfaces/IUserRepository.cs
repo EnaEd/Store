@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Store.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -22,6 +23,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<IList<Claim>> GetUserClaimsAsync(T item);
         public Task<IList<Claim>> GetRoleClaimsAsync(IdentityRole<Guid> role);
         public Task<IList<string>> GetUserRolesAsync(T item);
+        public Task<IEnumerable<UserProfileEntity>> GetFilteredUserProfilesAsync(UserFilterEntity filterEntity = null);
 
     }
 }

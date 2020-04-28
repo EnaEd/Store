@@ -8,5 +8,6 @@ namespace Store.DataAccessLayer.Entities
         public Guid UserId { get; set; }
         public DateTime Date { get; set; }
         public Guid PaymentId { get; set; }
+        public bool IsCanceled { get; set; }
     }
 }

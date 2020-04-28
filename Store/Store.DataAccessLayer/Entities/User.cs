@@ -9,5 +9,6 @@ namespace Store.DataAccessLayer.Entities
         public string LastName { get; set; }
         public string RefreshToken { get; set; }
         public bool IsBlocked { get; set; }
+        public DateTime RegistrationDate { get; set; }
     }
 }

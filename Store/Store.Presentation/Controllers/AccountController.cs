@@ -18,20 +18,34 @@ namespace Store.Presentation.Controllers
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly IJWTService _jWTService;
+        private readonly IAdminService _adminService;
         public AccountController(IAccountService accountService, IEmailService emailService, IConfiguration configuration,
-            IJWTService jWTService)
+            IJWTService jWTService, IAdminService adminService)
         {
             _accountService = accountService;
             _emailService = emailService;
             _configuration = configuration;
             _jWTService = jWTService;
+            _adminService = adminService;
         }
 
+        [HttpGet("getall")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
+        }
 
         [HttpGet("signout")]
         public async Task<IActionResult> SignOut()
         {
             await _accountService.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpGet("confirmemail")]
+        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        {
+            await _accountService.ConfirmEmailAsync(email, code);
             return Ok();
         }
 
@@ -60,13 +74,6 @@ namespace Store.Presentation.Controllers
             await _accountService.SignInAsync(value);
             TokenResponseModel result = await _jWTService.GetTokensAsync(value.Email);
             return Ok(result);
-        }
-
-        [HttpGet("confirmemail")]
-        public async Task<IActionResult> ConfirmEmail(string email, string code)
-        {
-            await _accountService.ConfirmEmailAsync(email, code);
-            return Ok();
         }
 
         [HttpPost("forgotpassword")]

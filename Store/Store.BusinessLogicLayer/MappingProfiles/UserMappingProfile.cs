@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
+using Store.Shared.Enums;
+using System;
 
 namespace Store.BusinessLogicLayer.MappingProfiles
 {
@@ -10,6 +12,10 @@ namespace Store.BusinessLogicLayer.MappingProfiles
         {
             CreateMap<User, UserModel>();
             CreateMap<UserModel, User>().ForMember(x => x.UserName, option => option.MapFrom<NameResolver>());
+            CreateMap<UserFilterEntity, UserFilterModel>();
+            CreateMap<UserFilterModel, UserFilterEntity>();
+            CreateMap<UserProfileEntity, UserProfileModel>().ForMember(dest => dest.Role, opt => opt.MapFrom(src => Enum.Parse(typeof(UserRole), src.Role)));
+            CreateMap<UserProfileModel, UserProfileEntity>();
         }
     }
 

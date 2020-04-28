@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace Store.Presentation
 {
@@ -8,16 +7,7 @@ namespace Store.Presentation
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                CreateHostBuilder(args).Build().Run();
-            }
-            catch (System.Exception ex)
-            {
-
-                Console.WriteLine(ex.Message + ex.StackTrace);
-            }
-
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

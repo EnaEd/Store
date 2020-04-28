@@ -13,5 +13,6 @@ namespace Store.BusinessLogicLayer.Models.Users
         [Required]
         public string Password { get; set; }
         public bool RememberMe { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }
