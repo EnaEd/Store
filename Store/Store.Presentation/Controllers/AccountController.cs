@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
 using Store.BusinessLogicLayer.Models.Users;
-using Store.Shared.Enums;
-using Store.Shared.Extensions;
-using System.Collections.Generic;
+using Store.Shared.Constants;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 namespace Store.Presentation.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
         private readonly IEmailService _emailService;
@@ -28,79 +27,57 @@ namespace Store.Presentation.Controllers
             _jWTService = jWTService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<UserModel>> Get()
-        {
-
-            return await _accountService.GetUsers();
-        }
 
         [HttpGet("signout")]
-        public async Task<string> SignOut()
+        public async Task<IActionResult> SignOut()
         {
             await _accountService.SignOutAsync();
-            return "signout completed";
+            return Ok();
         }
 
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody]UserModel value)
         {
+            await _accountService.SigUpAsync(value);
 
-            var result = await _accountService.SigUpAsync(value);
+            string token = await _accountService.GenerateEmailConfirmTokenAsync(value);
+            var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { email = value.Email, code = token },
+                        protocol: HttpContext.Request.Scheme
+                        );
+            await _emailService.SendEmailAsync(value.Email,
+                _configuration["RequestEmail:ThemeMail"],
+                $"click this link for confirm registration <br> <a href='{callbackUrl}'> Confirm mail <a/>");
 
-            if (result)
-            {
-                string token = await _accountService.GenerateEmailConfirmTokenAsync(value);
-                var callbackUrl = Url.Action(
-                            "ConfirmEmail",
-                            "Account",
-                            new { email = value.Email, code = token },
-                            protocol: HttpContext.Request.Scheme
-                            );
-                await _emailService.SendEmailAsync(value.Email,
-                    _configuration["RequestEmail:ThemeMail"],
-                    $"click this link for confirm registration <br> <a href='{callbackUrl}'> Confirm mail <a/>");
-
-                return Content("we send you email for confirm registration");
-            }
-
-            return Content("error");
+            return Ok("we send you email for confirm registration");
         }
 
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody]UserModel value)
         {
-            var res = await _accountService.SignInAsync(value);
-            if (!res)
-            {
-                return BadRequest();
-            }
-            var result = await _jWTService.GetTokensAsync(value.Email);
-            return Ok(new { accessToken = result.accessToken, refreshToken = result.refreshToken });
+            await _accountService.SignInAsync(value);
+            TokenResponseModel result = await _jWTService.GetTokensAsync(value.Email);
+            return Ok(result);
         }
 
         [HttpGet("confirmemail")]
         public async Task<IActionResult> ConfirmEmail(string email, string code)
         {
-            return await _accountService.ConfirmEmailAsync(email, code) ?
-                Content("verification success") :
-                Content("verification error");
+            await _accountService.ConfirmEmailAsync(email, code);
+            return Ok();
         }
 
         [HttpPost("forgotpassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel forgotPasswordModel)
         {
             string resetToken = await _accountService.ForgotPasswordAsync(forgotPasswordModel);
-            if (resetToken is null)
-            {
-                //TODO EE: return correct error
-                throw new System.Exception(ErrorCode.BadRequest.GetAttribute<EnumDescriptor>().Description);
-            }
+
             string password = _accountService.GenerateTempPassword();
-            if (!await _accountService.ResetPasswordAsync(forgotPasswordModel.Email, resetToken, password))
-            {
-                return Content("reset password failed");
-            }
+
+            await _accountService.ResetPasswordAsync(forgotPasswordModel.Email, resetToken, password);
+
             string callbackUrl = Url.Action(
                 "ResetPassword",
                 "Account",
@@ -110,14 +87,14 @@ namespace Store.Presentation.Controllers
                     _configuration["RequestEmail:ThemeMail"],
                     $"your new password <br> <div> {password} <div/>");
 
-            return Content("we generated to u link for reset password");
+            return Ok(InfoConstatnts.SEND_CONFIRM_MAIL_INFO);
         }
 
         [HttpPost("refreshtoken")]
         public async Task<IActionResult> RefreshToken([FromBody]TokenRequestModel tokenRequestModel)
         {
-            var result = await _jWTService.RefreshTokensAsync(tokenRequestModel.AccessToken, tokenRequestModel.RefreshToken);
-            return Ok(new { accessToken = result.accessToken, refreshToken = result.refreshToken });
+            TokenResponseModel result = await _jWTService.RefreshTokensAsync(tokenRequestModel.AccessToken, tokenRequestModel.RefreshToken);
+            return Ok(result);
         }
 
     }

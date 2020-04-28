@@ -5,7 +5,9 @@ using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Shared.Common;
 using Store.Shared.Constants;
+using Store.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -33,33 +35,42 @@ namespace Store.BusinessLogicLayer.Services
             _signInManager = signInManager;
         }
 
-        public async Task<bool> ConfirmEmailAsync(string email, string code)
+        public async Task ConfirmEmailAsync(string email, string code)
         {
             if (email is null || code is null)
             {
-                return false;
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.EMPTY_FIELD };
             }
-            User user = await _userRepository.GetOneAsync(email);
-            if (user is null)
+
+            if (!(await _userRepository.GetOneAsync(email) is User user))
             {
-                return false;
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
-            var isConfirmEmail = await _userRepository.ConfirmEmailAsync(user, code);
-            if (isConfirmEmail)
+
+            if (!await _userRepository.ConfirmEmailAsync(user, code))
             {
-                await _signInManager.SignInAsync(user, false);
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.CONFIRM_EMAIL_FAIL };
             }
-            return isConfirmEmail;
+
+            await _signInManager.SignInAsync(user, false);
         }
 
         public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
-            User user = await _userRepository.GetOneAsync(forgotPasswordModel.Email);
-            if (user is null || !(await _userRepository.IsEmailConfirmedAsync(user)))
+            if (!(await _userRepository.GetOneAsync(forgotPasswordModel.Email) is User user))
             {
-                return null;
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
-            return await _userRepository.GenerateResetPasswordTokenAsync(user);
+            if (!(await _userRepository.IsEmailConfirmedAsync(user)))
+            {
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.EMAIL_NOT_CONFIRM };
+            }
+            string token = await _userRepository.GenerateResetPasswordTokenAsync(user);
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.GENERATE_TOKEN_FAIL };
+            }
+            return token;
         }
 
         public async Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel)
@@ -86,21 +97,21 @@ namespace Store.BusinessLogicLayer.Services
             return _mapper.Map<IEnumerable<UserModel>>(await _userRepository.GetAllAsync()); ;
         }
 
-        public async Task<bool> SignInAsync(UserModel userModel)
+        public async Task SignInAsync(UserModel userModel)
         {
             User user = await _userRepository.GetOneAsync(_mapper.Map<User>(userModel));
             if (user is null)
             {
-                return false;
+                throw new UserException { Code = ErrorCode.Unauthorized, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
 
             SignInResult result = await _signInManager.PasswordSignInAsync(user, userModel.Password, userModel.RememberMe, false);
             if (!result.Succeeded)
             {
-                return false;
+                throw new UserException { Code = ErrorCode.Unauthorized, Description = ErrorsConstants.PASSWORD_NOT_MATCH };
+
             }
             await _signInManager.SignInAsync(user, false);
-            return true;
         }
 
         public async Task SignOutAsync()
@@ -108,33 +119,38 @@ namespace Store.BusinessLogicLayer.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<bool> SigUpAsync(UserModel userModel)
+        public async Task SigUpAsync(UserModel userModel)
         {
-            return await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password);
+            if (!await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password))
+            {
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.CREATE_USER_FAIL };
+            }
         }
 
         public string GeneratePassword()
         {
             //TODO EE: make better generation password
             string password = string.Empty;
-            int[] array = new int[Constanst.PASSWORD_LENGTH];
+            int[] array = new int[Constant.PASSWORD_LENGTH];
             Random random = new Random();
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = random.Next(Constanst.COMMON_SIMBOLS_RANGE_START, Constanst.COMMON_SIMBOLS_RANGE_END);
+                array[i] = random.Next(Constant.COMMON_SIMBOLS_RANGE_START, Constant.COMMON_SIMBOLS_RANGE_END);
                 password += (char)array[i];
             }
             return password;
         }
 
-        public async Task<bool> ResetPasswordAsync(string email, string token, string password)
+        public async Task ResetPasswordAsync(string email, string token, string password)
         {
-            User user = await _userRepository.GetOneAsync(email);
-            if (user is null)
+            if (!(await _userRepository.GetOneAsync(email) is User user))
             {
-                return false;
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
-            return await _userRepository.ResetPasswordAsync(user, token, password);
+            if (!await _userRepository.ResetPasswordAsync(user, token, password))
+            {
+                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.RESET_PASSWORD_FAIL };
+            }
         }
     }
 }

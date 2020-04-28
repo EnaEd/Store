@@ -2,8 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Tokens;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Shared.Common;
+using Store.Shared.Constants;
+using Store.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -34,16 +38,16 @@ namespace Store.BusinessLogicLayer.Services
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
         }
 
-        public async Task<(string accessToken, string refreshToken)> GetTokensAsync(string userEmail)
+        public async Task<TokenResponseModel> GetTokensAsync(string userEmail)
         {
+            TokenResponseModel responseModel = new TokenResponseModel();
             User user = await _userRepository.GetOneAsync(userEmail);
+            if (user is null)
+            {
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+            }
 
             var userClaim = await GetIdentityAsync(user);
-
-            if (userClaim is null)
-            {
-                return (null, null);
-            }
 
             var now = DateTime.UtcNow;
             var token = new JwtSecurityToken(
@@ -56,11 +60,15 @@ namespace Store.BusinessLogicLayer.Services
                                                            SecurityAlgorithms.HmacSha256));
             user.RefreshToken = Guid.NewGuid().ToString();
             await _userRepository.UpdateAsync(user);
-            return (new JwtSecurityTokenHandler().WriteToken(token), user.RefreshToken);
+
+            responseModel.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
+            responseModel.RefreshToken = user.RefreshToken;
+            return responseModel;
         }
 
         private async Task<ClaimsIdentity> GetIdentityAsync(User user)
         {
+
             var userRoles = await _userRepository.GetUserRolesAsync(user);
 
             var claims = new List<Claim>();
@@ -73,25 +81,24 @@ namespace Store.BusinessLogicLayer.Services
             return claimsIdentity;
         }
 
-        //TODO EE: change tuple on model
-        public async Task<(string accessToken, string refreshToken)> RefreshTokensAsync(string accessToken, string refreshToken)
+        public async Task<TokenResponseModel> RefreshTokensAsync(string accessToken, string refreshToken)
         {
+            TokenResponseModel responseModel = new TokenResponseModel();
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptToken = tokenHandler.ReadToken(accessToken) as JwtSecurityToken;
             var mail = encryptToken.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             User user = await _userRepository.GetOneAsync(mail);
             if (user is null)
             {
-                //TODO EE: add error
-                return (null, null);
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
             if (!user.RefreshToken.Equals(refreshToken))
             {
-                return (null, null);
+                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
             }
-            var resultTokens = await GetTokensAsync(mail);
+            TokenResponseModel resultTokens = await GetTokensAsync(mail);
 
-            return (resultTokens.accessToken, resultTokens.refreshToken);
+            return resultTokens;
         }
     }
 }

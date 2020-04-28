@@ -15,7 +15,7 @@ namespace Store.DataAccessLayer
     {
         public static void Init(IServiceCollection services, IConfiguration configuration)
         {
-
+            //TODO EE: get new connection string with sql auth
             services.AddDbContext<ApplicationContext>(option =>
                       option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                                           optionsBuilder => optionsBuilder.MigrationsAssembly("Store.DataAccessLayer")));

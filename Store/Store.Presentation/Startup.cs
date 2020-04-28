@@ -65,7 +65,7 @@ namespace Store.Presentation
             }
             if (!env.IsDevelopment())
             {
-                app.UseExceptionHandler(Constanst.ERROR_ROUTE);
+                app.UseExceptionHandler(RoutesConstants.ERROR_ROUTE);
             }
 
             app.UseRouting();
