@@ -8,7 +8,7 @@ namespace Store.BusinessLogicLayer.Interfaces
     {
         Task<UserProfileModel> GetProfileModelByUserAsync(UserModel user);
         Task<IEnumerable<UserProfileModel>> GetFilteredUserProfileModelsAsync(UserFilterModel userFilterModel = null);
-        Task SetBlockUser(UserModel user);
+        Task SetBlockUserAsync(UserModel user);
 
 
     }

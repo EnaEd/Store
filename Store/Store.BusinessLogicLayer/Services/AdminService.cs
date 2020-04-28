@@ -45,10 +45,15 @@ namespace Store.BusinessLogicLayer.Services
             return userProfile;
         }
 
-        public async Task SetBlockUser(UserModel user)
+        public async Task SetBlockUserAsync(UserModel userModel)
         {
+            User user = await _userRepository.GetOneAsync(userModel.Email);
+            if (user is null)
+            {
+                throw new UserException { Code = Shared.Enums.ErrorCode.BadRequest, Description = ErrorsConstants.USER_NOT_EXISTS };
+            }
             user.IsBlocked = !user.IsBlocked;
-            await _userRepository.UpdateAsync(_mapper.Map<User>(user));
+            await _userRepository.UpdateAsync(user);
         }
     }
 }
