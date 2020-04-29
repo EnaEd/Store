@@ -12,7 +12,7 @@ namespace Store.DataAccessLayer.AppContext
     {
         public DbSet<Order> Orders { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<AuthorInBook> AuthorInBooks { get; set; }
+        public DbSet<AuthorInPrintingEdition> AuthorInBooks { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PrintingEdition> PrintingEditions { get; set; }
