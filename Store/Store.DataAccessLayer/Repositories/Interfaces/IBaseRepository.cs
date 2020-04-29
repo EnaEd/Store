@@ -7,7 +7,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
     public interface IBaseRepository<T> where T : class
     {
         public Task<IEnumerable<T>> GetAllAsync();
-        public Task<T> GetOneAsync(Guid Id);
+        public Task<T> GetOneAsync(Guid id);
         public Task<T> GetOneAsync(T item);
         public Task CreateAsync(T item);
         public Task UpdateAsync(T item);
