@@ -13,6 +13,6 @@ namespace Store.BusinessLogicLayer.Models.Users
         public DateTime? RegistrationDate { get; set; }
         public int CanceledOrdersCount { get; set; }
         public int OrdersCount { get; set; }
-        public UserRole Role { get; set; }
+        public Enums.UserRole Role { get; set; }
     }
 }

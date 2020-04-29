@@ -1,5 +1,5 @@
-﻿using Store.Shared.Enums;
-using System;
+﻿using System;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.Shared.Common
 {

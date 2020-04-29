@@ -31,27 +31,27 @@ namespace Store.DataAccessLayer.Initialization
             IdentityResult result = await userManager.CreateAsync(admin, configuration["AdminData:Password"]);
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(admin, UserRole.Admin.ToString());
+                await userManager.AddToRoleAsync(admin, Enums.UserRole.Admin.ToString());
             }
         }
 
         public static async Task InitialazeRoles(RoleManager<IdentityRole<Guid>> roleManager)
         {
-            if (!await roleManager.RoleExistsAsync(UserRole.Admin.ToString()))
+            if (!await roleManager.RoleExistsAsync(Enums.UserRole.Admin.ToString()))
             {
                 var adminRole = new IdentityRole<Guid>
                 {
-                    Name = UserRole.Admin.ToString(),
-                    NormalizedName = UserRole.Client.ToString().ToUpper()
+                    Name = Enums.UserRole.Admin.ToString(),
+                    NormalizedName = Enums.UserRole.Client.ToString().ToUpper()
                 };
                 await roleManager.CreateAsync(adminRole);
             }
-            if (!await roleManager.RoleExistsAsync(UserRole.Client.ToString()))
+            if (!await roleManager.RoleExistsAsync(Enums.UserRole.Client.ToString()))
             {
                 var clientRole = new IdentityRole<Guid>
                 {
-                    Name = UserRole.Client.ToString(),
-                    NormalizedName = UserRole.Client.ToString().ToUpper()
+                    Name = Enums.UserRole.Client.ToString(),
+                    NormalizedName = Enums.UserRole.Client.ToString().ToUpper()
                 };
                 await roleManager.CreateAsync(clientRole);
             }

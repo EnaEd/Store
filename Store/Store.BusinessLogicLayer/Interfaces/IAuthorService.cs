@@ -7,5 +7,6 @@ namespace Store.BusinessLogicLayer.Interfaces
     public interface IAuthorService
     {
         public Task<IEnumerable<AuthorModel>> GetAuthorsAsync();
+        //public Task
     }
 }

@@ -1,9 +1,12 @@
 ﻿namespace Store.Shared.Enums
 {
-    public enum PayStatus
+    public partial class Enums
     {
-        None = 0,
-        Paid = 1,
-        Unpaid = 2
+        public enum PayStatus
+        {
+            None = 0,
+            Paid = 1,
+            Unpaid = 2
+        }
     }
 }

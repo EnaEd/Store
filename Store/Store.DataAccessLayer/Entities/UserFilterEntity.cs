@@ -1,5 +1,6 @@
-﻿using Store.Shared.Enums;
+﻿
 using System;
+using static Store.Shared.Enums.Enums;
 
 namespace Store.DataAccessLayer.Entities
 {

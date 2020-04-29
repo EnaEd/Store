@@ -94,7 +94,7 @@ namespace Store.Presentation.Controllers
                     _configuration["RequestEmail:ThemeMail"],
                     $"your new password <br> <div> {password} <div/>");
 
-            return Ok(InfoConstatnts.SEND_CONFIRM_MAIL_INFO);
+            return Ok(Constant.Info.SEND_CONFIRM_MAIL_INFO);
         }
 
         [HttpPost("refreshtoken")]

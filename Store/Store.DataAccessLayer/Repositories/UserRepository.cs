@@ -35,7 +35,7 @@ namespace Store.DataAccessLayer.Repositories
             {
                 return result.Succeeded;
             }
-            result = await _userManager.AddToRoleAsync(item, UserRole.Client.ToString());
+            result = await _userManager.AddToRoleAsync(item, Enums.UserRole.Client.ToString());
 
             return result.Succeeded;
         }

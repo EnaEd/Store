@@ -11,6 +11,6 @@ namespace Store.BusinessLogicLayer.Models.Users
         public DateTime? LastActivity { get; set; }
         public DateTime? LastOrderDate { get; set; }
         public DateTime? RegistrationDate { get; set; }
-        public UserRole? Role { get; set; }
+        public Enums.UserRole? Role { get; set; }
     }
 }

@@ -2,31 +2,35 @@
 
 namespace Store.Shared.Enums
 {
-    public enum ErrorCode
+    public partial class Enums
     {
-        [EnumDescriptor("Unknown code")]
-        None = 0,
 
-        [EnumDescriptor("Bad Request")]
-        BadRequest = 400,
+        public enum ErrorCode
+        {
+            [EnumDescriptor("Unknown code")]
+            None = 0,
 
-        [EnumDescriptor("Unauthorized")]
-        Unauthorized = 401,
+            [EnumDescriptor("Bad Request")]
+            BadRequest = 400,
 
-        [EnumDescriptor("Forbidden")]
-        Forbidden = 403,
+            [EnumDescriptor("Unauthorized")]
+            Unauthorized = 401,
 
-        [EnumDescriptor("Not Found")]
-        NotFound = 404,
+            [EnumDescriptor("Forbidden")]
+            Forbidden = 403,
 
-        [EnumDescriptor("Method Not Allowed")]
-        MethodNotAllowed = 405,
+            [EnumDescriptor("Not Found")]
+            NotFound = 404,
 
-        [EnumDescriptor("Request Timeout")]
-        RequestTimeout = 408,
+            [EnumDescriptor("Method Not Allowed")]
+            MethodNotAllowed = 405,
 
-        [EnumDescriptor("Internal Server Error")]
-        InternalServerError = 500
+            [EnumDescriptor("Request Timeout")]
+            RequestTimeout = 408,
+
+            [EnumDescriptor("Internal Server Error")]
+            InternalServerError = 500
+        }
     }
 
     public class EnumDescriptor : Attribute

@@ -1,10 +1,14 @@
 ﻿namespace Store.Shared.Enums
 {
-    public enum EditionType
+    public partial class Enums
     {
-        None = 0,
-        Book = 1,
-        Journal = 2,
-        Newpaper = 3
+
+        public enum EditionType
+        {
+            None = 0,
+            Book = 1,
+            Journal = 2,
+            Newpaper = 3
+        }
     }
 }

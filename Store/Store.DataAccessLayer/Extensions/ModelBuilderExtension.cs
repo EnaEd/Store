@@ -27,12 +27,12 @@ namespace Store.DataAccessLayer.Extensions
                 new PrintingEdition
                 {
                     Id = new Guid(printEditionIdGuid),
-                    Currency = Currency.USD.ToString(),
+                    Currency = Enums.Currency.USD.ToString(),
                     Description = "init desc",
                     Price = 1,
-                    Status = PayStatus.Unpaid.ToString(),
+                    Status = Enums.PayStatus.Unpaid.ToString(),
                     Title = "test Title",
-                    Type = EditionType.Book.ToString()
+                    Type = Enums.EditionType.Book.ToString()
                 });
         }
     }
