@@ -16,6 +16,7 @@ namespace Store.BusinessLogicLayer
             var mapperConfig = new MapperConfiguration(config =>
               {
                   config.AddProfile(new UserMappingProfile());
+                  config.AddProfile(new AuthorMappingProfile());
               });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -24,6 +25,7 @@ namespace Store.BusinessLogicLayer
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IJWTService, JWTService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IAuthorService, AuthorService>();
         }
     }
 }

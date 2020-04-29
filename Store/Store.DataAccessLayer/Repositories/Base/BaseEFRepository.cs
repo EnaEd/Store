@@ -20,6 +20,7 @@ namespace Store.DataAccessLayer.Repositories.Base
 
         public async Task CreateAsync(T item)
         {
+            _dbSet.Add(item);
             await _context.SaveChangesAsync();
         }
 
