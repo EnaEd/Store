@@ -5,6 +5,7 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
+using Store.Shared.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,15 +33,17 @@ namespace Store.BusinessLogicLayer.Services
         public async Task<UserProfileModel> GetProfileModelByUserAsync(UserModel user)
         {
 
-            var filter = new UserFilterEntity();
-            filter.Email = user.Email;
+            var filter = new UserFilterEntity
+            {
+                Email = user.Email
+            };
 
             UserProfileModel userProfile = _mapper.Map<IEnumerable<UserProfileModel>>(
                     await _userRepository.GetFilteredUserProfilesAsync(filter)).FirstOrDefault();
 
             if (userProfile is null)
             {
-                throw new UserException { Code = Shared.Enums.ErrorCode.BadRequest, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             return userProfile;
         }
@@ -50,7 +53,7 @@ namespace Store.BusinessLogicLayer.Services
             User user = await _userRepository.GetOneAsync(userModel.Email);
             if (user is null)
             {
-                throw new UserException { Code = Shared.Enums.ErrorCode.BadRequest, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             user.IsBlocked = !user.IsBlocked;
             await _userRepository.UpdateAsync(user);

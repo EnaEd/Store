@@ -6,6 +6,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,15 +24,68 @@ namespace Store.BusinessLogicLayer.Services
             _mapper = mapper;
         }
 
+        public async Task CreateAuthorAsync(AuthorModel model)
+        {
+            try
+            {
+                await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
+            }
+            catch (Exception)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_CREATE_FAIL, Enums.ErrorCode.BadRequest);
+            }
+
+        }
+
         public async Task<IEnumerable<AuthorModel>> GetAuthorsAsync()
         {
             IEnumerable<AuthorModel> authors = _mapper.Map<IEnumerable<AuthorModel>>(await _authorRepository.GetAllAsync());
             if (!authors.Any())
             {
-                throw new UserException { Code = Enums.ErrorCode.NotFound, Description = Constant.Errors.AUTHOR_NOT_FOUND };
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
 
             return authors;
+        }
+
+        public async Task<AuthorModel> GetOneAuthorAsync(Guid id)
+        {
+            Author author = await _authorRepository.GetOneAsync(id);
+            if (author is null)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
+            return _mapper.Map<AuthorModel>(author);
+        }
+
+        public async Task<AuthorModel> GetOneAuthorAsync(AuthorModel model)
+        {
+            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            if (author is null)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
+            return _mapper.Map<AuthorModel>(author);
+        }
+
+        public async Task RemoveAuthorAsync(AuthorModel model)
+        {
+            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            if (author is null)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
+            await _authorRepository.RemoveOneAsync(author);
+        }
+
+        public async Task UpdateAuthorAsync(AuthorModel model)
+        {
+            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            if (author is null)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
+            await _authorRepository.UpdateAsync(author);
         }
     }
 }

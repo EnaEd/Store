@@ -42,7 +42,7 @@ namespace Store.DataAccessLayer
             RoleManager<IdentityRole<Guid>> roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
             IdentityInitialization.InitialazeRoles(roleManager).Wait();
-            IdentityInitialization.InitializeAdmin(userManager, roleManager, configuration).Wait();
+            IdentityInitialization.InitializeAdmin(userManager, configuration).Wait();
 
         }
     }

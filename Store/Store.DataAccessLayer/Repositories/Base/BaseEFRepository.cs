@@ -9,8 +9,8 @@ namespace Store.DataAccessLayer.Repositories.Base
 {
     public class BaseEFRepository<T> : IBaseRepository<T> where T : class
     {
-        private ApplicationContext _context;
-        private DbSet<T> _dbSet;
+        private readonly ApplicationContext _context;
+        private readonly DbSet<T> _dbSet;
 
         public BaseEFRepository(ApplicationContext applicationContext)
         {

@@ -17,6 +17,7 @@
             public const string SIGNOUT_FAIL = "fail on signout";
             public const string GENERATE_TOKEN_FAIL = "fail on generaet token";
             public const string AUTHOR_NOT_FOUND = "author not found";
+            public const string AUTHOR_CREATE_FAIL = "fail on author create";
         }
     }
 }

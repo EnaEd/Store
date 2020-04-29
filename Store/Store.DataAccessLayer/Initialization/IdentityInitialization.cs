@@ -9,25 +9,19 @@ namespace Store.DataAccessLayer.Initialization
 {
     public class IdentityInitialization
     {
-        public static async Task InitializeAdmin(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager,
-            IConfiguration configuration)
+        public static async Task InitializeAdmin(UserManager<User> userManager, IConfiguration configuration)
         {
             if (!(await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]) is null))
             {
-                //var adminRole = await userManager.GetRolesAsync(
-                //    await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]));
-                //if (adminRole.Count == default(int))
-                //{
-                //    await userManager.AddToRoleAsync(await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]), UserRole.Admin.ToString());
-                //}
                 return;
             }
 
-            User admin = new User();
-            admin.Email = configuration["AdminData:AdminEmail"];
-            admin.UserName = configuration["AdminData:AdminEmail"];
-            admin.EmailConfirmed = true;
-            //admin.RefreshToken = null;
+            User admin = new User
+            {
+                Email = configuration["AdminData:AdminEmail"],
+                UserName = configuration["AdminData:AdminEmail"],
+                EmailConfirmed = true
+            };
             IdentityResult result = await userManager.CreateAsync(admin, configuration["AdminData:Password"]);
             if (result.Succeeded)
             {

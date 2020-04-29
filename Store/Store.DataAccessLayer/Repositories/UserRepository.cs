@@ -14,8 +14,8 @@ namespace Store.DataAccessLayer.Repositories
 {
     public class UserRepository : IUserRepository<User>
     {
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly ApplicationContext _context;
         public UserRepository(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, ApplicationContext context)
         {

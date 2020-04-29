@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
@@ -22,16 +21,11 @@ namespace Store.BusinessLogicLayer.Services
     {
         private readonly IUserRepository<User> _userRepository;
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
         private const string AUTH_TYPE = "Token";
-        private readonly TokenValidationParameters _tokenValidationParameters;
-        public JWTService(IUserRepository<User> userRepository, IConfiguration configuration, IMapper mapper,
-            TokenValidationParameters tokenValidationParameters)
+        public JWTService(IUserRepository<User> userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _configuration = configuration;
-            _mapper = mapper;
-            _tokenValidationParameters = tokenValidationParameters;
         }
         public static SymmetricSecurityKey GetSymmetricSecurityKey(string key)
         {
@@ -44,7 +38,7 @@ namespace Store.BusinessLogicLayer.Services
             User user = await _userRepository.GetOneAsync(userEmail);
             if (user is null)
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
 
             var userClaim = await GetIdentityAsync(user);
@@ -71,8 +65,10 @@ namespace Store.BusinessLogicLayer.Services
 
             var userRoles = await _userRepository.GetUserRolesAsync(user);
 
-            var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, user.Email)
+            };
             claims.AddRange(userRoles.Select(item => new Claim(ClaimsIdentity.DefaultRoleClaimType, item)));
 
             ClaimsIdentity claimsIdentity =
@@ -90,11 +86,11 @@ namespace Store.BusinessLogicLayer.Services
             User user = await _userRepository.GetOneAsync(mail);
             if (user is null)
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             if (!user.RefreshToken.Equals(refreshToken))
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             TokenResponseModel resultTokens = await GetTokensAsync(mail);
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
@@ -19,19 +18,15 @@ namespace Store.BusinessLogicLayer.Services
     {
         private readonly IUserRepository<User> _userRepository;
         private readonly IMapper _mapper;
-        private readonly IEmailService _emailService;
-        private readonly IConfiguration _configuration;
         private readonly SignInManager<User> _signInManager;
 
 
 
         public AccountService(IUserRepository<User> userRepository, IMapper mapper,
-            IEmailService emailService, IConfiguration configuration, SignInManager<User> signInManager)
+            SignInManager<User> signInManager)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _emailService = emailService;
-            _configuration = configuration;
             _signInManager = signInManager;
         }
 
@@ -39,17 +34,17 @@ namespace Store.BusinessLogicLayer.Services
         {
             if (email is null || code is null)
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.EMPTY_FIELD };
+                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.BadRequest);
             }
 
             if (!(await _userRepository.GetOneAsync(email) is User user))
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.NotFound);
             }
 
             if (!await _userRepository.ConfirmEmailAsync(user, code))
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.CONFIRM_EMAIL_FAIL };
+                throw new UserException(Constant.Errors.CONFIRM_EMAIL_FAIL, Enums.ErrorCode.BadRequest);
             }
 
             await _signInManager.SignInAsync(user, false);
@@ -59,16 +54,16 @@ namespace Store.BusinessLogicLayer.Services
         {
             if (!(await _userRepository.GetOneAsync(forgotPasswordModel.Email) is User user))
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             if (!(await _userRepository.IsEmailConfirmedAsync(user)))
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.EMAIL_NOT_CONFIRM };
+                throw new UserException(Constant.Errors.EMAIL_NOT_CONFIRM, Enums.ErrorCode.BadRequest);
             }
             string token = await _userRepository.GenerateResetPasswordTokenAsync(user);
             if (string.IsNullOrWhiteSpace(token))
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.GENERATE_TOKEN_FAIL };
+                throw new UserException(Constant.Errors.GENERATE_TOKEN_FAIL, Enums.ErrorCode.BadRequest);
             }
             return token;
         }
@@ -102,13 +97,13 @@ namespace Store.BusinessLogicLayer.Services
             User user = await _userRepository.GetOneAsync(_mapper.Map<User>(userModel));
             if (user is null)
             {
-                throw new UserException { Code = ErrorCode.Unauthorized, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.Unauthorized);
             }
 
             SignInResult result = await _signInManager.PasswordSignInAsync(user, userModel.Password, userModel.RememberMe, false);
             if (!result.Succeeded)
             {
-                throw new UserException { Code = ErrorCode.Unauthorized, Description = ErrorsConstants.PASSWORD_NOT_MATCH };
+                throw new UserException(Constant.Errors.PASSWORD_NOT_MATCH, Enums.ErrorCode.Unauthorized);
 
             }
             await _signInManager.SignInAsync(user, false);
@@ -123,7 +118,7 @@ namespace Store.BusinessLogicLayer.Services
         {
             if (!await _userRepository.CreateAsync(_mapper.Map<User>(userModel), userModel.Password))
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.CREATE_USER_FAIL };
+                throw new UserException(Constant.Errors.CREATE_USER_FAIL, Enums.ErrorCode.BadRequest);
             }
         }
 
@@ -131,11 +126,11 @@ namespace Store.BusinessLogicLayer.Services
         {
             //TODO EE: make better generation password
             string password = string.Empty;
-            int[] array = new int[Constant.PASSWORD_LENGTH];
+            int[] array = new int[Constant.PasswordConfig.PASSWORD_LENGTH];
             Random random = new Random();
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = random.Next(Constant.COMMON_SIMBOLS_RANGE_START, Constant.COMMON_SIMBOLS_RANGE_END);
+                array[i] = random.Next(Constant.PasswordConfig.COMMON_SIMBOLS_RANGE_START, Constant.PasswordConfig.COMMON_SIMBOLS_RANGE_END);
                 password += (char)array[i];
             }
             return password;
@@ -145,11 +140,11 @@ namespace Store.BusinessLogicLayer.Services
         {
             if (!(await _userRepository.GetOneAsync(email) is User user))
             {
-                throw new UserException { Code = ErrorCode.NotFound, Description = ErrorsConstants.USER_NOT_EXISTS };
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
             if (!await _userRepository.ResetPasswordAsync(user, token, password))
             {
-                throw new UserException { Code = ErrorCode.BadRequest, Description = ErrorsConstants.RESET_PASSWORD_FAIL };
+                throw new UserException(Constant.Errors.RESET_PASSWORD_FAIL, Enums.ErrorCode.BadRequest);
             }
         }
     }

@@ -84,8 +84,7 @@ namespace Store.Presentation.Controllers
             string password = _accountService.GenerateTempPassword();
 
             await _accountService.ResetPasswordAsync(forgotPasswordModel.Email, resetToken, password);
-
-            string callbackUrl = Url.Action(
+            _ = Url.Action(
                 "ResetPassword",
                 "Account",
                  new { email = forgotPasswordModel.Email, code = resetToken },
