@@ -79,12 +79,15 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task UpdateAuthorAsync(AuthorModel model)
         {
-            Author author = await _authorRepository.GetOneAsync(model.Name);
+            Author author = await _authorRepository.GetOneAsync(model.Id);
             if (author is null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
-            await _authorRepository.UpdateAsync(author);
+
+            await _authorRepository.RemoveOneAsync(author);
+
+            await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
         }
     }
 }

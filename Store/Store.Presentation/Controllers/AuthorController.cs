@@ -28,7 +28,27 @@ namespace Store.Presentation.Controllers
         public async Task<IActionResult> CreateAuthor([FromBody]AuthorModel model)
         {
             await _authorSevice.CreateAuthorAsync(model);
-            return Ok();
+            return Ok("author successusfully created");
+        }
+
+        [HttpPost("getauthor")]
+        public async Task<IActionResult> GetAuthor([FromBody]AuthorModel model)
+        {
+            return Ok(await _authorSevice.GetOneAuthorAsync(model));
+        }
+
+        [HttpPost("deleteauthor")]
+        public async Task<IActionResult> DeleteAuthor([FromBody]AuthorModel model)
+        {
+            await _authorSevice.RemoveAuthorAsync(model);
+            return Ok("author successesfully deleted");
+        }
+
+        [HttpPost("updateauthor")]
+        public async Task<IActionResult> UpdateAuthor([FromBody]AuthorModel model)
+        {
+            await _authorSevice.UpdateAuthorAsync(model);
+            return Ok("author successesfully updated");
         }
     }
 }

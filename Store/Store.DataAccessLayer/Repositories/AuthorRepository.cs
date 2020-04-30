@@ -9,12 +9,8 @@ namespace Store.DataAccessLayer.Repositories
 {
     public class AuthorRepository : BaseEFRepository<Author>, IAuthorRepository<Author>
     {
-        //private readonly ApplicationContext _context;
-        private readonly DbSet<Author> _dbSet;
         public AuthorRepository(ApplicationContext context) : base(context)
         {
-            //_context = context;
-            _dbSet = context.Set<Author>();
         }
 
         public async Task<Author> GetOneAsync(string authorName)
