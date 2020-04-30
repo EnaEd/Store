@@ -35,6 +35,7 @@ namespace Store.DataAccessLayer
             //services.AddScoped<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
+            services.AddTransient<IPrintingEditionRepository<PrintingEdition>, PrintingEditionRepository>();
 
 
             ServiceProvider provider = services.BuildServiceProvider();
