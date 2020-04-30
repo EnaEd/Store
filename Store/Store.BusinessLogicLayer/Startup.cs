@@ -26,6 +26,7 @@ namespace Store.BusinessLogicLayer
             services.AddTransient<IJWTService, JWTService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IAuthorService, AuthorService>();
+            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
         }
     }
 }
