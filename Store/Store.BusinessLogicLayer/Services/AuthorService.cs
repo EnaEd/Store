@@ -26,15 +26,14 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task CreateAuthorAsync(AuthorModel model)
         {
-            try
+
+            Author author = await _authorRepository.GetOneAsync(model.Name);
+            if (!(author is null))
             {
-                await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
-            }
-            catch (Exception)
-            {
-                throw new UserException(Constant.Errors.AUTHOR_CREATE_FAIL, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.AUTHOR_ALREADY_EXISTS, Enums.ErrorCode.BadRequest);
             }
 
+            await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
         }
 
         public async Task<IEnumerable<AuthorModel>> GetAuthorsAsync()
@@ -60,7 +59,7 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task<AuthorModel> GetOneAuthorAsync(AuthorModel model)
         {
-            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
@@ -70,7 +69,7 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task RemoveAuthorAsync(AuthorModel model)
         {
-            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
@@ -80,7 +79,7 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task UpdateAuthorAsync(AuthorModel model)
         {
-            Author author = await _authorRepository.GetOneAsync(_mapper.Map<Author>(model));
+            Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Author;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Store.Presentation.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AuthorController : Controller
     {
         private readonly IAuthorService _authorSevice;
@@ -22,6 +22,13 @@ namespace Store.Presentation.Controllers
         public async Task<IActionResult> GetAllAuthors()
         {
             return Ok(await _authorSevice.GetAuthorsAsync());
+        }
+
+        [HttpPost("createauthor")]
+        public async Task<IActionResult> CreateAuthor([FromBody]AuthorModel model)
+        {
+            await _authorSevice.CreateAuthorAsync(model);
+            return Ok();
         }
     }
 }
