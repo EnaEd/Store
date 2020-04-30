@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.BusinessLogicLayer.Interfaces;
+using System.Threading.Tasks;
 
 namespace Store.Presentation.Controllers
 {
     [Route("api/[controller]")]
     public class PrintingEditionController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        private readonly IPrintingEditionService _printingEditionService;
+
+        public PrintingEditionController(IPrintingEditionService printingEditionService)
         {
-            return View();
+            _printingEditionService = printingEditionService;
+        }
+
+        [HttpGet("getedition")]
+        public async Task<IActionResult> GetEdition()
+        {
+            return Ok(await _printingEditionService.GetPrintingEdition());
         }
     }
 }
