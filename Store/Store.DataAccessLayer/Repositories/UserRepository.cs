@@ -39,9 +39,10 @@ namespace Store.DataAccessLayer.Repositories
 
             return result.Succeeded;
         }
-        public async Task CreateAsync(User item)
+        public async Task<User> CreateAsync(User item)
         {
             await _userManager.CreateAsync(item);
+            return await _userManager.FindByEmailAsync(item.Email);
         }
         public async Task<bool> CreateRoleAsync(IdentityRole<Guid> role)
         {
@@ -138,5 +139,6 @@ namespace Store.DataAccessLayer.Repositories
                FirstName, LastName, Email, LastActivity, LastOrderDate, RegistrationDate, Role)
                .ToListAsync());
         }
+
     }
 }

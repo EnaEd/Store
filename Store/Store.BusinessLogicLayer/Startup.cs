@@ -28,6 +28,7 @@ namespace Store.BusinessLogicLayer
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IAuthorService, AuthorService>();
             services.AddTransient<IPrintingEditionService, PrintingEditionService>();
+            services.AddTransient<IAuthorInPintingEditionService, AuthorInPintingEditionService>();
         }
     }
 }

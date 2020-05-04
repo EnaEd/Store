@@ -3,6 +3,7 @@ using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Base
@@ -18,10 +19,11 @@ namespace Store.DataAccessLayer.Repositories.Base
             _dbSet = _context.Set<T>();
         }
 
-        public async Task CreateAsync(T item)
+        public async Task<T> CreateAsync(T item)
         {
             _dbSet.Add(item);
             await _context.SaveChangesAsync();
+            return _dbSet.AsEnumerable().Last();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

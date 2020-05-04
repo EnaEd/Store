@@ -16,9 +16,13 @@
             public const string RESET_PASSWORD_FAIL = "fail on reset password";
             public const string SIGNOUT_FAIL = "fail on signout";
             public const string GENERATE_TOKEN_FAIL = "fail on generaet token";
+
             public const string AUTHOR_NOT_FOUND = "author not found";
             public const string AUTHOR_CREATE_FAIL = "fail on author create";
             public const string AUTHOR_ALREADY_EXISTS = "author with same name already exists";
+
+            public const string CREATE_EDITION_FAIL = "cann't create empty edition";
+
         }
     }
 }

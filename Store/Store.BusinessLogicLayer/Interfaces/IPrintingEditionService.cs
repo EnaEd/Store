@@ -6,6 +6,7 @@ namespace Store.BusinessLogicLayer.Interfaces
 {
     public interface IPrintingEditionService
     {
-        public Task<PaginationIndexModel> GetPrintingEdition(PrintingEditionFilterModel filter = null);
+        public Task<PaginationIndexModel> GetPrintingEditionAsync(PrintingEditionFilterModel filter = null);
+        public Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile);
     }
 }

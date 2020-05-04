@@ -33,5 +33,6 @@ namespace Store.DataAccessLayer.Repositories
                Currency, Description, Status, Title, Type, MinPrice, MaxPrice, Author)
                .ToListAsync());
         }
+
     }
 }

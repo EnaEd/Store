@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.PrintingEdition;
 using System.Threading.Tasks;
 
 namespace Store.Presentation.Controllers
@@ -17,7 +19,15 @@ namespace Store.Presentation.Controllers
         [HttpGet("getedition")]
         public async Task<IActionResult> GetEdition()
         {
-            return Ok(await _printingEditionService.GetPrintingEdition());
+            return Ok(await _printingEditionService.GetPrintingEditionAsync());
+        }
+
+        [HttpPost("createedition")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateEdition([FromBody]PrintingEditionProfileModel model)
+        {
+            await _printingEditionService.CreatePrintingEditionAsync(model);
+            return Ok();
         }
     }
 }

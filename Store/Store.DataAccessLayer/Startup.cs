@@ -36,6 +36,7 @@ namespace Store.DataAccessLayer
             services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository<PrintingEdition>, PrintingEditionRepository>();
+            services.AddTransient<IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>, AuthorInPrintingEditionRepository>();
 
 
             ServiceProvider provider = services.BuildServiceProvider();

@@ -13,6 +13,8 @@ namespace Store.BusinessLogicLayer.MappingProfiles
             CreateMap<PrintingEditionFilterModelDAL, PrintingEditionFilterModel>();
             CreateMap<PrintingEditionModel, PrintingEdition>();
             CreateMap<PrintingEdition, PrintingEditionModel>();
+            CreateMap<PrintingEdition, PrintingEditionProfileModel>();
+            CreateMap<PrintingEditionProfileModel, PrintingEdition>();
         }
     }
 }
