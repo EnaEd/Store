@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20200330103822_addPrintEditionInitFullField")]
-    partial class addPrintEditionInitFullField
+    partial class AddPrintEditionInitFullField
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Store.DataAccessLayer.Migrations
 {
-    public partial class addRefreshToken : Migration
+    public partial class AddRefreshToken : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20200325140435_initWithAuthor")]
-    partial class initWithAuthor
+    partial class InitWithAuthor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

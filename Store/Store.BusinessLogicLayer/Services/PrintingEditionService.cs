@@ -92,8 +92,8 @@ namespace Store.BusinessLogicLayer.Services
 
             IEnumerable<PrintingEditionModel> editions = sourceEditions
                 .Skip((
-                (model?.PageNumber - Constant.Common.ARRAY_INDEX_OFFSET) ?? default(int))
-                * model?.PageSize ?? default(int))
+                (model?.PageNumber - Constant.Common.ARRAY_INDEX_OFFSET) ?? default)
+                * model?.PageSize ?? default)
                 .Take((model?.PageSize ?? 10));
 
             PaginationPageModel pageModel = new PaginationPageModel(count,

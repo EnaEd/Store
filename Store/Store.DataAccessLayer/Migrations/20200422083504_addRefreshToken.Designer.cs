@@ -11,7 +11,7 @@ namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20200422083504_addRefreshToken")]
-    partial class addRefreshToken
+    partial class AddRefreshToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

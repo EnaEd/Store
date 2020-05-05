@@ -3,7 +3,7 @@ using System;
 
 namespace Store.DataAccessLayer.Migrations
 {
-    public partial class initWithAuthor : Migration
+    public partial class InitWithAuthor : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
