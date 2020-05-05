@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Store.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constant.Routes.DEFAULT_API_ROUTE)]
     public class PrintingEditionController : Controller
     {
         private readonly IPrintingEditionService _printingEditionService;
@@ -17,30 +17,30 @@ namespace Store.Presentation.Controllers
             _printingEditionService = printingEditionService;
         }
 
-        [HttpGet("getedition")]
+        [HttpGet(Constant.Routes.GET_EDITIONS_ROUTE)]
         public async Task<IActionResult> GetEdition()
         {
             return Ok(await _printingEditionService.GetPrintingEditionAsync());
         }
 
-        [HttpPost("createedition")]
-        [Authorize(Roles = "Admin")]
+        [HttpPost(Constant.Routes.CREATE_EDITION_ROUTE)]
+        [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
         public async Task<IActionResult> CreateEdition([FromBody]PrintingEditionProfileModel model)
         {
             await _printingEditionService.CreatePrintingEditionAsync(model);
             return Ok(Constant.Info.CREATE_EDITION_SUCCESS);
         }
 
-        [HttpPost("deleteedition")]
-        [Authorize(Roles = "Admin")]
+        [HttpPost(Constant.Routes.DELETE_EDITION_ROUTE)]
+        [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
         public async Task<IActionResult> DeleteEdition([FromBody]PrintingEditionProfileModel model)
         {
             await _printingEditionService.DeletePrintingEditionAsync(model);
             return Ok(Constant.Info.REMOVE_EDITION_SUCCESS);
         }
 
-        [HttpPost("updateedition")]
-        [Authorize(Roles = "Admin")]
+        [HttpPost(Constant.Routes.UPDATE_EDITION_ROUTE)]
+        [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
         public async Task<IActionResult> UpdateEdition([FromBody]PrintingEditionProfileModel model)
         {
             await _printingEditionService.UpdatePrintingEditionAsync(model);

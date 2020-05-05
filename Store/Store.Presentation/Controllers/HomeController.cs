@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Store.Shared.Constants;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,14 +21,14 @@ namespace Store.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpGet("auth")]
+        [HttpGet(Constant.Routes.TEST_AUTH_ROUTE)]
         public IActionResult AuthTest()
         {
             return Ok("Auth ok");
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("authadmin")]
+        [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
+        [HttpGet(Constant.Routes.TEST_AUTH_ADMIN_ROUTE)]
         public IActionResult AuthadminTest()
         {
             return Ok("Auth ok");

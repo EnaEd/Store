@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Store.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constant.Routes.DEFAULT_API_ROUTE)]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -29,27 +29,27 @@ namespace Store.Presentation.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet(Constant.Routes.GET_ACCOUNTS_ROUTE)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
         }
 
-        [HttpGet("signout")]
+        [HttpGet(Constant.Routes.SIGN_OUT_ROUTE)]
         public async Task<IActionResult> SignOut()
         {
             await _accountService.SignOutAsync();
-            return Ok();
+            return Ok(Constant.Info.SIGN_OUT_SUCCESS);
         }
 
-        [HttpGet("confirmemail")]
+        [HttpGet(Constant.Routes.CONFIRM_MAIL_ROUTE)]
         public async Task<IActionResult> ConfirmEmail(string email, string code)
         {
             await _accountService.ConfirmEmailAsync(email, code);
-            return Ok();
+            return Ok(Constant.Info.CONFIRM_MAIL_SUCCESS);
         }
 
-        [HttpPost("signup")]
+        [HttpPost(Constant.Routes.SIGN_UP_ROUTE)]
         public async Task<IActionResult> SignUp([FromBody]UserModel value)
         {
             await _accountService.SigUpAsync(value);
@@ -65,10 +65,10 @@ namespace Store.Presentation.Controllers
                 _configuration["RequestEmail:ThemeMail"],
                 $"click this link for confirm registration <br> <a href='{callbackUrl}'> Confirm mail <a/>");
 
-            return Ok("we send you email for confirm registration");
+            return Ok(Constant.Info.CONFIRM_MAIL_FOR_REGISTRATION_SUCCESS);
         }
 
-        [HttpPost("signin")]
+        [HttpPost(Constant.Routes.SIGN_IN_ROUTE)]
         public async Task<IActionResult> SignIn([FromBody]UserModel value)
         {
             await _accountService.SignInAsync(value);
@@ -76,7 +76,7 @@ namespace Store.Presentation.Controllers
             return Ok(result);
         }
 
-        [HttpPost("forgotpassword")]
+        [HttpPost(Constant.Routes.FORGOT_PASSWORD_ROUTE)]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel forgotPasswordModel)
         {
             string resetToken = await _accountService.ForgotPasswordAsync(forgotPasswordModel);
@@ -93,10 +93,10 @@ namespace Store.Presentation.Controllers
                     _configuration["RequestEmail:ThemeMail"],
                     $"your new password <br> <div> {password} <div/>");
 
-            return Ok(Constant.Info.SEND_CONFIRM_MAIL_INFO);
+            return Ok(Constant.Info.SEND_RESET_PASSWORD_MAIL_SUCCESS);
         }
 
-        [HttpPost("refreshtoken")]
+        [HttpPost(Constant.Routes.REFRESH_TOKEN_ROUTE)]
         public async Task<IActionResult> RefreshToken([FromBody]TokenRequestModel tokenRequestModel)
         {
             TokenResponseModel result = await _jWTService.RefreshTokensAsync(tokenRequestModel.AccessToken, tokenRequestModel.RefreshToken);

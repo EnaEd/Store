@@ -2,14 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Users;
+using Store.Shared.Constants;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Store.Presentation.Controllers
 {
-    [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Route(Constant.Routes.DEFAULT_API_ROUTE)]
+    [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
@@ -19,19 +20,19 @@ namespace Store.Presentation.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("getfiltereduser")]
+        [HttpGet(Constant.Routes.GET_USERS_ROUTE)]
         public async Task<IActionResult> GetFilteredUsers()
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
         }
 
-        [HttpPost("getfiltereduser")]
+        [HttpPost(Constant.Routes.GET_USERS_ROUTE)]
         public async Task<IActionResult> GetFilteredUsers([FromBody]UserFilterModel filter)
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync(filter));
         }
 
-        [HttpPost("setblockuser")]
+        [HttpPost(Constant.Routes.BLOCK_USER_ROUTE)]
         public async Task<IActionResult> SetBlockUser([FromBody]UserModel user)
         {
             await _adminService.SetBlockUserAsync(user);
