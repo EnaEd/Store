@@ -32,11 +32,13 @@ namespace Store.DataAccessLayer
             services.AddAuthentication().AddIdentityCookies();
 
 
-            //services.AddScoped<SignInManager<User>, SignInManager<User>>();
             services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IAuthorRepository<Author>, AuthorRepository>();
             services.AddTransient<IPrintingEditionRepository<PrintingEdition>, PrintingEditionRepository>();
             services.AddTransient<IAuthorInPrintingEditionRepository<AuthorInPrintingEdition>, AuthorInPrintingEditionRepository>();
+            services.AddTransient<IPaymentRepository<Payment>, PaymentRepository>();
+            services.AddTransient<IOrderRepository<Order>, OrderRepository>();
+            services.AddTransient<IOrderItemRepository<OrderItem>, OrderItemRepository>();
 
 
             ServiceProvider provider = services.BuildServiceProvider();
