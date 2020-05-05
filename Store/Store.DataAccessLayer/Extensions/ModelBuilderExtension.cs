@@ -34,6 +34,15 @@ namespace Store.DataAccessLayer.Extensions
                     Title = "test Title",
                     Type = Enums.EditionType.Book.ToString()
                 });
+
+            modelBuilder.Entity<AuthorInPrintingEdition>()
+                .HasOne(x => x.Author)
+                .WithMany(x => x.AuthorInPrintingEditions)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<AuthorInPrintingEdition>()
+                .HasOne(x => x.Edition)
+                .WithMany(x => x.AuthorInPrintingEditions)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

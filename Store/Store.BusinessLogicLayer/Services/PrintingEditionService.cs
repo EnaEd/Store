@@ -36,7 +36,17 @@ namespace Store.BusinessLogicLayer.Services
         }
         public async Task DeletePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
         {
+            if (printingEditionProfile is null)
+            {
+                throw new UserException(Constant.Errors.DELETE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+            }
 
+            PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
+            if (edition is null)
+            {
+                throw new UserException(Constant.Errors.DELETE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+            }
+            await _printingEditionRepository.RemoveOneAsync(edition);
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
         {

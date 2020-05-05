@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.PrintingEdition;
 using System.Threading.Tasks;
@@ -23,10 +22,18 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost("createedition")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateEdition([FromBody]PrintingEditionProfileModel model)
         {
             await _printingEditionService.CreatePrintingEditionAsync(model);
+            return Ok();
+        }
+
+        [HttpPost("deleteedition")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteEdition([FromBody]PrintingEditionProfileModel model)
+        {
+            await _printingEditionService.DeletePrintingEditionAsync(model);
             return Ok();
         }
     }

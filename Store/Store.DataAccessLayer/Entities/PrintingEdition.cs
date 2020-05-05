@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Store.DataAccessLayer.Entities
 {
@@ -12,5 +13,7 @@ namespace Store.DataAccessLayer.Entities
         public string Status { get; set; }
         public string Type { get; set; }
         public string Currency { get; set; }
+        public IList<AuthorInPrintingEdition> AuthorInPrintingEditions { get; set; }
+
     }
 }
