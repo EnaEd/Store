@@ -32,7 +32,20 @@ namespace Store.BusinessLogicLayer.Services
         }
         public async Task UpdatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
         {
+            if (printingEditionProfile is null)
+            {
+                throw new UserException(Constant.Errors.UPDATE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+            }
+            AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
+            if (author is null)
+            {
+                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
+            PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
 
+            await _printingEditionRepository.RemoveOneAsync(edition);
+            await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
+            await _authorInPintingEditionService.AddAuthorToPrintingEditionAsync(author.Id, edition.Id);
         }
         public async Task DeletePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
         {
@@ -46,6 +59,7 @@ namespace Store.BusinessLogicLayer.Services
             {
                 throw new UserException(Constant.Errors.DELETE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
             }
+
             await _printingEditionRepository.RemoveOneAsync(edition);
         }
         public async Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
@@ -62,7 +76,7 @@ namespace Store.BusinessLogicLayer.Services
             }
             PrintingEdition edition = await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
 
-            await _authorInPintingEditionService.AddAuthorToPrintingEdition(author.Id, edition.Id);
+            await _authorInPintingEditionService.AddAuthorToPrintingEditionAsync(author.Id, edition.Id);
 
         }
 

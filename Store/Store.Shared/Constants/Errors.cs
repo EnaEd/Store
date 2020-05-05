@@ -22,7 +22,7 @@
             public const string AUTHOR_ALREADY_EXISTS = "author with same name already exists";
 
             public const string CREATE_EDITION_FAIL = "cann't create empty edition";
-            public const string UPDATE_EDITION_FAIL = "cann't update empty edition";
+            public const string UPDATE_EDITION_FAIL = "no data for update";
             public const string DELETE_EDITION_FAIL = "no data for deleting";
 
         }

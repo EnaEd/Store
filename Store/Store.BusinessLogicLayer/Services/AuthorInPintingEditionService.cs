@@ -15,7 +15,7 @@ namespace Store.BusinessLogicLayer.Services
             _authorInPrintingEditionRepository = authorInPrintingEditionRepository;
         }
 
-        public async Task AddAuthorToPrintingEdition(Guid authorId, Guid printingEditionId)
+        public async Task AddAuthorToPrintingEditionAsync(Guid authorId, Guid printingEditionId)
         {
             AuthorInPrintingEdition item = new AuthorInPrintingEdition
             {

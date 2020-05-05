@@ -5,6 +5,6 @@ namespace Store.BusinessLogicLayer.Interfaces
 {
     public interface IAuthorInPintingEditionService
     {
-        public Task AddAuthorToPrintingEdition(Guid authorId, Guid printingEditionId);
+        public Task AddAuthorToPrintingEditionAsync(Guid authorId, Guid printingEditionId);
     }
 }
