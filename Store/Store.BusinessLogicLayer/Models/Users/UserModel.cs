@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Store.BusinessLogicLayer.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Store.BusinessLogicLayer.Models.Users
 {
-    public class UserModel
+    public class UserModel : BaseModel
     {
         [Required]
         public string FirstName { get; set; }

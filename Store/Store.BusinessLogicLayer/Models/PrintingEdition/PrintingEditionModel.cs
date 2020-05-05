@@ -1,8 +1,9 @@
-﻿using Store.Shared.Enums;
+﻿using Store.BusinessLogicLayer.Models.Base;
+using Store.Shared.Enums;
 
 namespace Store.BusinessLogicLayer.Models.PrintingEdition
 {
-    public class PrintingEditionModel
+    public class PrintingEditionModel : BaseModel
     {
         public string Title { get; set; }
         public string Description { get; set; }

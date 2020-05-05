@@ -8,5 +8,7 @@ namespace Store.BusinessLogicLayer.Interfaces
     {
         public Task<PaginationIndexModel> GetPrintingEditionAsync(PrintingEditionFilterModel filter = null);
         public Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile);
+        public Task UpdatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile);
+        public Task DeletePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile);
     }
 }

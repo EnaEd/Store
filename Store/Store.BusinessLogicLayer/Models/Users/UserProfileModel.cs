@@ -1,9 +1,10 @@
-﻿using Store.Shared.Enums;
+﻿using Store.BusinessLogicLayer.Models.Base;
+using Store.Shared.Enums;
 using System;
 
 namespace Store.BusinessLogicLayer.Models.Users
 {
-    public class UserProfileModel
+    public class UserProfileModel : BaseModel
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

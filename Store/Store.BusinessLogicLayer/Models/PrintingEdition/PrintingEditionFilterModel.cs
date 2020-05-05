@@ -3,7 +3,7 @@ using Store.Shared.Enums;
 
 namespace Store.BusinessLogicLayer.Models.PrintingEdition
 {
-    public class PrintingEditionFilterModel
+    public class PrintingEditionFilterModel : BaseModel
     {
         public string Title { get; set; }
         public string Author { get; set; }

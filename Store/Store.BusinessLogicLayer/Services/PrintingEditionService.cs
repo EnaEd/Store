@@ -30,7 +30,14 @@ namespace Store.BusinessLogicLayer.Services
             _mapper = mapper;
             _authorService = authorService;
         }
+        public async Task UpdatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
+        {
 
+        }
+        public async Task DeletePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
+        {
+
+        }
         public async Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
         {
             if (printingEditionProfile is null)
