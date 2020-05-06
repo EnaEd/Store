@@ -4,6 +4,8 @@
     {
         public static class Info
         {
+            public const string SUCCESS = "operation successfully done";
+
             public const string SIGN_OUT_SUCCESS = "sign out successusfully done";
             public const string CONFIRM_MAIL_SUCCESS = "email successusfully send";
             public const string CONFIRM_MAIL_FOR_REGISTRATION_SUCCESS = "we send to u email for confirm registration";

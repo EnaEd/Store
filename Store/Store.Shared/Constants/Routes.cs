@@ -36,6 +36,7 @@
             public const string CREATE_EDITION_ROUTE = "createedition";
             public const string DELETE_EDITION_ROUTE = "deleteedition";
             public const string UPDATE_EDITION_ROUTE = "updateedition";
+            public const string PAY_EDITION_ROUTE = "pay";
         }
     }
 }

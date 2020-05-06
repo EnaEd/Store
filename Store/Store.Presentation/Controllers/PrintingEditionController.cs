@@ -11,10 +11,12 @@ namespace Store.Presentation.Controllers
     public class PrintingEditionController : Controller
     {
         private readonly IPrintingEditionService _printingEditionService;
+        private readonly IStripeService _stripeService;
 
-        public PrintingEditionController(IPrintingEditionService printingEditionService)
+        public PrintingEditionController(IPrintingEditionService printingEditionService, IStripeService stripeService)
         {
             _printingEditionService = printingEditionService;
+            _stripeService = stripeService;
         }
 
         [HttpGet(Constant.Routes.GET_EDITIONS_ROUTE)]
@@ -45,6 +47,13 @@ namespace Store.Presentation.Controllers
         {
             await _printingEditionService.UpdatePrintingEditionAsync(model);
             return Ok(Constant.Info.UPDATE_EDITION_SUCCESS);
+        }
+
+        [HttpPost(Constant.Routes.PAY_EDITION_ROUTE)]
+        public async Task<IActionResult> PayEdition([FromBody]PayRequestModel model)
+        {
+
+            return Ok(await _stripeService.PayAsync(model));
         }
     }
 }
