@@ -15,6 +15,7 @@ namespace Store.BusinessLogicLayer.Services
     public class StripeService : IStripeService
     {
         private readonly IOptions<StripeConfig> _options;
+        private const int CENT_IN_DOLLAR = 100;
 
         public StripeService(IOptions<StripeConfig> options)
         {
@@ -43,15 +44,16 @@ namespace Store.BusinessLogicLayer.Services
 
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = (long)model.Amount,
+                    Amount = ConvertToCent(model.Amount),
                     Currency = Enums.Currency.USD.ToString().ToLower(),
                     PaymentMethodTypes = new List<string> { _options.Value.DefaultPaymentTypes },
                     PaymentMethod = card.Id,
+                    ReceiptEmail = model.UserEmail,
                     Confirm = true
                 };
 
                 var service = new PaymentIntentService();
-                var intent = await service.CreateAsync(options);
+                PaymentIntent intent = await service.CreateAsync(options);
 
                 return Constant.Info.SUCCESS;
             }
@@ -61,5 +63,9 @@ namespace Store.BusinessLogicLayer.Services
             }
         }
 
+        private long? ConvertToCent(decimal amount)
+        {
+            return (long)amount * CENT_IN_DOLLAR;
+        }
     }
 }

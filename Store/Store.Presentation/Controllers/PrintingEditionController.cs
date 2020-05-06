@@ -52,7 +52,7 @@ namespace Store.Presentation.Controllers
         [HttpPost(Constant.Routes.PAY_EDITION_ROUTE)]
         public async Task<IActionResult> PayEdition([FromBody]PayRequestModel model)
         {
-
+            model.UserEmail = User.Identity.Name;
             return Ok(await _stripeService.PayAsync(model));
         }
     }

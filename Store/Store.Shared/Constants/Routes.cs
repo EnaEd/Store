@@ -7,6 +7,8 @@
             public const string DEFAULT_API_ROUTE = "api/[controller]";
             public const string ERROR_ROUTE = "/error";
 
+            //order controller
+            public const string TEST_ORDER_ROUTE = "testorder";
             //home controller
             public const string TEST_AUTH_ADMIN_ROUTE = "authadmin";
             public const string TEST_AUTH_ROUTE = "auth";
@@ -37,6 +39,7 @@
             public const string DELETE_EDITION_ROUTE = "deleteedition";
             public const string UPDATE_EDITION_ROUTE = "updateedition";
             public const string PAY_EDITION_ROUTE = "pay";
+            public const string BUY_EDITION_ROUTE = "buy";
         }
     }
 }

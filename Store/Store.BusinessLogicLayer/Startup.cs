@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Scrutor;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.MappingProfiles;
 using Store.BusinessLogicLayer.Models.Config;
-using Store.BusinessLogicLayer.Services;
 
 
 namespace Store.BusinessLogicLayer
@@ -28,14 +28,13 @@ namespace Store.BusinessLogicLayer
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<IJWTService, JWTService>();
-            services.AddTransient<IAdminService, AdminService>();
-            services.AddTransient<IAuthorService, AuthorService>();
-            services.AddTransient<IPrintingEditionService, PrintingEditionService>();
-            services.AddTransient<IAuthorInPintingEditionService, AuthorInPintingEditionService>();
-            services.AddTransient<IStripeService, StripeService>();
+
+            services.Scan(scan => scan
+            .FromAssemblyOf<IEmailService>()
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsMatchingInterface()
+            .WithTransientLifetime());
         }
     }
 }
