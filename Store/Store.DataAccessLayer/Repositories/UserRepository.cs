@@ -51,7 +51,7 @@ namespace Store.DataAccessLayer.Repositories
         }
         public async Task<string> GenerateEmailConfirmationTokenAsync(User item)
         {
-            var res = await _userManager.GenerateEmailConfirmationTokenAsync(item);
+            string res = await _userManager.GenerateEmailConfirmationTokenAsync(item);
             return res;
         }
         public async Task<IEnumerable<User>> GetAllAsync()

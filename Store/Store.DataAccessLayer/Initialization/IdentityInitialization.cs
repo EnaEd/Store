@@ -9,8 +9,9 @@ namespace Store.DataAccessLayer.Initialization
 {
     public class IdentityInitialization
     {
-        public static async Task InitializeAdmin(UserManager<User> userManager, IConfiguration configuration)
+        public static async Task InitializeAdminAsync(UserManager<User> userManager, IConfiguration configuration)
         {
+            //throw new NotImplementedException();
             if (!(await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]) is null))
             {
                 return;
@@ -29,7 +30,7 @@ namespace Store.DataAccessLayer.Initialization
             }
         }
 
-        public static async Task InitialazeRoles(RoleManager<IdentityRole<Guid>> roleManager)
+        public static async Task InitialazeRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
         {
             if (!await roleManager.RoleExistsAsync(Enums.UserRole.Admin.ToString()))
             {

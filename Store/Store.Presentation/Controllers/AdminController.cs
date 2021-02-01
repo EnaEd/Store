@@ -21,19 +21,19 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet(Constant.Routes.GET_USERS_ROUTE)]
-        public async Task<IActionResult> GetFilteredUsers()
+        public async Task<IActionResult> GetFilteredUsersAsync()
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
         }
 
         [HttpPost(Constant.Routes.GET_USERS_ROUTE)]
-        public async Task<IActionResult> GetFilteredUsers([FromBody]UserFilterModel filter)
+        public async Task<IActionResult> GetFilteredUsersAsync([FromBody] UserFilterModel filter)
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync(filter));
         }
 
         [HttpPost(Constant.Routes.BLOCK_USER_ROUTE)]
-        public async Task<IActionResult> SetBlockUser([FromBody]UserModel user)
+        public async Task<IActionResult> SetBlockUserAsync([FromBody] UserModel user)
         {
             await _adminService.SetBlockUserAsync(user);
             return Ok();

@@ -82,7 +82,7 @@ namespace Store.BusinessLogicLayer.Services
             TokenResponseModel responseModel = new TokenResponseModel();
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptToken = tokenHandler.ReadToken(accessToken) as JwtSecurityToken;
-            var mail = encryptToken.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
+            string mail = encryptToken.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             User user = await _userRepository.GetOneAsync(mail);
             if (user is null)
             {

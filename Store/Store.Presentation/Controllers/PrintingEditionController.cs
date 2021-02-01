@@ -20,14 +20,14 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet(Constant.Routes.GET_EDITIONS_ROUTE)]
-        public async Task<IActionResult> GetEdition()
+        public async Task<IActionResult> GetEditionAsync()
         {
             return Ok(await _printingEditionService.GetPrintingEditionAsync());
         }
 
         [HttpPost(Constant.Routes.CREATE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> CreateEdition([FromBody]PrintingEditionProfileModel model)
+        public async Task<IActionResult> CreateEditionAsync([FromBody] PrintingEditionProfileModel model)
         {
             await _printingEditionService.CreatePrintingEditionAsync(model);
             return Ok(Constant.Info.CREATE_EDITION_SUCCESS);
@@ -35,7 +35,7 @@ namespace Store.Presentation.Controllers
 
         [HttpPost(Constant.Routes.DELETE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> DeleteEdition([FromBody]PrintingEditionProfileModel model)
+        public async Task<IActionResult> DeleteEditionAsync([FromBody] PrintingEditionProfileModel model)
         {
             await _printingEditionService.DeletePrintingEditionAsync(model);
             return Ok(Constant.Info.REMOVE_EDITION_SUCCESS);
@@ -43,14 +43,14 @@ namespace Store.Presentation.Controllers
 
         [HttpPost(Constant.Routes.UPDATE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> UpdateEdition([FromBody]PrintingEditionProfileModel model)
+        public async Task<IActionResult> UpdateEditionAsync([FromBody] PrintingEditionProfileModel model)
         {
             await _printingEditionService.UpdatePrintingEditionAsync(model);
             return Ok(Constant.Info.UPDATE_EDITION_SUCCESS);
         }
 
         [HttpPost(Constant.Routes.PAY_EDITION_ROUTE)]
-        public async Task<IActionResult> PayEdition([FromBody]PayRequestModel model)
+        public async Task<IActionResult> PayEditionAsync([FromBody] PayRequestModel model)
         {
             model.UserEmail = User.Identity.Name;
             return Ok(await _stripeService.PayAsync(model));

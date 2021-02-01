@@ -6,8 +6,8 @@ namespace Store.Shared.Common
 {
     public class Logger : ILogger
     {
-        private string _path;
-        private static object _lock = new object();
+        private readonly string _path;
+        private static readonly object _lock = new object();
 
         public Logger(string path)
         {

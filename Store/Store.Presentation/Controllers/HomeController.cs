@@ -11,6 +11,7 @@ namespace Store.Presentation.Controllers
 
         public IActionResult Index()
         {
+            //throw new System.NullReferenceException();
             return Content("home");
         }
 

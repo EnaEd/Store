@@ -10,9 +10,9 @@ using Store.BusinessLogicLayer.Models.Config;
 
 namespace Store.BusinessLogicLayer
 {
-    public class Startup
+    public static class Startup
     {
-        public static void Init(IServiceCollection services, IConfiguration configuration)
+        public static void Init(this IServiceCollection services, IConfiguration configuration)
         {
             DataAccessLayer.Startup.Init(services, configuration);
             services.Configure<StripeConfig>(configuration.GetSection("StripeConfig"));

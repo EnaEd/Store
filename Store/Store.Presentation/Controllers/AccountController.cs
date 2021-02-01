@@ -30,32 +30,32 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet(Constant.Routes.GET_ACCOUNTS_ROUTE)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
         }
 
         [HttpGet(Constant.Routes.SIGN_OUT_ROUTE)]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> SignOutAsync()
         {
             await _accountService.SignOutAsync();
             return Ok(Constant.Info.SIGN_OUT_SUCCESS);
         }
 
         [HttpGet(Constant.Routes.CONFIRM_MAIL_ROUTE)]
-        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
         {
             await _accountService.ConfirmEmailAsync(email, code);
             return Ok(Constant.Info.CONFIRM_MAIL_SUCCESS);
         }
 
         [HttpPost(Constant.Routes.SIGN_UP_ROUTE)]
-        public async Task<IActionResult> SignUp([FromBody]UserModel value)
+        public async Task<IActionResult> SignUpAsync([FromBody] UserModel value)
         {
             await _accountService.SigUpAsync(value);
 
             string token = await _accountService.GenerateEmailConfirmTokenAsync(value);
-            var callbackUrl = Url.Action(
+            string callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Account",
                         new { email = value.Email, code = token },
@@ -69,7 +69,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.SIGN_IN_ROUTE)]
-        public async Task<IActionResult> SignIn([FromBody]UserModel value)
+        public async Task<IActionResult> SignInAsync([FromBody] UserModel value)
         {
             await _accountService.SignInAsync(value);
             TokenResponseModel result = await _jWTService.GetTokensAsync(value.Email);
@@ -77,7 +77,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.FORGOT_PASSWORD_ROUTE)]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel forgotPasswordModel)
+        public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordModel forgotPasswordModel)
         {
             string resetToken = await _accountService.ForgotPasswordAsync(forgotPasswordModel);
 
@@ -97,7 +97,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.REFRESH_TOKEN_ROUTE)]
-        public async Task<IActionResult> RefreshToken([FromBody]TokenRequestModel tokenRequestModel)
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] TokenRequestModel tokenRequestModel)
         {
             TokenResponseModel result = await _jWTService.RefreshTokensAsync(tokenRequestModel.AccessToken, tokenRequestModel.RefreshToken);
             return Ok(result);

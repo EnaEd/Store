@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
-using Store.Presentation.Extensions;
+using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Initialization;
 using Store.Shared.Constants;
 using Store.Shared.Extensions;
 using System.IO;
@@ -16,6 +19,8 @@ namespace Store.Presentation
 {
     public class Startup
     {
+        public UserManager<User> UserManager { get; set; }
+        public RoleManager<IdentityRole> RoleManager { get; set; }
         public IConfiguration Configuration { get; set; }
 
         public Startup(IConfiguration configuration)
@@ -26,7 +31,7 @@ namespace Store.Presentation
 
         public void ConfigureServices(IServiceCollection services)
         {
-            BusinessLogicLayer.Startup.Init(services, Configuration);
+            services.Init(Configuration);
 
 
             var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -51,7 +56,8 @@ namespace Store.Presentation
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
-
+            UserManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
+            IdentityInitialization.InitializeAdminAsync(UserManager, Configuration).Wait();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -71,7 +77,7 @@ namespace Store.Presentation
             app.UseRouting();
 
             //custom handler with logger
-            app.UseErrorHandler();
+            // app.UseErrorHandler();
 
             app.UseAuthentication();
             app.UseAuthorization();
