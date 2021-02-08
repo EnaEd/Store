@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
@@ -33,7 +34,6 @@ namespace Store.Presentation
         {
             services.Init(Configuration);
 
-
             var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -56,7 +56,15 @@ namespace Store.Presentation
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
             UserManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
+
             IdentityInitialization.InitializeAdminAsync(UserManager, Configuration).Wait();
         }
 
@@ -73,6 +81,13 @@ namespace Store.Presentation
             {
                 app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
             }
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
