@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
@@ -73,15 +72,15 @@ namespace Store.Presentation
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
             var logger = loggerFactory.CreateLogger("Logger");
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            if (!env.IsDevelopment())
-            {
-                app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
-            }
-
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //if (!env.IsDevelopment())
+            //{
+            //    app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
+            //}
+            app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

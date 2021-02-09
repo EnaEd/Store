@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Tokens;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
@@ -19,15 +20,17 @@ namespace Store.BusinessLogicLayer.Services
         private readonly IUserRepository<User> _userRepository;
         private readonly IMapper _mapper;
         private readonly SignInManager<User> _signInManager;
+        private readonly IJWTService _jWTService;
 
 
 
         public AccountService(IUserRepository<User> userRepository, IMapper mapper,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager, IJWTService jWTService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _signInManager = signInManager;
+            _jWTService = jWTService;
         }
 
         public async Task ConfirmEmailAsync(string email, string code)
@@ -92,7 +95,7 @@ namespace Store.BusinessLogicLayer.Services
             return _mapper.Map<IEnumerable<UserModel>>(await _userRepository.GetAllAsync()); ;
         }
 
-        public async Task SignInAsync(UserModel userModel)
+        public async Task<TokenResponseModel> SignInAsync(UserModel userModel)
         {
             User user = await _userRepository.GetOneAsync(_mapper.Map<User>(userModel));
             if (user is null)
@@ -107,6 +110,8 @@ namespace Store.BusinessLogicLayer.Services
 
             }
             await _signInManager.SignInAsync(user, false);
+            TokenResponseModel responseModel = await _jWTService.GetTokensAsync(userModel.Email);
+            return responseModel;
         }
 
         public async Task SignOutAsync()

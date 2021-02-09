@@ -71,8 +71,7 @@ namespace Store.Presentation.Controllers
         [HttpPost(Constant.Routes.SIGN_IN_ROUTE)]
         public async Task<IActionResult> SignInAsync([FromBody] UserModel value)
         {
-            await _accountService.SignInAsync(value);
-            TokenResponseModel result = await _jWTService.GetTokensAsync(value.Email);
+            TokenResponseModel result = await _accountService.SignInAsync(value);
             return Ok(result);
         }
 

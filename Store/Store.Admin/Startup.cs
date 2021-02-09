@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Store.BusinessLogicLayer;
+using Store.Shared.Extensions;
 
 namespace Store.Admin
 {
@@ -26,7 +26,7 @@ namespace Store.Admin
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/SignIn/SignIn");
                 });
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;
 
             services.Init(Configuration);
 
@@ -35,16 +35,8 @@ namespace Store.Admin
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
 
+            app.UseErrorHandler();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -1,4 +1,5 @@
-﻿using Store.BusinessLogicLayer.Models.Users;
+﻿using Store.BusinessLogicLayer.Models.Tokens;
+using Store.BusinessLogicLayer.Models.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Store.BusinessLogicLayer.Interfaces
     {
         public Task<IEnumerable<UserModel>> GetUsers();
         public Task SigUpAsync(UserModel userModel);
-        public Task SignInAsync(UserModel userModel);
+        public Task<TokenResponseModel> SignInAsync(UserModel userModel);
         public Task SignOutAsync();
         public Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel);
         public Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel);
