@@ -13,7 +13,7 @@ namespace Store.DataAccessLayer.Entities
         public string Status { get; set; }
         public string Type { get; set; }
         public string Currency { get; set; }
-        public IList<AuthorInPrintingEdition> AuthorInPrintingEditions { get; set; }
+        public IList<Author> Authors { get; set; }
 
     }
 }
