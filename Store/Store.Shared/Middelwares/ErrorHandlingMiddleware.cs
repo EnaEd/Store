@@ -2,6 +2,7 @@
 using Store.Shared.Common;
 using Store.Shared.Enums;
 using Store.Shared.Extensions;
+using System;
 using System.Threading.Tasks;
 
 namespace Store.Shared.Middelwares
@@ -24,6 +25,10 @@ namespace Store.Shared.Middelwares
                 context.Response.StatusCode = (int)ex.Code;
                 await context.Response.WriteAsync(
                 $"Error:{(int)ex.Code} {(ex.Code).GetAttribute<EnumDescriptor>().Description}\n {ex.Description}");
+            }
+            catch (Exception ex)
+            {
+                //TODO EE: add logger
             }
         }
 

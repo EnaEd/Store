@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
-using Store.Shared.Constants;
 using Store.Shared.Extensions;
 using System.IO;
 
@@ -71,16 +70,6 @@ namespace Store.Presentation
             loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
             var logger = loggerFactory.CreateLogger("Logger");
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //if (!env.IsDevelopment())
-            //{
-            //    app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
-            //}
-            app.UseExceptionHandler(Constant.Routes.ERROR_ROUTE);
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -90,7 +79,7 @@ namespace Store.Presentation
             app.UseRouting();
 
             //custom handler with logger
-            // app.UseErrorHandler();
+            app.UseErrorHandler();
 
             app.UseAuthentication();
             app.UseAuthorization();
