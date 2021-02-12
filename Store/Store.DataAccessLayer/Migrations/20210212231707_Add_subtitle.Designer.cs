@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210212231707_Add_subtitle")]
+    partial class Add_subtitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +184,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b5bce4b6-15d1-4c7f-88eb-cf60733f8ff5"),
+                            Id = new Guid("85a2deb4-fda3-4318-b461-981f4a80eed9"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -284,6 +286,9 @@ namespace Store.DataAccessLayer.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SubTitleTitle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -297,7 +302,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6c172b46-dd45-4fd8-9027-ea6d6604b50a"),
+                            Id = new Guid("9af25e1b-68df-414b-8147-1804e1a68316"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

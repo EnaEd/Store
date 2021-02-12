@@ -59,10 +59,6 @@ namespace Store.Presentation
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
-
-            UserManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
-
-            //IdentityInitialization.InitializeAdminAsync(UserManager, Configuration).Wait();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)

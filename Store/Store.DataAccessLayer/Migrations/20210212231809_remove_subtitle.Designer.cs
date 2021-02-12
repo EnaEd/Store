@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210212231809_remove_subtitle")]
+    partial class remove_subtitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +184,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b5bce4b6-15d1-4c7f-88eb-cf60733f8ff5"),
+                            Id = new Guid("1be2f781-c3f3-4848-8757-07fac95bae47"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -297,7 +299,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6c172b46-dd45-4fd8-9027-ea6d6604b50a"),
+                            Id = new Guid("b2b846d3-5752-4cae-aa18-db0a058f3608"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

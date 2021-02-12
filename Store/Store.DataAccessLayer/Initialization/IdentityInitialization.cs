@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Store.DataAccessLayer.Entities;
 using Store.Shared.Enums;
 using System;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Initialization
 {
-    public class IdentityInitialization
+    public static class IdentityInitialization
     {
-        public static async Task InitializeAdminAsync(UserManager<User> userManager, IConfiguration configuration)
+        public static async Task InitializeAdminAsync(this IServiceCollection services, IConfiguration configuration)
         {
-            //throw new NotImplementedException();
+            var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
+
             if (!(await userManager.FindByEmailAsync(configuration["AdminData:AdminEmail"]) is null))
             {
                 return;
@@ -30,8 +32,9 @@ namespace Store.DataAccessLayer.Initialization
             }
         }
 
-        public static async Task InitialazeRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
+        public static async Task InitialazeRolesAsync(this IServiceCollection services)
         {
+            var roleManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             if (!await roleManager.RoleExistsAsync(Enums.UserRole.Admin.ToString()))
             {
                 var adminRole = new IdentityRole<Guid>

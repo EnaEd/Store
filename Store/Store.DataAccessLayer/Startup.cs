@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Initialization;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System;
 
@@ -39,12 +40,9 @@ namespace Store.DataAccessLayer
             .AsImplementedInterfaces()//if not math interface like Interface<T>
             .WithTransientLifetime());
 
-            ServiceProvider provider = services.BuildServiceProvider();
-            UserManager<User> userManager = provider.GetRequiredService<UserManager<User>>();
-            RoleManager<IdentityRole<Guid>> roleManager = provider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-            //IdentityInitialization.InitialazeRolesAsync(roleManager).Wait();
-            //IdentityInitialization.InitializeAdmin(userManager, configuration).Wait();
+            services.InitialazeRolesAsync().Wait();
+            services.InitializeAdminAsync(configuration).Wait();
 
         }
     }
