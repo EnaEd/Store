@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Initialization;
 using Store.Shared.Constants;
 using Store.Shared.Extensions;
 using System.IO;
@@ -64,7 +63,7 @@ namespace Store.Presentation
 
             UserManager = services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
 
-            IdentityInitialization.InitializeAdminAsync(UserManager, Configuration).Wait();
+            //IdentityInitialization.InitializeAdminAsync(UserManager, Configuration).Wait();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
