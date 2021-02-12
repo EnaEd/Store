@@ -1,3 +1,9 @@
+urgent
+--Check auth point on server side
+--Add Client Angular
+-- Add FB/Google Auth
+
+
 1 add web hook and notification
 2 add job notification for wellcome back to store users
 3 change reast api to grahpQL
