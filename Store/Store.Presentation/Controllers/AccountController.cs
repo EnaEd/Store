@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
 using Store.BusinessLogicLayer.Models.Users;
+using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.Shared.Constants;
 using System.Threading.Tasks;
 
@@ -15,11 +16,11 @@ namespace Store.Presentation.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-        private readonly IEmailService _emailService;
+        private readonly IEmailProvider _emailService;
         private readonly IConfiguration _configuration;
         private readonly IJWTService _jWTService;
         private readonly IAdminService _adminService;
-        public AccountController(IAccountService accountService, IEmailService emailService, IConfiguration configuration,
+        public AccountController(IAccountService accountService, IEmailProvider emailService, IConfiguration configuration,
             IJWTService jWTService, IAdminService adminService)
         {
             _accountService = accountService;
@@ -50,18 +51,18 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.SIGN_UP_ROUTE)]
-        public async Task<IActionResult> SignUpAsync([FromBody] UserModel value)
+        public async Task<IActionResult> SignUpAsync([FromBody] UserModel model)
         {
-            await _accountService.SigUpAsync(value);
+            await _accountService.SigUpAsync(model);
 
-            string token = await _accountService.GenerateEmailConfirmTokenAsync(value);
+            string token = await _accountService.GenerateEmailConfirmTokenAsync(model);
             string callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Account",
-                        new { email = value.Email, code = token },
+                        new { email = model.Email, code = token },
                         protocol: HttpContext.Request.Scheme
                         );
-            await _emailService.SendEmailAsync(value.Email,
+            await _emailService.SendEmailAsync(model.Email,
                 _configuration["RequestEmail:ThemeMail"],
                 $"click this link for confirm registration <br> <a href='{callbackUrl}'> Confirm mail <a/>");
 

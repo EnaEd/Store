@@ -6,7 +6,7 @@ using Scrutor;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.MappingProfiles;
 using Store.BusinessLogicLayer.Models.Config;
-
+using Store.BusinessLogicLayer.Providers.Interfaces;
 
 namespace Store.BusinessLogicLayer
 {
@@ -30,7 +30,14 @@ namespace Store.BusinessLogicLayer
             services.AddSingleton(mapper);
 
             services.Scan(scan => scan
-            .FromAssemblyOf<IEmailService>()
+            .FromAssemblyOf<IAccountService>()
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsMatchingInterface()
+            .WithTransientLifetime());
+
+            services.Scan(scan => scan
+            .FromAssemblyOf<IEmailProvider>()
             .AddClasses()
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)
             .AsMatchingInterface()

@@ -1,15 +1,15 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Providers.Interfaces;
 using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Services
+namespace Store.BusinessLogicLayer.Providers
 {
-    public class EmailService : IEmailService
+    public class EmailProvider : IEmailProvider
     {
         private IConfiguration _configuration;
-        public EmailService(IConfiguration configuration)
+        public EmailProvider(IConfiguration configuration)
         {
             _configuration = configuration;
         }
