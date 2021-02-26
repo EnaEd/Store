@@ -41,21 +41,20 @@ namespace Store.BusinessLogicLayer.Services
             _validationProvider = validationProvider;
         }
 
-        public async Task ConfirmEmailAsync(string email, string code)
+        public async Task ConfirmEmailAsync(ConfirmEmailRequestModel model)
         {
-            if (email is null || code is null)
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.BadRequest);
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
             }
 
-            var user = await _userManager.FindByEmailAsync(email);
-
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user is null)
             {
                 throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.NotFound);
             }
 
-            var confirmResult = await _userManager.ConfirmEmailAsync(user, code);
+            var confirmResult = await _userManager.ConfirmEmailAsync(user, model.Code);
             if (confirmResult.Errors.Any())
             {
                 throw new UserException(confirmResult.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
@@ -99,26 +98,6 @@ namespace Store.BusinessLogicLayer.Services
                 $"your new password <br> <div> {newPassword} <div/>");
         }
 
-        public async Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel)
-        {
-            if (userModel is null || string.IsNullOrWhiteSpace(userModel.Email))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.BadRequest);
-            }
-            var user = await _userManager.FindByEmailAsync(userModel.Email);
-            if (user is null)
-            {
-                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
-            }
-            string confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            if (string.IsNullOrWhiteSpace(confirmToken))
-            {
-                throw new UserException(Constant.Errors.CONFIRM_EMAIL_FAIL, Enums.ErrorCode.BadRequest);
-            }
-
-            return confirmToken;
-        }
-
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             var result = _mapper.Map<IEnumerable<UserModel>>(await _userManager.Users.ToListAsync());
@@ -141,7 +120,8 @@ namespace Store.BusinessLogicLayer.Services
             SignInResult result = await _signInManager.PasswordSignInAsync(user, userModel.Password, userModel.RememberMe, false);
             if (!result.Succeeded)
             {
-                throw new UserException(Constant.Errors.WRONG_PASSWORD_ERROR, Enums.ErrorCode.Unauthorized);
+                string error = result.IsNotAllowed ? Constant.Errors.EMAIL_NOT_CONFIRM : Constant.Errors.WRONG_PASSWORD_ERROR;
+                throw new UserException(error, Enums.ErrorCode.Unauthorized);
             }
 
             TokenResponseModel responseModel = await _jWTService.GetTokensAsync(userModel.Email);
@@ -167,12 +147,21 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(result.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
             }
 
-            string token = await GenerateEmailConfirmTokenAsync(userModel);
+            var user = await _userManager.FindByEmailAsync(userModel.Email);
+            if (user is null)
+            {
+                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
+            }
+            string confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (string.IsNullOrWhiteSpace(confirmToken))
+            {
+                throw new UserException(Constant.Errors.CONFIRM_EMAIL_FAIL, Enums.ErrorCode.BadRequest);
+            }
 
             var uriBuilder = new UriBuilder($"http://localhost:56932/api/account/confirmemail");
             var paramValues = HttpUtility.ParseQueryString(uriBuilder.Query);
             paramValues.Add("email", $"{userModel.Email}");
-            paramValues.Add("code", $"{token}");
+            paramValues.Add("code", $"{confirmToken}");
             uriBuilder.Query = paramValues.ToString();
 
             await _emailProvider.SendEmailAsync(userModel.Email,

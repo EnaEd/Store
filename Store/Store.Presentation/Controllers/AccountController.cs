@@ -43,9 +43,9 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpGet(Constant.Routes.CONFIRM_MAIL_ROUTE)]
-        public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
+        public async Task<IActionResult> ConfirmEmailAsync(ConfirmEmailRequestModel model)
         {
-            await _accountService.ConfirmEmailAsync(email, code);
+            await _accountService.ConfirmEmailAsync(model);
             return Ok(Constant.Info.CONFIRM_MAIL_SUCCESS);
         }
 
