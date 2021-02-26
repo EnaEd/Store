@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
+using Store.Presentation.Extensions;
 using Store.Shared.Extensions;
 
 namespace Store.Presentation
@@ -29,6 +30,8 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             services.Init(Configuration);
+
+            services.ConfigureAppSettings(Configuration);
 
             var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {

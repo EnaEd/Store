@@ -30,7 +30,8 @@ namespace Store.BusinessLogicLayer.Services
 
 
         public AccountService(IMapper mapper,
-            SignInManager<User> signInManager, IJWTService jWTService, UserManager<User> userManager, IEmailProvider emailProvider, IValidationProvider validationProvider)
+            SignInManager<User> signInManager, IJWTService jWTService, UserManager<User> userManager,
+            IEmailProvider emailProvider, IValidationProvider validationProvider)
         {
 
             _mapper = mapper;
