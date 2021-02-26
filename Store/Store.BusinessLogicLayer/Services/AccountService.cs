@@ -12,7 +12,6 @@ using Store.Shared.Providers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -63,11 +62,11 @@ namespace Store.BusinessLogicLayer.Services
             }
         }
 
-        public async Task<string> ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
+        public async Task ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel)
         {
-            if (forgotPasswordModel is null || string.IsNullOrWhiteSpace(forgotPasswordModel.Email))
+            if (!_validationProvider.TryValidate(forgotPasswordModel, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.BadRequest);
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
             }
 
             var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
@@ -87,7 +86,17 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(Constant.Errors.GENERATE_TOKEN_FAIL, Enums.ErrorCode.BadRequest);
             }
 
-            return token;
+            string newPassword = _validationProvider.GenerateTempPassword();
+
+            var resetResult = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            if (resetResult.Errors.Any())
+            {
+                throw new UserException(resetResult.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
+            }
+
+            await _emailProvider.SendEmailAsync(user.Email,
+                "Verification mail",
+                $"your new password <br> <div> {newPassword} <div/>");
         }
 
         public async Task<string> GenerateEmailConfirmTokenAsync(UserModel userModel)
@@ -110,18 +119,6 @@ namespace Store.BusinessLogicLayer.Services
             return confirmToken;
         }
 
-        public string GenerateTempPassword()
-        {
-            string pattern = @"(?=.*[0 - 9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{16,}";
-            string password = GeneratePassword();
-            while (Regex.IsMatch(password, pattern))
-            {
-                password = GeneratePassword();
-            }
-
-            return password;
-        }
-
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             var result = _mapper.Map<IEnumerable<UserModel>>(await _userManager.Users.ToListAsync());
@@ -130,7 +127,6 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task<TokenResponseModel> SignInAsync(UserModel userModel)
         {
-            //TODO EE: add common handler if models null(it not depends from user )
             if (!_validationProvider.TryValidate<UserModel>(userModel, out List<string> errors))
             {
                 throw new UserException(errors, Enums.ErrorCode.Unauthorized);
@@ -183,41 +179,6 @@ namespace Store.BusinessLogicLayer.Services
                 "Verification mail",
                 $"click this link for confirm registration <br> <a href='{uriBuilder.Uri}'> Confirm mail <a/>");
 
-        }
-
-        public string GeneratePassword()
-        {
-            //TODO EE: make better generation password
-            string password = string.Empty;
-            int[] array = new int[Constant.PasswordConfig.PASSWORD_LENGTH];
-            Random random = new Random();
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = random.Next(Constant.PasswordConfig.COMMON_SIMBOLS_RANGE_START, Constant.PasswordConfig.COMMON_SIMBOLS_RANGE_END);
-                password += (char)array[i];
-            }
-            return password;
-        }
-
-        public async Task ResetPasswordAsync(string email, string token, string password)
-        {
-            if (string.IsNullOrWhiteSpace(email) ||
-                string.IsNullOrWhiteSpace(token) ||
-                string.IsNullOrWhiteSpace(password))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.BadRequest);
-            }
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user is null)
-            {
-                throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
-            }
-
-            var resetResult = await _userManager.ResetPasswordAsync(user, token, password);
-            if (resetResult.Errors.Any())
-            {
-                throw new UserException(resetResult.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
-            }
         }
     }
 }

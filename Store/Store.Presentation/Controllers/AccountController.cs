@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
@@ -54,9 +53,6 @@ namespace Store.Presentation.Controllers
         public async Task<IActionResult> SignUpAsync([FromBody] UserModel model)
         {
             await _accountService.SigUpAsync(model);
-
-
-
             return Ok(Constant.Info.CONFIRM_MAIL_FOR_REGISTRATION_SUCCESS);
         }
 
@@ -70,20 +66,7 @@ namespace Store.Presentation.Controllers
         [HttpPost(Constant.Routes.FORGOT_PASSWORD_ROUTE)]
         public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordModel forgotPasswordModel)
         {
-            string resetToken = await _accountService.ForgotPasswordAsync(forgotPasswordModel);
-
-            string password = _accountService.GenerateTempPassword();
-
-            await _accountService.ResetPasswordAsync(forgotPasswordModel.Email, resetToken, password);
-            _ = Url.Action(
-                "ResetPassword",
-                "Account",
-                 new { email = forgotPasswordModel.Email, code = resetToken },
-                 protocol: HttpContext.Request.Scheme);
-            await _emailService.SendEmailAsync(forgotPasswordModel.Email,
-                    _configuration["RequestEmail:ThemeMail"],
-                    $"your new password <br> <div> {password} <div/>");
-
+            await _accountService.ForgotPasswordAsync(forgotPasswordModel);
             return Ok(Constant.Info.SEND_RESET_PASSWORD_MAIL_SUCCESS);
         }
 
