@@ -147,18 +147,13 @@ namespace Store.BusinessLogicLayer.Services
             User user = await _userManager.FindByEmailAsync(userModel.Email);
             if (user is null)
             {
-                errors.Add(Constant.Errors.WRONG_EMAIL_ERROR);
+                throw new UserException(Constant.Errors.WRONG_EMAIL_ERROR, Enums.ErrorCode.Unauthorized);
             }
 
             SignInResult result = await _signInManager.PasswordSignInAsync(user, userModel.Password, userModel.RememberMe, false);
             if (!result.Succeeded)
             {
-                errors.Add(Constant.Errors.WRONG_PASSWORD_ERROR);
-            }
-
-            if (errors.Any())
-            {
-                throw new UserException(errors, Enums.ErrorCode.Unauthorized);
+                throw new UserException(Constant.Errors.WRONG_PASSWORD_ERROR, Enums.ErrorCode.Unauthorized);
             }
 
             TokenResponseModel responseModel = await _jWTService.GetTokensAsync(userModel.Email);
