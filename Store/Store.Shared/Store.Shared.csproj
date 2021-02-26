@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Providers\Interfaces\IValidationProvider.cs~RF20b049.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.10.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="MimeKit" Version="2.10.1" />
   </ItemGroup>
 
 </Project>

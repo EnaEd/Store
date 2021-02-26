@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Store.BusinessLogicLayer.Providers.Interfaces
+namespace Store.Shared.Providers.Interfaces
 {
     public interface IEmailProvider
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Store.Presentation.Middelwares;
+using Store.Shared.Middelwares;
 
 namespace Store.Presentation.Extensions
 {

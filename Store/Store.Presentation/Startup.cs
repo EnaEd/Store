@@ -11,7 +11,6 @@ using Store.BusinessLogicLayer;
 using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
 using Store.Shared.Extensions;
-using System.IO;
 
 namespace Store.Presentation
 {
@@ -63,8 +62,8 @@ namespace Store.Presentation
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
-            var logger = loggerFactory.CreateLogger("Logger");
+            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
+            //var logger = loggerFactory.CreateLogger("Logger");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

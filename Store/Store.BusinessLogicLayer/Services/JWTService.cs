@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
 using Store.DataAccessLayer.Entities;
-using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
@@ -19,13 +19,14 @@ namespace Store.BusinessLogicLayer.Services
 {
     public class JWTService : IJWTService
     {
-        private readonly IUserRepository<User> _userRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private const string AUTH_TYPE = "Token";
-        public JWTService(IUserRepository<User> userRepository, IConfiguration configuration)
+        public JWTService(IConfiguration configuration, UserManager<User> userManager)
         {
-            _userRepository = userRepository;
+
             _configuration = configuration;
+            _userManager = userManager;
         }
         public static SymmetricSecurityKey GetSymmetricSecurityKey(string key)
         {
@@ -35,7 +36,7 @@ namespace Store.BusinessLogicLayer.Services
         public async Task<TokenResponseModel> GetTokensAsync(string userEmail)
         {
             TokenResponseModel responseModel = new TokenResponseModel();
-            User user = await _userRepository.GetOneAsync(userEmail);
+            User user = await _userManager.FindByEmailAsync(userEmail);
             if (user is null)
             {
                 throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
@@ -53,7 +54,7 @@ namespace Store.BusinessLogicLayer.Services
                 signingCredentials: new SigningCredentials(GetSymmetricSecurityKey(_configuration["AuthOptions:Key"]),
                                                            SecurityAlgorithms.HmacSha256));
             user.RefreshToken = Guid.NewGuid().ToString();
-            await _userRepository.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
             responseModel.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
             responseModel.RefreshToken = user.RefreshToken;
@@ -63,7 +64,7 @@ namespace Store.BusinessLogicLayer.Services
         private async Task<ClaimsIdentity> GetIdentityAsync(User user)
         {
 
-            var userRoles = await _userRepository.GetUserRolesAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
@@ -83,7 +84,7 @@ namespace Store.BusinessLogicLayer.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptToken = tokenHandler.ReadToken(accessToken) as JwtSecurityToken;
             string mail = encryptToken.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
-            User user = await _userRepository.GetOneAsync(mail);
+            User user = await _userManager.FindByEmailAsync(mail);
             if (user is null)
             {
                 throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);

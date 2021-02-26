@@ -3,6 +3,7 @@ using Store.Shared.Common;
 using Store.Shared.Enums;
 using Store.Shared.Extensions;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Store.Shared.Middelwares
@@ -22,9 +23,10 @@ namespace Store.Shared.Middelwares
             }
             catch (UserException ex)
             {
+                string errorContent = JsonSerializer.Serialize(ex.Descriptions);
+                string response = $"Error:{(int)ex.Code} {(ex.Code).GetAttribute<EnumDescriptor>().Description}\n {errorContent}";
                 context.Response.StatusCode = (int)ex.Code;
-                await context.Response.WriteAsync(
-                $"Error:{(int)ex.Code} {(ex.Code).GetAttribute<EnumDescriptor>().Description}\n {ex.Description}");
+                await context.Response.WriteAsync(response);
             }
             catch (Exception ex)
             {

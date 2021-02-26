@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Tokens;
 using Store.BusinessLogicLayer.Models.Users;
-using Store.BusinessLogicLayer.Providers.Interfaces;
 using Store.Shared.Constants;
+using Store.Shared.Providers.Interfaces;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -55,16 +55,7 @@ namespace Store.Presentation.Controllers
         {
             await _accountService.SigUpAsync(model);
 
-            string token = await _accountService.GenerateEmailConfirmTokenAsync(model);
-            string callbackUrl = Url.Action(
-                        "ConfirmEmail",
-                        "Account",
-                        new { email = model.Email, code = token },
-                        protocol: HttpContext.Request.Scheme
-                        );
-            await _emailService.SendEmailAsync(model.Email,
-                _configuration["RequestEmail:ThemeMail"],
-                $"click this link for confirm registration <br> <a href='{callbackUrl}'> Confirm mail <a/>");
+
 
             return Ok(Constant.Info.CONFIRM_MAIL_FOR_REGISTRATION_SUCCESS);
         }

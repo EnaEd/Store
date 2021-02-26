@@ -6,7 +6,7 @@ using Scrutor;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.MappingProfiles;
 using Store.BusinessLogicLayer.Models.Config;
-using Store.BusinessLogicLayer.Providers.Interfaces;
+using Store.Shared.Providers.Interfaces;
 
 namespace Store.BusinessLogicLayer
 {

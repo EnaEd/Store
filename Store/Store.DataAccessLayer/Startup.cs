@@ -33,7 +33,7 @@ namespace Store.DataAccessLayer
 
 
             services.Scan(scan => scan
-            .FromAssemblyOf<IUserRepository<User>>()
+            .FromAssemblyOf<IAuthorRepository<Author>>()
             .AddClasses()
             .UsingRegistrationStrategy(RegistrationStrategy.Skip)
             .AsMatchingInterface()
