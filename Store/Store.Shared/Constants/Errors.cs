@@ -5,6 +5,9 @@
 
         public static class Errors
         {
+
+            public const string SERVER_ERROR = "something went wrong please call to admin";
+
             public const string USER_NOT_EXISTS = "user not exists";
 
             public const string REFRESH_TOKEN_NOT_CONFIRM = "refresh token not confirm";

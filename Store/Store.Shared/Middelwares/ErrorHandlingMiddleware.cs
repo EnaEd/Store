@@ -31,6 +31,19 @@ namespace Store.Shared.Middelwares
             catch (Exception ex)
             {
                 //TODO EE: add logger
+#if DEBUG
+                string errorContent = JsonSerializer.Serialize(new { ex.Message, ex.StackTrace });
+                string response = $"Error:{(int)Enums.Enums.ErrorCode.InternalServerError} \n {errorContent}";
+                context.Response.StatusCode = (int)Enums.Enums.ErrorCode.InternalServerError;
+                await context.Response.WriteAsync(response);
+#endif
+
+#if RELEASE
+                string response = $"Error:{(int)Enums.Enums.ErrorCode.InternalServerError} \n {Constants.Constant.Errors.SERVER_ERROR}";
+                context.Response.StatusCode = (int)Enums.Enums.ErrorCode.InternalServerError;
+                await context.Response.WriteAsync(response);
+
+#endif
             }
         }
 

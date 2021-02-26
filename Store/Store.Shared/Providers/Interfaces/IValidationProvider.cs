@@ -1,8 +1,9 @@
-﻿namespace Store.Shared.Providers.Interfaces
+﻿using System.Collections.Generic;
+
+namespace Store.Shared.Providers.Interfaces
 {
     public interface IValidationProvider
     {
-        //TODO EE:add validation
-        public bool Validate();
+        public bool TryValidate<T>(T model, out List<string> errors, bool validateAll = true);
     }
 }

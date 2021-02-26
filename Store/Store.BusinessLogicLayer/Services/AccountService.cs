@@ -25,12 +25,13 @@ namespace Store.BusinessLogicLayer.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IJWTService _jWTService;
         private readonly IEmailProvider _emailProvider;
+        private readonly IValidationProvider _validationProvider;
 
 
 
 
         public AccountService(IMapper mapper,
-            SignInManager<User> signInManager, IJWTService jWTService, UserManager<User> userManager, IEmailProvider emailProvider)
+            SignInManager<User> signInManager, IJWTService jWTService, UserManager<User> userManager, IEmailProvider emailProvider, IValidationProvider validationProvider)
         {
 
             _mapper = mapper;
@@ -38,6 +39,7 @@ namespace Store.BusinessLogicLayer.Services
             _jWTService = jWTService;
             _userManager = userManager;
             _emailProvider = emailProvider;
+            _validationProvider = validationProvider;
         }
 
         public async Task ConfirmEmailAsync(string email, string code)
@@ -128,20 +130,10 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task<TokenResponseModel> SignInAsync(UserModel userModel)
         {
-            //TODO EE: add new validation
-            List<string> errors = new();
-
-            if (userModel is null)
+            //TODO EE: add common handler if models null(it not depends from user )
+            if (!_validationProvider.TryValidate<UserModel>(userModel, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.Email))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.Password))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
+                throw new UserException(errors, Enums.ErrorCode.Unauthorized);
             }
 
             User user = await _userManager.FindByEmailAsync(userModel.Email);
@@ -167,38 +159,19 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task SigUpAsync(UserModel userModel)
         {
-            if (userModel is null)
+            if (!_validationProvider.TryValidate<UserModel>(userModel, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.Email))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.Password))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.FirstName))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
-            }
-            if (string.IsNullOrWhiteSpace(userModel.LastName))
-            {
-                throw new UserException(Constant.Errors.EMPTY_FIELD, Enums.ErrorCode.Unauthorized);
+                throw new UserException(errors, Enums.ErrorCode.Unauthorized);
             }
 
             var mappedEntity = _mapper.Map<User>(userModel);
-
             var result = await _userManager.CreateAsync(mappedEntity, userModel.Password);
             if (result.Errors.Any())
             {
                 throw new UserException(result.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
             }
 
-
             string token = await GenerateEmailConfirmTokenAsync(userModel);
-
 
             var uriBuilder = new UriBuilder($"http://localhost:56932/api/account/confirmemail");
             var paramValues = HttpUtility.ParseQueryString(uriBuilder.Query);
