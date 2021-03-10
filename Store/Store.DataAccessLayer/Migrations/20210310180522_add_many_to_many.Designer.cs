@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210310180522_add_many_to_many")]
+    partial class add_many_to_many
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +184,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6d5f6f1c-f8bc-4c3f-bd7d-13f3e3d31c18"),
+                            Id = new Guid("011ff3ff-cc92-4f13-8f9f-0aa68832db71"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -297,7 +299,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b779e755-3b0f-4188-9cb7-c498bb03804e"),
+                            Id = new Guid("7baed731-354b-402d-8909-3de362a75de8"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

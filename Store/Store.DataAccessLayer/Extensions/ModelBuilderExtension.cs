@@ -34,6 +34,11 @@ namespace Store.DataAccessLayer.Extensions
                     Title = "test Title",
                     Type = Enums.EditionType.Book.ToString()
                 });
+            modelBuilder.Entity<Author>()
+                .HasMany(author => author.PrintingEditions)
+                .WithMany(edition => edition.Authors)
+                .UsingEntity(join => join.ToTable("AuthorPrintingEdition"));
+
         }
     }
 }

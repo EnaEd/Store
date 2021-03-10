@@ -23,7 +23,7 @@ namespace Store.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(UserModel requestModel)
+        public async Task<IActionResult> SignInAsync(SignInRequestModel requestModel)
         {
             var response = await _accountService.SignInAsync(requestModel);
 
