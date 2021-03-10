@@ -31,9 +31,10 @@ namespace Store.DataAccessLayer.Repositories.Base
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetOneAsync(Guid id)
+        public virtual async Task<T> GetOneAsync(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            var result = await _dbSet.FindAsync(id);
+            return result;
         }
 
         public async Task<T> GetOneAsync(T item)
@@ -56,6 +57,7 @@ namespace Store.DataAccessLayer.Repositories.Base
         public async Task UpdateAsync(T item)
         {
             _dbSet.Update(item);
+            //_context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }

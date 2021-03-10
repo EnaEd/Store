@@ -85,9 +85,9 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
 
-            await _authorRepository.RemoveOneAsync(author);
 
-            await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
+            author = _mapper.Map<Author>(model);
+            await _authorRepository.UpdateAsync(author);
         }
     }
 }

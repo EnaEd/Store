@@ -17,6 +17,12 @@ namespace Store.DataAccessLayer.Repositories
         {
         }
 
+        public override async Task<PrintingEdition> GetOneAsync(Guid id)
+        {
+            var result = await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
+            return result;
+        }
+
         public async Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterModelDAL filter = null)
         {
             var Currency = new SqlParameter("@Currency", filter?.Currency ?? (object)DBNull.Value);
