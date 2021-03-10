@@ -94,9 +94,7 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(resetResult.Errors.Select(error => error.Description).ToList(), Enums.ErrorCode.BadRequest);
             }
 
-            await _emailProvider.SendEmailAsync(user.Email,
-                "Verification mail",
-                $"your new password <br> <div> {newPassword} <div/>");
+            await _emailProvider.SendEmailAsync(user.Email, Constant.Common.MAIL_SUBJECT_TEXT, string.Format(Constant.Common.MAIL_MESSAGE_FORGOT_PASSWORD_TEXT, newPassword));
         }
 
         public async Task<IEnumerable<UserModel>> GetUsers()
@@ -153,22 +151,22 @@ namespace Store.BusinessLogicLayer.Services
             {
                 throw new UserException(Constant.Errors.USER_NOT_EXISTS, Enums.ErrorCode.BadRequest);
             }
+
             string confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             if (string.IsNullOrWhiteSpace(confirmToken))
             {
                 throw new UserException(Constant.Errors.CONFIRM_EMAIL_FAIL, Enums.ErrorCode.BadRequest);
             }
 
-            var uriBuilder = new UriBuilder($"http://localhost:56932/api/account/confirmemail");
+            var uriBuilder = new UriBuilder(Constant.Common.MAIL_CALLBACK_URL);
             var paramValues = HttpUtility.ParseQueryString(uriBuilder.Query);
-            paramValues.Add("email", $"{userModel.Email}");
-            paramValues.Add("code", $"{confirmToken}");
+            paramValues.Add(Constant.Common.MAIL_PARAM_EMAIL, $"{userModel.Email}");
+            paramValues.Add(Constant.Common.MAIL_PARAM_CODE, $"{confirmToken}");
             uriBuilder.Query = paramValues.ToString();
 
             await _emailProvider.SendEmailAsync(userModel.Email,
-                "Verification mail",
-                $"click this link for confirm registration <br> <a href='{uriBuilder.Uri}'> Confirm mail <a/>");
-
+                Constant.Common.MAIL_SUBJECT_TEXT,
+                string.Format(Constant.Common.MAIL_MESSAGE_CONFIRM_EMAIL_TEXT, uriBuilder.Uri));
         }
     }
 }

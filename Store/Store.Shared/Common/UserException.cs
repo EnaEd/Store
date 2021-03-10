@@ -12,8 +12,7 @@ namespace Store.Shared.Common
         public UserException(string description, ErrorCode errorCode = ErrorCode.InternalServerError)
         {
             Code = errorCode;
-            Descriptions = new List<string>();
-            Descriptions.Add(description);
+            Descriptions = new List<string>() { description };
         }
 
         public UserException(List<string> descriptions, ErrorCode errorCode = ErrorCode.InternalServerError)
