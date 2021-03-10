@@ -5,8 +5,6 @@ using Store.BusinessLogicLayer.Models.Users;
 using Store.Shared.Constants;
 using System.Threading.Tasks;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Store.Presentation.Controllers
 {
     [Route(Constant.Routes.DEFAULT_API_ROUTE)]
@@ -20,16 +18,11 @@ namespace Store.Presentation.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet(Constant.Routes.GET_USERS_ROUTE)]
-        public async Task<IActionResult> GetFilteredUsersAsync()
-        {
-            return Ok(await _adminService.GetFilteredUserProfileModelsAsync());
-        }
-
         [HttpPost(Constant.Routes.GET_USERS_ROUTE)]
         public async Task<IActionResult> GetFilteredUsersAsync([FromBody] UserFilterModel filter)
         {
-            return Ok(await _adminService.GetFilteredUserProfileModelsAsync(filter));
+            var result = await _adminService.GetFilteredUserProfileModelsAsync();
+            return Ok(result);
         }
 
         [HttpPost(Constant.Routes.BLOCK_USER_ROUTE)]

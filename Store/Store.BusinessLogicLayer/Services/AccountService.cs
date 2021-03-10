@@ -103,9 +103,9 @@ namespace Store.BusinessLogicLayer.Services
             return result;
         }
 
-        public async Task<TokenResponseModel> SignInAsync(UserModel userModel)
+        public async Task<TokenResponseModel> SignInAsync(SignInRequestModel userModel)
         {
-            if (!_validationProvider.TryValidate<UserModel>(userModel, out List<string> errors))
+            if (!_validationProvider.TryValidate(userModel, out List<string> errors))
             {
                 throw new UserException(errors, Enums.ErrorCode.Unauthorized);
             }

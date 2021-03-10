@@ -9,7 +9,7 @@ namespace Store.BusinessLogicLayer.Interfaces
     {
         public Task<IEnumerable<UserModel>> GetUsers();
         public Task SigUpAsync(UserModel userModel);
-        public Task<TokenResponseModel> SignInAsync(UserModel userModel);
+        public Task<TokenResponseModel> SignInAsync(SignInRequestModel userModel);
         public Task SignOutAsync();
         public Task ForgotPasswordAsync(ForgotPasswordModel forgotPasswordModel);
         public Task ConfirmEmailAsync(ConfirmEmailRequestModel model);
