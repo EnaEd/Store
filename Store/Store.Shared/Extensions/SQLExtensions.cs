@@ -10,7 +10,7 @@ namespace Store.Shared.Extensions
         {
             string command = direction ? "OrderByDescending" : "OrderBy";
             var type = typeof(T);
-            var property = type.GetProperty(field) ?? type.GetProperties().First();
+            var property = type.GetProperty(field ?? type.GetProperties().First().ToString()) ?? type.GetProperties().First();
             var parameter = Expression.Parameter(type, "p");
             var propertyAccess = Expression.MakeMemberAccess(parameter, property);
             var orderByExpression = Expression.Lambda(propertyAccess, parameter);

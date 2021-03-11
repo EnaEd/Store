@@ -27,8 +27,8 @@ namespace Store.DataAccessLayer.Repositories
         public IQueryable<Author> GetAllFiltered(AuthorFilterDTO model)
         {
             var result =
-                _dbSet.Where(author => author.Name.Contains(model.NameFilter))
-                .OrderByExtension(model.NameFilter, model.OrderByDesc)
+                _dbSet.Where(author => model.NameFilter == null || author.Name.Contains(model.NameFilter))
+                .OrderByExtension(model.OrderField, model.OrderByDesc)
                 .Skip((model.PageNumber - Constant.Common.DEFAULT_PAGE_OFFSET) * model.PageSize)
                 .Take(model.PageSize);
 
