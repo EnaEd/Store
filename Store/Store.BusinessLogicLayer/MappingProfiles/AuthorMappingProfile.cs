@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Store.BusinessLogicLayer.Models.Author;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Models;
 
 namespace Store.BusinessLogicLayer.MappingProfiles
 {
@@ -10,6 +11,7 @@ namespace Store.BusinessLogicLayer.MappingProfiles
         {
             CreateMap<Author, AuthorModel>();
             CreateMap<AuthorModel, Author>();
+            CreateMap<AuthorFilterModel, AuthorFilterDTO>().ReverseMap();
         }
     }
 }

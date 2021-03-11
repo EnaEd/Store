@@ -27,11 +27,13 @@ namespace Store.DataAccessLayer.Repositories.Base
             return result;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             var result = await _dbSet.ToListAsync();
             return result;
         }
+
+
 
         public virtual async Task<T> GetOneAsync(Guid id)
         {

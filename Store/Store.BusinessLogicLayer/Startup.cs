@@ -21,6 +21,7 @@ namespace Store.BusinessLogicLayer
 
             var mapperConfig = new MapperConfiguration(config =>
               {
+                  //TODO EE: simplify it
                   config.AddProfile(new UserMappingProfile());
                   config.AddProfile(new AuthorMappingProfile());
                   config.AddProfile(new PrintingEditionProfile());

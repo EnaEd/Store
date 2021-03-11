@@ -18,10 +18,17 @@ namespace Store.Presentation.Controllers
             _authorSevice = authorSevice;
         }
 
-        [HttpGet(Constant.Routes.GET_AUTHORS_ROUTE)]
-        public async Task<IActionResult> GetAllAuthorsAsync()
+        //[HttpGet(Constant.Routes.GET_AUTHORS_ROUTE)]
+        //public async Task<IActionResult> GetAllAuthorsAsync()
+        //{
+        //    return Ok(await _authorSevice.GetAuthorsAsync());
+        //}
+
+        [HttpPost(Constant.Routes.GET_AUTHORS_ROUTE)]
+        public async Task<IActionResult> GetAllFilteredAuthorsAsync([FromBody] AuthorFilterModel model)
         {
-            return Ok(await _authorSevice.GetAuthorsAsync());
+            var result = await _authorSevice.GetAuthorsAsync(model);
+            return Ok(result);
         }
 
         [HttpPost(Constant.Routes.CREATE_AUTHOR_ROUTE)]

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Author;
+using Store.BusinessLogicLayer.Models.Base;
 using Store.DataAccessLayer.Entities;
+using Store.DataAccessLayer.Models;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
@@ -35,23 +38,40 @@ namespace Store.BusinessLogicLayer.Services
             }
 
             Author author = await _authorRepository.GetOneAsync(model.Name);
-            if (!(author is null))
+            if (author is not null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_ALREADY_EXISTS, Enums.ErrorCode.BadRequest);
             }
 
-            await _authorRepository.CreateAsync(_mapper.Map<Author>(model));
+            var mappedModel = _mapper.Map<Author>(model);
+
+            await _authorRepository.CreateAsync(mappedModel);
         }
 
-        public async Task<IEnumerable<AuthorModel>> GetAuthorsAsync()
+        public async Task<PaginationModel<IEnumerable<AuthorModel>>> GetAuthorsAsync(AuthorFilterModel model)
         {
-            IEnumerable<AuthorModel> authors = _mapper.Map<IEnumerable<AuthorModel>>(await _authorRepository.GetAllAsync());
-            if (!authors.Any())
+
+            var mappedDTO = _mapper.Map<AuthorFilterDTO>(model);
+
+            var entities = await _authorRepository.GetAllFiltered(mappedDTO).ToListAsync();
+            var mappedAuthorModel = _mapper.Map<IEnumerable<AuthorModel>>(entities);
+
+            if (!mappedAuthorModel.Any())
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
 
-            return authors;
+            int totalCount = await _authorRepository.GetCount(mappedDTO);
+
+            var pageModel = new PaginationModel<IEnumerable<AuthorModel>>();
+            pageModel.Data = mappedAuthorModel;
+            pageModel.Count = (int)Math.Ceiling((double)totalCount / model.PageSize);
+            pageModel.HasNext = model.PageSize * model.PageNumber < totalCount;
+            pageModel.HasPrevious = model.PageNumber - Constant.Common.DEFAULT_PAGE_OFFSET > default(int);
+            pageModel.PageNumber = model.PageNumber;
+            pageModel.PageSize = model.PageSize;
+
+            return pageModel;
         }
 
         public async Task<AuthorModel> GetOneAuthorAsync(Guid id)
