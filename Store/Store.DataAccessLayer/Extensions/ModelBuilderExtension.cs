@@ -37,8 +37,7 @@ namespace Store.DataAccessLayer.Extensions
             modelBuilder.Entity<Author>()
                 .HasMany(author => author.PrintingEditions)
                 .WithMany(edition => edition.Authors)
-                .UsingEntity(join => join.ToTable("AuthorPrintingEdition"));
-
+                .UsingEntity(join => join.HasData(new { AuthorsId = new Guid(authorIdGuid), PrintingEditionsId = new Guid(printEditionIdGuid) }));
         }
     }
 }
