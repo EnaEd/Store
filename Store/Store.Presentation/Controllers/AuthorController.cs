@@ -45,7 +45,7 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.UPDATE_AUTHOR_ROUTE)]
-        public async Task<IActionResult> UpdateAuthor([FromBody] AuthorModel model)
+        public async Task<IActionResult> UpdateAuthorAsync([FromBody] AuthorModel model)
         {
             await _authorSevice.UpdateAuthorAsync(model);
             return Ok(Constant.Info.UPDATE_AUTHOR_SUCCESS);

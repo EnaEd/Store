@@ -6,6 +6,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
+using Store.Shared.Providers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,21 @@ namespace Store.BusinessLogicLayer.Services
     {
         private readonly IAuthorRepository<Author> _authorRepository;
         private readonly IMapper _mapper;
+        private readonly IValidationProvider _validationProvider;
 
-        public AuthorService(IAuthorRepository<Author> authorRepository, IMapper mapper)
+        public AuthorService(IAuthorRepository<Author> authorRepository, IMapper mapper, IValidationProvider validationProvider)
         {
             _authorRepository = authorRepository;
             _mapper = mapper;
+            _validationProvider = validationProvider;
         }
 
         public async Task CreateAuthorAsync(AuthorModel model)
         {
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
+            {
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
+            }
 
             Author author = await _authorRepository.GetOneAsync(model.Name);
             if (!(author is null))
@@ -84,7 +91,6 @@ namespace Store.BusinessLogicLayer.Services
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
-
 
             author = _mapper.Map<Author>(model);
             await _authorRepository.UpdateAsync(author);
