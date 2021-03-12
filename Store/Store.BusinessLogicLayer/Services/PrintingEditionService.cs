@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Interfaces;
-using Store.BusinessLogicLayer.Models.Author;
 using Store.BusinessLogicLayer.Models.Base;
 using Store.BusinessLogicLayer.Models.PrintingEdition;
 using Store.DataAccessLayer.Entities;
@@ -10,6 +9,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
+using Store.Shared.Providers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,38 +22,41 @@ namespace Store.BusinessLogicLayer.Services
         private readonly IAuthorService _authorService;
         private readonly IPrintingEditionRepository<PrintingEdition> _printingEditionRepository;
         private readonly IMapper _mapper;
+        private readonly IValidationProvider _validationProvider;
 
         public PrintingEditionService(IPrintingEditionRepository<PrintingEdition> printingEditionRepository, IMapper mapper,
-            IAuthorService authorService)
+            IAuthorService authorService, IValidationProvider validationProvider)
         {
             _printingEditionRepository = printingEditionRepository;
             _mapper = mapper;
             _authorService = authorService;
+            _validationProvider = validationProvider;
         }
-        public async Task UpdatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
+        public async Task UpdatePrintingEditionAsync(PrintingEditionRequestModel printingEditionProfile)
         {
-            if (printingEditionProfile is null)
-            {
-                throw new UserException(Constant.Errors.UPDATE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
-            }
-            AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
-            if (author is null)
-            {
-                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
-            }
-            PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
+            //if (printingEditionProfile is null)
+            //{
+            //    throw new UserException(Constant.Errors.UPDATE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+            //}
+            //AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
+            //if (author is null)
+            //{
+            //    throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            //}
+            //PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
 
-            await _printingEditionRepository.RemoveOneAsync(edition);
-            await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
+            //await _printingEditionRepository.RemoveOneAsync(edition);
+            //await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
         }
-        public async Task DeletePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
+        public async Task DeletePrintingEditionAsync(PrintingEditionRequestModel model)
         {
-            if (printingEditionProfile is null)
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.DELETE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
             }
 
-            PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
+            var mappedEdition = _mapper.Map<PrintingEdition>(model);
+            var edition = await _printingEditionRepository.GetOneAsync(mappedEdition.Id);
             if (edition is null)
             {
                 throw new UserException(Constant.Errors.DELETE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
@@ -61,19 +64,22 @@ namespace Store.BusinessLogicLayer.Services
 
             await _printingEditionRepository.RemoveOneAsync(edition);
         }
-        public async Task CreatePrintingEditionAsync(PrintingEditionProfileModel printingEditionProfile)
+        public async Task CreatePrintingEditionAsync(PrintingEditionRequestModel model)
         {
-            if (printingEditionProfile is null)
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
             {
-                throw new UserException(Constant.Errors.CREATE_EDITION_FAIL, Enums.ErrorCode.BadRequest);
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
             }
 
-            AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
-            if (author is null)
+            var mappedEdition = _mapper.Map<PrintingEdition>(model);
+
+            var edition = await _printingEditionRepository.GetOneAsync(mappedEdition);
+            if (edition is not null)
             {
-                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_ALREADY_EXISTS, Enums.ErrorCode.BadRequest);
             }
-            PrintingEdition edition = await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
+
+            await _printingEditionRepository.CreateAsync(mappedEdition);
         }
 
         public async Task<PaginationModel<IEnumerable<PrintingEditionModel>>> GetPrintingEditionAsync(PrintingEditionFilterModel model)

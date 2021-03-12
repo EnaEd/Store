@@ -28,7 +28,7 @@ namespace Store.Presentation.Controllers
 
         [HttpPost(Constant.Routes.CREATE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> CreateEditionAsync([FromBody] PrintingEditionProfileModel model)
+        public async Task<IActionResult> CreateEditionAsync([FromBody] PrintingEditionRequestModel model)
         {
             await _printingEditionService.CreatePrintingEditionAsync(model);
             return Ok(Constant.Info.CREATE_EDITION_SUCCESS);
@@ -36,7 +36,7 @@ namespace Store.Presentation.Controllers
 
         [HttpPost(Constant.Routes.DELETE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> DeleteEditionAsync([FromBody] PrintingEditionProfileModel model)
+        public async Task<IActionResult> DeleteEditionAsync([FromBody] PrintingEditionRequestModel model)
         {
             await _printingEditionService.DeletePrintingEditionAsync(model);
             return Ok(Constant.Info.REMOVE_EDITION_SUCCESS);
@@ -44,7 +44,7 @@ namespace Store.Presentation.Controllers
 
         [HttpPost(Constant.Routes.UPDATE_EDITION_ROUTE)]
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
-        public async Task<IActionResult> UpdateEditionAsync([FromBody] PrintingEditionProfileModel model)
+        public async Task<IActionResult> UpdateEditionAsync([FromBody] PrintingEditionRequestModel model)
         {
             await _printingEditionService.UpdatePrintingEditionAsync(model);
             return Ok(Constant.Info.UPDATE_EDITION_SUCCESS);

@@ -3,7 +3,6 @@ using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories.Base
@@ -19,12 +18,10 @@ namespace Store.DataAccessLayer.Repositories.Base
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<T> CreateAsync(T item)
+        public virtual async Task CreateAsync(T item)
         {
             _dbSet.Add(item);
             await _context.SaveChangesAsync();
-            var result = _dbSet.AsEnumerable().Last();
-            return result;
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -32,8 +29,6 @@ namespace Store.DataAccessLayer.Repositories.Base
             var result = await _dbSet.ToListAsync();
             return result;
         }
-
-
 
         public virtual async Task<T> GetOneAsync(Guid id)
         {
@@ -47,7 +42,7 @@ namespace Store.DataAccessLayer.Repositories.Base
             return result;
         }
 
-        public async Task RemoveOneAsync(T item)
+        public virtual async Task RemoveOneAsync(T item)
         {
             _dbSet.Remove(item);
             await _context.SaveChangesAsync();
@@ -62,6 +57,11 @@ namespace Store.DataAccessLayer.Repositories.Base
         public async Task UpdateAsync(T item)
         {
             _dbSet.Update(item);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
     }

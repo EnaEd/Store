@@ -26,7 +26,7 @@
 
             public const string ENTITY_NOT_FOUND = "entity not found";
             public const string AUTHOR_CREATE_FAIL = "fail on author create";
-            public const string AUTHOR_ALREADY_EXISTS = "author with same name already exists";
+            public const string ENTITY_ALREADY_EXISTS = "entity with same name already exists";
 
             public const string CREATE_EDITION_FAIL = "cann't create empty edition";
             public const string UPDATE_EDITION_FAIL = "no data for update";

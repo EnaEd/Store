@@ -40,7 +40,7 @@ namespace Store.BusinessLogicLayer.Services
             Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is not null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_ALREADY_EXISTS, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_ALREADY_EXISTS, Enums.ErrorCode.BadRequest);
             }
 
             var mappedModel = _mapper.Map<Author>(model);

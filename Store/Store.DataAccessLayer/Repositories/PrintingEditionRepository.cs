@@ -7,6 +7,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Constants;
 using Store.Shared.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +21,18 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<PrintingEdition> GetOneAsync(Guid id)
         {
-            var result = await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
+            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return result;
+        }
+
+        public override async Task CreateAsync(PrintingEdition item)
+        {
+            //TODO EE: improve this after implement delete method
+            var authors = new List<Author>(item.Authors);
+            item.Authors.Clear();
+            _dbSet.Add(item);
+            item.Authors.AddRange(authors);
+            await SaveChangesAsync();
         }
 
         public async Task<int> GetCountAsync(PrintingEditionFilterDTO model)

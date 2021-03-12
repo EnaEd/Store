@@ -13,7 +13,7 @@ namespace Store.BusinessLogicLayer.MappingProfiles
         {
             CreateMap<PrintingEditionFilterModel, PrintingEditionFilterDTO>().ReverseMap();
             CreateMap<PrintingEditionModel, PrintingEdition>().ReverseMap();
-            CreateMap<PrintingEdition, PrintingEditionProfileModel>().ReverseMap();
+            CreateMap<PrintingEdition, PrintingEditionRequestModel>().ReverseMap();
 
             CreateMap<PriceRangeModel, PriceRangeDTO>().ReverseMap();
 
