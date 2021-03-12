@@ -7,6 +7,6 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
 {
     public interface IPrintingEditionRepository<T> : IBaseRepository<T> where T : class
     {
-        public Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterModelDAL printingEditionFilterModel = null);
+        public Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterDTO printingEditionFilterModel = null);
     }
 }

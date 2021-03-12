@@ -23,7 +23,7 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterModelDAL filter = null)
+        public async Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterDTO filter = null)
         {
             var Currency = new SqlParameter("@Currency", filter?.Currency ?? (object)DBNull.Value);
             var Description = new SqlParameter("@Description", filter?.Description ?? (object)DBNull.Value);

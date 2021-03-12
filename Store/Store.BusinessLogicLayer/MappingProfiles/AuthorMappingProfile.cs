@@ -12,6 +12,7 @@ namespace Store.BusinessLogicLayer.MappingProfiles
             CreateMap<Author, AuthorModel>();
             CreateMap<AuthorModel, Author>();
             CreateMap<AuthorFilterModel, AuthorFilterDTO>().ReverseMap();
+
         }
     }
 }

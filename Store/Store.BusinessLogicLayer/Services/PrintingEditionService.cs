@@ -74,11 +74,14 @@ namespace Store.BusinessLogicLayer.Services
             PrintingEdition edition = await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
         }
 
-        public async Task<PaginationIndexModel> GetPrintingEditionAsync(PrintingEditionFilterModel model = null)
+        public async Task<PaginationIndexModel> GetPrintingEditionAsync(PrintingEditionFilterModel model)
         {
 
+            var mappedDTO = _mapper.Map<PrintingEditionFilterDTO>(model);
 
-            PrintingEditionFilterModelDAL filter = model is null ? null : _mapper.Map<PrintingEditionFilterModelDAL>(model);
+
+
+            PrintingEditionFilterDTO filter = model is null ? null : _mapper.Map<PrintingEditionFilterDTO>(model);
             IEnumerable<PrintingEditionModel> sourceEditions = _mapper.Map<IEnumerable<PrintingEditionModel>>(
                 await _printingEditionRepository.GetFilteredPrintingEditionAsync(filter));
 

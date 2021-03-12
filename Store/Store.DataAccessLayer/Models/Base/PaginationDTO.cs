@@ -1,4 +1,4 @@
-﻿namespace Store.DataAccessLayer.Models
+﻿namespace Store.DataAccessLayer.Models.Base
 {
     public class PaginationDTO
     {

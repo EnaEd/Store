@@ -19,10 +19,11 @@ namespace Store.Presentation.Controllers
             _stripeService = stripeService;
         }
 
-        [HttpGet(Constant.Routes.GET_EDITIONS_ROUTE)]
-        public async Task<IActionResult> GetEditionAsync()
+        [HttpPost(Constant.Routes.GET_EDITIONS_ROUTE)]
+        public async Task<IActionResult> GetEditionAsync([FromBody] PrintingEditionFilterModel model)
         {
-            return Ok(await _printingEditionService.GetPrintingEditionAsync());
+            var result = await _printingEditionService.GetPrintingEditionAsync(model);
+            return Ok(result);
         }
 
         [HttpPost(Constant.Routes.CREATE_EDITION_ROUTE)]

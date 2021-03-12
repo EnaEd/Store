@@ -1,9 +1,10 @@
-﻿namespace Store.DataAccessLayer.Models
+﻿using Store.DataAccessLayer.Models.Base;
+
+namespace Store.DataAccessLayer.Models
 {
-    public class AuthorFilterDTO : PaginationDTO
+    public class AuthorFilterDTO : OrderByDTO
     {
         public string NameFilter { get; set; }
-        public bool OrderByDesc { get; set; }
-        public string OrderField { get; set; }
+
     }
 }

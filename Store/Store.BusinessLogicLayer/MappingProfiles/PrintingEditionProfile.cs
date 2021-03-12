@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Store.BusinessLogicLayer.Models.Base;
 using Store.BusinessLogicLayer.Models.PrintingEdition;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models;
+using Store.DataAccessLayer.Models.Base;
 
 namespace Store.BusinessLogicLayer.MappingProfiles
 {
@@ -9,12 +11,12 @@ namespace Store.BusinessLogicLayer.MappingProfiles
     {
         public PrintingEditionProfile()
         {
-            CreateMap<PrintingEditionFilterModel, PrintingEditionFilterModelDAL>();
-            CreateMap<PrintingEditionFilterModelDAL, PrintingEditionFilterModel>();
-            CreateMap<PrintingEditionModel, PrintingEdition>();
-            CreateMap<PrintingEdition, PrintingEditionModel>();
-            CreateMap<PrintingEdition, PrintingEditionProfileModel>();
-            CreateMap<PrintingEditionProfileModel, PrintingEdition>();
+            CreateMap<PrintingEditionFilterModel, PrintingEditionFilterDTO>().ReverseMap();
+            CreateMap<PrintingEditionModel, PrintingEdition>().ReverseMap();
+            CreateMap<PrintingEdition, PrintingEditionProfileModel>().ReverseMap();
+
+            CreateMap<PriceRangeModel, PriceRangeDTO>().ReverseMap();
+
         }
     }
 }
