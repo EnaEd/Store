@@ -24,7 +24,7 @@
             public const string ADD_TO_ROLE_FAIL = "fail on user to role";
             public const string RESET_PASSWORD_FAIL = "fail on reset password";
 
-            public const string AUTHOR_NOT_FOUND = "author not found";
+            public const string ENTITY_NOT_FOUND = "entity not found";
             public const string AUTHOR_CREATE_FAIL = "fail on author create";
             public const string AUTHOR_ALREADY_EXISTS = "author with same name already exists";
 

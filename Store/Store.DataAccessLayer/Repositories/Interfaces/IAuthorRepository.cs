@@ -8,6 +8,6 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
     {
         public Task<T> GetOneAsync(string authorName);
         public IQueryable<T> GetAllFiltered(AuthorFilterDTO model);
-        public Task<int> GetCount(AuthorFilterDTO model);
+        public Task<int> GetCountAsync(AuthorFilterDTO model);
     }
 }

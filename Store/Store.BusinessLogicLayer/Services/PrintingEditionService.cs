@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Author;
-using Store.BusinessLogicLayer.Models.Pagination;
+using Store.BusinessLogicLayer.Models.Base;
 using Store.BusinessLogicLayer.Models.PrintingEdition;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models;
@@ -9,6 +10,7 @@ using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Constants;
 using Store.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +39,7 @@ namespace Store.BusinessLogicLayer.Services
             AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
             if (author is null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
             PrintingEdition edition = await _printingEditionRepository.GetOneAsync(printingEditionProfile.Id);
 
@@ -69,35 +71,35 @@ namespace Store.BusinessLogicLayer.Services
             AuthorModel author = await _authorService.GetOneAuthorAsync(new AuthorModel { Name = printingEditionProfile.Author });
             if (author is null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
             PrintingEdition edition = await _printingEditionRepository.CreateAsync(_mapper.Map<PrintingEdition>(printingEditionProfile));
         }
 
-        public async Task<PaginationIndexModel> GetPrintingEditionAsync(PrintingEditionFilterModel model)
+        public async Task<PaginationModel<IEnumerable<PrintingEditionModel>>> GetPrintingEditionAsync(PrintingEditionFilterModel model)
         {
 
             var mappedDTO = _mapper.Map<PrintingEditionFilterDTO>(model);
+            var entities = await _printingEditionRepository.GetFilteredPrintingEditionAsync(mappedDTO).ToListAsync();
 
+            if (!entities.Any())
+            {
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
+            }
 
+            var mappedModel = _mapper.Map<IEnumerable<PrintingEditionModel>>(entities);
+            int totalCount = await _printingEditionRepository.GetCountAsync(mappedDTO);
 
-            PrintingEditionFilterDTO filter = model is null ? null : _mapper.Map<PrintingEditionFilterDTO>(model);
-            IEnumerable<PrintingEditionModel> sourceEditions = _mapper.Map<IEnumerable<PrintingEditionModel>>(
-                await _printingEditionRepository.GetFilteredPrintingEditionAsync(filter));
+            var pageModel = new PaginationModel<IEnumerable<PrintingEditionModel>>();
+            pageModel.Data = mappedModel;
+            pageModel.Count = (int)Math.Ceiling((double)totalCount / model.PageSize);
+            pageModel.HasNext = model.PageSize * model.PageNumber < totalCount;
+            pageModel.HasPrevious = model.PageNumber - Constant.Common.DEFAULT_PAGE_OFFSET > default(int);
+            pageModel.PageNumber = model.PageNumber;
+            pageModel.PageSize = model.PageSize;
 
-            int count = sourceEditions.ToList().Count();
+            return pageModel;
 
-            IEnumerable<PrintingEditionModel> editions = sourceEditions
-                .Skip((
-                (model?.PageNumber - Constant.Common.ARRAY_INDEX_OFFSET) ?? default)
-                * model?.PageSize ?? default)
-                .Take((model?.PageSize ?? 10));
-
-            PaginationPageModel pageModel = new PaginationPageModel(count,
-                (model?.PageNumber ?? Constant.PaginationConfig.DEFAULT_PAGE_NUMBER),
-                (model?.PageSize ?? Constant.PaginationConfig.DEFAULT_ITEM_PER_PAGE));
-
-            return new PaginationIndexModel { Page = pageModel, PrintingEditions = editions };
         }
     }
 }

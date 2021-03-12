@@ -1,12 +1,13 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Store.DataAccessLayer.AppContext;
 using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Models;
 using Store.DataAccessLayer.Repositories.Base;
 using Store.DataAccessLayer.Repositories.Interfaces;
+using Store.Shared.Constants;
+using Store.Shared.Extensions;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.DataAccessLayer.Repositories
@@ -23,21 +24,34 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<PrintingEdition>> GetFilteredPrintingEditionAsync(PrintingEditionFilterDTO filter = null)
+        public async Task<int> GetCountAsync(PrintingEditionFilterDTO model)
         {
-            var Currency = new SqlParameter("@Currency", filter?.Currency ?? (object)DBNull.Value);
-            var Description = new SqlParameter("@Description", filter?.Description ?? (object)DBNull.Value);
-            var Status = new SqlParameter("@Status", filter?.Status ?? (object)DBNull.Value);
-            var Title = new SqlParameter("@Title", filter?.Title ?? (object)DBNull.Value);
-            var Type = new SqlParameter("@Type", filter?.Type ?? (object)DBNull.Value);
-            var MinPrice = new SqlParameter("@MinPrice", filter?.Price?.MinPrice ?? (object)DBNull.Value);
-            var MaxPrice = new SqlParameter("@MaxPrice", filter?.Price.MaxPrice ?? (object)DBNull.Value);
-            var Author = new SqlParameter("@Author", filter?.Author ?? (object)DBNull.Value);
+            var query = _dbSet
+                .Where(x => model.Title == null || x.Title.Contains(model.Title))
+                .Where(x => model.Description == null || x.Description.Contains(model.Description))
+                .Where(x => model.Currency == default || x.Currency.Equals(model.Currency.ToString()))
+                .Where(x => model.Status == default || x.Status.Equals(model.Status.ToString()))
+                .Where(x => model.Type == default || x.Type.Equals(model.Type.ToString()))
+                .Where(x => x.Price >= model.Price.MinPrice && x.Price <= model.Price.MaxPrice)
+                .Where(x => model.Author == null || x.Authors.Any(author => author.Name.Equals(model.Author)));
 
-            return await Task.Run(() => _context.PrintingEditions.FromSqlRaw(
-               $"spGetFilteredPrintingEdition @Currency,@Description,@Status,@Title,@Type,@MinPrice,@MaxPrice,@Author",
-               Currency, Description, Status, Title, Type, MinPrice, MaxPrice, Author)
-               .ToListAsync());
+            int result = await query.CountAsync();
+            return result;
+        }
+
+        public IQueryable<PrintingEdition> GetFilteredPrintingEditionAsync(PrintingEditionFilterDTO filter)
+        {
+            var query = _dbSet.Include(edition => edition.Authors)
+                        .Where(x => filter.Title == null || x.Title.Contains(filter.Title))
+                        .Where(x => filter.Description == null || x.Description.Contains(filter.Description))
+                        .Where(x => filter.Currency == default || x.Currency.Equals(filter.Currency.ToString()))
+                        .Where(x => filter.Status == default || x.Status.Equals(filter.Status.ToString()))
+                        .Where(x => filter.Type == default || x.Type.Equals(filter.Type.ToString()))
+                        .Where(x => x.Price >= filter.Price.MinPrice && x.Price <= filter.Price.MaxPrice)
+                        .Where(x => filter.Author == null || x.Authors.Any(author => author.Name.Equals(filter.Author)))
+                        .OrderByExtension(filter.OrderField, filter.OrderByDesc).Skip((filter.PageNumber - Constant.Common.DEFAULT_PAGE_OFFSET) * filter.PageSize).Take(filter.PageSize);
+
+            return query;
         }
 
     }

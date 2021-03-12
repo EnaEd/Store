@@ -18,7 +18,7 @@ namespace Store.DataAccessLayer.Repositories
         {
         }
 
-        public async Task<int> GetCount(AuthorFilterDTO model)
+        public async Task<int> GetCountAsync(AuthorFilterDTO model)
         {
             int result = await _dbSet.Where(author => model.NameFilter == null || author.Name.Contains(model.NameFilter)).CountAsync();
             return result;

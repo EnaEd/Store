@@ -54,14 +54,13 @@ namespace Store.BusinessLogicLayer.Services
             var mappedDTO = _mapper.Map<AuthorFilterDTO>(model);
 
             var entities = await _authorRepository.GetAllFiltered(mappedDTO).ToListAsync();
-            var mappedAuthorModel = _mapper.Map<IEnumerable<AuthorModel>>(entities);
-
-            if (!mappedAuthorModel.Any())
+            if (!entities.Any())
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
 
-            int totalCount = await _authorRepository.GetCount(mappedDTO);
+            var mappedAuthorModel = _mapper.Map<IEnumerable<AuthorModel>>(entities);
+            int totalCount = await _authorRepository.GetCountAsync(mappedDTO);
 
             var pageModel = new PaginationModel<IEnumerable<AuthorModel>>();
             pageModel.Data = mappedAuthorModel;
@@ -79,7 +78,7 @@ namespace Store.BusinessLogicLayer.Services
             Author author = await _authorRepository.GetOneAsync(model.Id);
             if (author is null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
             var result = _mapper.Map<AuthorModel>(author);
             return result;
@@ -95,7 +94,7 @@ namespace Store.BusinessLogicLayer.Services
             Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
             await _authorRepository.RemoveOneAsync(author);
         }
@@ -110,7 +109,7 @@ namespace Store.BusinessLogicLayer.Services
             Author author = await _authorRepository.GetOneAsync(model.Id);
             if (author is null)
             {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
+                throw new UserException(Constant.Errors.ENTITY_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
 
             author = _mapper.Map<Author>(model);
