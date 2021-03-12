@@ -35,7 +35,8 @@ namespace Store.Presentation.Controllers
         [HttpPost(Constant.Routes.GET_AUTHOR_ROUTE)]
         public async Task<IActionResult> GetAuthorAsync([FromBody] AuthorModel model)
         {
-            return Ok(await _authorSevice.GetOneAuthorAsync(model));
+            var result = await _authorSevice.GetOneAuthorAsync(model);
+            return Ok(result);
         }
 
         [HttpPost(Constant.Routes.DELETE_AUTHOR_ROUTE)]
