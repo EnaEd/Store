@@ -14,6 +14,10 @@
             public const string MAIL_PARAM_EMAIL = "email";
             public const string MAIL_CALLBACK_URL = "http://localhost:56932/api/account/confirmemail";
             public const int DEFAULT_PAGE_OFFSET = 1;
+            public const string ORDER_DESC = "OrderByDescending";
+            public const string ORDER_ASC = "OrderBy";
+            public const string NAME_DECLARING_VARIABLE = "p";
+
         }
     }
 }

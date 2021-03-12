@@ -74,28 +74,24 @@ namespace Store.BusinessLogicLayer.Services
             return pageModel;
         }
 
-        public async Task<AuthorModel> GetOneAuthorAsync(Guid id)
-        {
-            Author author = await _authorRepository.GetOneAsync(id);
-            if (author is null)
-            {
-                throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
-            }
-            return _mapper.Map<AuthorModel>(author);
-        }
-
         public async Task<AuthorModel> GetOneAuthorAsync(AuthorModel model)
         {
-            Author author = await _authorRepository.GetOneAsync(model.Name);
+            Author author = await _authorRepository.GetOneAsync(model.Id);
             if (author is null)
             {
                 throw new UserException(Constant.Errors.AUTHOR_NOT_FOUND, Enums.ErrorCode.BadRequest);
             }
-            return _mapper.Map<AuthorModel>(author);
+            var result = _mapper.Map<AuthorModel>(author);
+            return result;
         }
 
         public async Task RemoveAuthorAsync(AuthorModel model)
         {
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
+            {
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
+            }
+
             Author author = await _authorRepository.GetOneAsync(model.Name);
             if (author is null)
             {
@@ -106,6 +102,11 @@ namespace Store.BusinessLogicLayer.Services
 
         public async Task UpdateAuthorAsync(AuthorModel model)
         {
+            if (!_validationProvider.TryValidate(model, out List<string> errors))
+            {
+                throw new UserException(errors, Enums.ErrorCode.BadRequest);
+            }
+
             Author author = await _authorRepository.GetOneAsync(model.Id);
             if (author is null)
             {
