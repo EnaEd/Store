@@ -81,7 +81,6 @@ namespace Store.BusinessLogicLayer.Services
 
             await _printingEditionRepository.CreateAsync(mappedEdition);
         }
-
         public async Task<PaginationModel<IEnumerable<PrintingEditionModel>>> GetPrintingEditionAsync(PrintingEditionFilterModel model)
         {
 
