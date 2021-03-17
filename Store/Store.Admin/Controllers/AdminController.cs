@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
-using Store.BusinessLogicLayer.Models.Author;
 using Store.BusinessLogicLayer.Models.Users;
 using Store.Shared.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +32,9 @@ namespace Store.Admin.Controllers
         [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
         public async Task<IActionResult> Authors()
         {
-            IEnumerable<AuthorModel> result = await _authorService.GetAuthorsAsync();
-            return View(result.ToList());
+            throw new NotImplementedException();
+            //IEnumerable<AuthorModel> result = await _authorService.GetAuthorsAsync();
+            //return View(result.ToList());
         }
     }
 }

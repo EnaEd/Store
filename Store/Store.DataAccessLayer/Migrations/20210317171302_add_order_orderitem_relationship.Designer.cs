@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.DataAccessLayer.AppContext;
 
 namespace Store.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210317171302_add_order_orderitem_relationship")]
+    partial class add_order_orderitem_relationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +38,8 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            AuthorsId = new Guid("b3f6b745-4ac8-40a9-840f-b4b04c883e26"),
-                            PrintingEditionsId = new Guid("227c18ee-14c6-4f14-ac54-e9b899bbde66")
+                            AuthorsId = new Guid("d60182dc-353b-4650-b0ae-97d689874355"),
+                            PrintingEditionsId = new Guid("7c325872-ade8-4d05-b899-6353368b10c2")
                         });
                 });
 
@@ -190,7 +192,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b3f6b745-4ac8-40a9-840f-b4b04c883e26"),
+                            Id = new Guid("d60182dc-353b-4650-b0ae-97d689874355"),
                             IsRemoved = false,
                             Name = "TestAuthor"
                         });
@@ -216,9 +218,6 @@ namespace Store.DataAccessLayer.Migrations
 
                     b.Property<Guid>("PaymentId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Test")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -310,7 +309,7 @@ namespace Store.DataAccessLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("227c18ee-14c6-4f14-ac54-e9b899bbde66"),
+                            Id = new Guid("7c325872-ade8-4d05-b899-6353368b10c2"),
                             Currency = "USD",
                             Description = "init desc",
                             IsRemoved = false,

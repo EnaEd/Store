@@ -22,5 +22,12 @@ namespace Store.Presentation.Controllers
             await _orderService.CreateOrderAsync(model);
             return Ok(Constant.Info.ORDER_CREATE_SUCCESS);
         }
+
+        [HttpPost(Constant.Routes.ORDER_DELETE_ROUTE)]
+        public async Task<IActionResult> DeleteOrderAsync([FromBody] OrderModel model)
+        {
+            await _orderService.CreateOrderAsync(model);
+            return Ok(Constant.Info.ORDER_CREATE_SUCCESS);
+        }
     }
 }

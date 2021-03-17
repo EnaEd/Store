@@ -10,6 +10,7 @@
             //order controller
             public const string TEST_ORDER_ROUTE = "testorder";
             public const string ORDER_CREATE_ROUTE = "createorder";
+            public const string ORDER_DELETE_ROUTE = "deleteorder";
 
             //home controller
             public const string TEST_AUTH_ADMIN_ROUTE = "authadmin";
