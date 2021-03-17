@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Scrutor;
 using Store.BusinessLogicLayer.Interfaces;
-using Store.BusinessLogicLayer.MappingProfiles;
 using Store.BusinessLogicLayer.Models.Config;
 using Store.Shared.Providers.Interfaces;
+using System.Reflection;
 
 namespace Store.BusinessLogicLayer
 {
@@ -21,11 +21,7 @@ namespace Store.BusinessLogicLayer
 
             var mapperConfig = new MapperConfiguration(config =>
               {
-                  //TODO EE: simplify it
-                  config.AddProfile(new UserMappingProfile());
-                  config.AddProfile(new AuthorMappingProfile());
-                  config.AddProfile(new PrintingEditionProfile());
-                  config.AddProfile(new OrderMappingProfile());
+                  config.AddMaps(Assembly.GetAssembly(typeof(MappingProfiles.AuthorMappingProfile)));//auto scan profile
               });
 
             IMapper mapper = mapperConfig.CreateMapper();
