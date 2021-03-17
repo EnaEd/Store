@@ -54,9 +54,9 @@ namespace Store.DataAccessLayer.Repositories.Base
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(T item)
+        public virtual async Task UpdateAsync(T item)
         {
-            _dbSet.Update(item);
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

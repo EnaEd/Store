@@ -41,7 +41,6 @@ namespace Store.DataAccessLayer.Repositories
             return result;
         }
 
-
         public async Task<Author> GetOneAsync(string authorName)
         {
             var result = await _dbSet.FirstOrDefaultAsync(x => EF.Functions.Like(x.Name, authorName));

@@ -21,17 +21,22 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<PrintingEdition> GetOneAsync(Guid id)
         {
-            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _dbSet.Include(edition => edition.Authors).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return result;
+        }
+        public override async Task UpdateAsync(PrintingEdition item)
+        {
+            var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == item.Id);
+            result.Authors = item.Authors;
+            await SaveChangesAsync();
         }
 
         public override async Task CreateAsync(PrintingEdition item)
         {
-            //TODO EE: improve this after implement delete method
             var authors = new List<Author>(item.Authors);
             item.Authors.Clear();
             _dbSet.Add(item);
-            item.Authors.AddRange(authors);
+            item.Authors = authors;
             await SaveChangesAsync();
         }
 
