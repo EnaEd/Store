@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Store.DataAccessLayer.Entities
+﻿namespace Store.DataAccessLayer.Entities
 {
     public class Payment : BaseEntity
     {
-        public Guid TransactionId { get; set; }
+        public string TransactionId { get; set; }
     }
 }

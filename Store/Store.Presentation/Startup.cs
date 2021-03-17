@@ -30,7 +30,7 @@ namespace Store.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             services.Init(Configuration);
-
+            Stripe.StripeConfiguration.ApiKey = Configuration["StripeConfig:ApiSecretKey"];
             services.ConfigureAppSettings(Configuration);
 
             var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters

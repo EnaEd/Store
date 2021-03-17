@@ -24,6 +24,12 @@ namespace Store.DataAccessLayer.Repositories.Base
             await _context.SaveChangesAsync();
         }
 
+        public virtual async Task CreateRangeAsync(IEnumerable<T> items)
+        {
+            _dbSet.AddRange(items);
+            await _context.SaveChangesAsync();
+        }
+
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             var result = await _dbSet.ToListAsync();

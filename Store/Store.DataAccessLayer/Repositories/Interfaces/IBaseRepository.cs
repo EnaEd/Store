@@ -10,6 +10,7 @@ namespace Store.DataAccessLayer.Repositories.Interfaces
         public Task<T> GetOneAsync(Guid id);
         public Task<T> GetOneAsync(T item);
         public Task CreateAsync(T item);
+        public Task CreateRangeAsync(IEnumerable<T> items);
         public Task UpdateAsync(T item);
         public Task RemoveOneAsync(T item);
         public Task RemoveRangeAsync(IEnumerable<T> listItems);
