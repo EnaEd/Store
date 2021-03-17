@@ -5,6 +5,6 @@ namespace Store.BusinessLogicLayer.Interfaces
 {
     public interface IOrderService
     {
-        public Task<OrderModel> CreateOrderAsync();
+        public Task CreateOrderAsync(OrderModel model);
     }
 }

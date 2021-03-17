@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
+using Store.BusinessLogicLayer.Models.Order;
 using Store.Shared.Constants;
 using System.Threading.Tasks;
 
@@ -15,11 +16,11 @@ namespace Store.Presentation.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet(Constant.Routes.TEST_ORDER_ROUTE)]
-        public async Task<IActionResult> Index()
+        [HttpPost(Constant.Routes.ORDER_CREATE_ROUTE)]
+        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderModel model)
         {
-            await _orderService.CreateOrderAsync();
-            return Ok("test order ok");
+            await _orderService.CreateOrderAsync(model);
+            return Ok(Constant.Info.ORDER_CREATE_SUCCESS);
         }
     }
 }

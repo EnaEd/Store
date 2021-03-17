@@ -37,7 +37,7 @@ namespace Store.DataAccessLayer.Repositories
 
         public override async Task<Author> GetOneAsync(Guid id)
         {
-            var result = await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
+            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return result;
         }
 

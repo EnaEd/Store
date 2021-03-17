@@ -25,6 +25,7 @@ namespace Store.BusinessLogicLayer
                   config.AddProfile(new UserMappingProfile());
                   config.AddProfile(new AuthorMappingProfile());
                   config.AddProfile(new PrintingEditionProfile());
+                  config.AddProfile(new OrderMappingProfile());
               });
 
             IMapper mapper = mapperConfig.CreateMapper();
