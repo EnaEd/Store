@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.BusinessLogicLayer.Interfaces;
 using Store.BusinessLogicLayer.Models.Order;
 using Store.Shared.Constants;
@@ -27,11 +28,13 @@ namespace Store.Presentation.Controllers
         }
 
         [HttpPost(Constant.Routes.ORDER_BUY_ROUTE)]
+        [Authorize(Roles = Constant.AuthRoles.ADMIN_ROLE)]
         public async Task<IActionResult> BuyOrderAsync([FromBody] OrderRequestModel model)
         {
+            //TODO EE: pay notification by webhook
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await _orderService.CreateOrderAsync(model, Guid.Parse(userId));
-            return Ok(Constant.Info.ORDER_CREATE_SUCCESS);
+            string result = await _orderService.CreateAndBuyOrderAsync(model, Guid.Parse(userId));
+            return Ok(result);
         }
 
         [HttpPost(Constant.Routes.ORDER_DELETE_ROUTE)]

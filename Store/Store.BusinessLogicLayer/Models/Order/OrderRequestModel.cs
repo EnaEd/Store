@@ -10,6 +10,6 @@ namespace Store.BusinessLogicLayer.Models.Order
 
         public bool IsCanceled { get; set; }
         [Required]
-        public IEnumerable<OrderItemRequestModel> OrderItem { get; set; }
+        public List<OrderItemRequestModel> OrderItems { get; set; }
     }
 }

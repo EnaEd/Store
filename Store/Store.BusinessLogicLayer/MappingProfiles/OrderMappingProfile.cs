@@ -8,9 +8,9 @@ namespace Store.BusinessLogicLayer.MappingProfiles
     {
         public OrderMappingProfile()
         {
+            CreateMap<OrderItem, OrderItemRequestModel>().ReverseMap();
             CreateMap<Order, OrderModel>().ReverseMap();
             CreateMap<Order, OrderRequestModel>().ReverseMap();
-            CreateMap<OrderItem, OrderItemRequestModel>().ReverseMap();
         }
     }
 }

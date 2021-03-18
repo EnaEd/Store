@@ -38,10 +38,10 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(errors, ErrorCode.BadRequest);
             }
             //TODO EE: add validation amount
-
+            //TODO EE: add stripeToken;
             var mappedOrder = _mapper.Map<Order>(model);
             mappedOrder.UserId = userId;
-            var mappedOrderItem = mappedOrder.OrderItems;
+            var mappedOrderItem = new List<OrderItem>(mappedOrder.OrderItems);
 
             var options = new Stripe.ChargeCreateOptions
             {
@@ -56,11 +56,11 @@ namespace Store.BusinessLogicLayer.Services
 
             mappedOrder.PayStatus = result.Paid ? PayStatus.Paid : PayStatus.Unpaid;
 
-            var payment = new Payment() { TransactionId = result.OrderId };
+            var payment = new Payment() { TransactionId = result.Id };
             await _paymentRepository.CreateAsync(payment);
 
+            mappedOrder.PaymentId = payment.Id;
             await _orderRepository.CreateAsync(mappedOrder);
-            await _orderItemRepository.CreateRangeAsync(mappedOrderItem);
 
             return mappedOrder.PayStatus.ToString();
         }

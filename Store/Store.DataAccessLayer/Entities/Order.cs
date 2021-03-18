@@ -13,5 +13,9 @@ namespace Store.DataAccessLayer.Entities
         public bool IsCanceled { get; set; }
         public PayStatus PayStatus { get; set; }
         public List<OrderItem> OrderItems { get; set; }
+        public Order()
+        {
+            Date = DateTime.UtcNow;
+        }
     }
 }
