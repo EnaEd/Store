@@ -20,13 +20,15 @@ namespace Store.BusinessLogicLayer.Services
         private readonly IOrderItemRepository<OrderItem> _orderItemRepository;
         private readonly IValidationProvider _validationProvider;
         private readonly IMapper _mapper;
+        private readonly IPaymentRepository<Payment> _paymentRepository;
 
-        public OrderService(IOrderRepository<Order> orderRepository, IValidationProvider validationProvider, IMapper mapper, IOrderItemRepository<OrderItem> orderItemRepository)
+        public OrderService(IOrderRepository<Order> orderRepository, IValidationProvider validationProvider, IMapper mapper, IOrderItemRepository<OrderItem> orderItemRepository, IPaymentRepository<Payment> paymentRepository)
         {
             _orderRepository = orderRepository;
             _validationProvider = validationProvider;
             _mapper = mapper;
             _orderItemRepository = orderItemRepository;
+            _paymentRepository = paymentRepository;
         }
 
         public async Task<string> CreateAndBuyOrderAsync(OrderRequestModel model, Guid userId)
@@ -39,10 +41,7 @@ namespace Store.BusinessLogicLayer.Services
 
             var mappedOrder = _mapper.Map<Order>(model);
             mappedOrder.UserId = userId;
-            var mappedOrderItem = _mapper.Map<IEnumerable<OrderItem>>(model.OrderItem);
-
-            await _orderRepository.CreateAsync(mappedOrder);
-            await _orderItemRepository.CreateRangeAsync(mappedOrderItem);
+            var mappedOrderItem = mappedOrder.OrderItems;
 
             var options = new Stripe.ChargeCreateOptions
             {
@@ -54,12 +53,16 @@ namespace Store.BusinessLogicLayer.Services
             var service = new Stripe.ChargeService();
             var result = service.Create(options);
 
-            //TODO EE: add payment
-            if (result.Paid)
-            {
 
-            }
-            throw new NotImplementedException();
+            mappedOrder.PayStatus = result.Paid ? PayStatus.Paid : PayStatus.Unpaid;
+
+            var payment = new Payment() { TransactionId = result.OrderId };
+            await _paymentRepository.CreateAsync(payment);
+
+            await _orderRepository.CreateAsync(mappedOrder);
+            await _orderItemRepository.CreateRangeAsync(mappedOrderItem);
+
+            return mappedOrder.PayStatus.ToString();
         }
 
         public async Task CreateOrderAsync(OrderRequestModel model, Guid userId)

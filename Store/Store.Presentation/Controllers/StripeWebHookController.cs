@@ -11,6 +11,7 @@ namespace Store.Presentation.Controllers
     [Route(Constant.Routes.DEFAULT_API_ROUTE)]
     public class StripeWebHookController : Controller
     {
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             string json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();

@@ -13,6 +13,7 @@ namespace Store.DataAccessLayer.Repositories
         public OrderRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
         }
+
         public override async Task<Order> GetOneAsync(Guid id)
         {
             var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);

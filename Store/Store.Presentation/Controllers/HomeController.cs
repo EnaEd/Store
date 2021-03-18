@@ -9,6 +9,7 @@ namespace Store.Presentation.Controllers
     public class HomeController : Controller
     {
 
+        [HttpGet]
         public IActionResult Index()
         {
             //throw new System.NullReferenceException();

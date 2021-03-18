@@ -12,6 +12,7 @@ using Store.BusinessLogicLayer.Services;
 using Store.DataAccessLayer.Entities;
 using Store.Presentation.Extensions;
 using Store.Shared.Extensions;
+using System.Linq;
 
 namespace Store.Presentation
 {
@@ -60,6 +61,14 @@ namespace Store.Presentation
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore API", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
             });
         }
 
@@ -72,6 +81,7 @@ namespace Store.Presentation
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore API V1");
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseRouting();
