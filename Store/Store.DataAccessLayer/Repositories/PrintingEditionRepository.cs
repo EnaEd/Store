@@ -26,8 +26,11 @@ namespace Store.DataAccessLayer.Repositories
         }
         public override async Task UpdateAsync(PrintingEdition item)
         {
+            var authors = new List<Author>(item.Authors);
+            item.Authors.Clear();
+            _dbSet.Update(item);
             var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == item.Id);
-            result.Authors = item.Authors;
+            result.Authors = authors;
             await SaveChangesAsync();
         }
 

@@ -5,7 +5,6 @@ using Store.DataAccessLayer.Entities;
 using Store.DataAccessLayer.Repositories.Interfaces;
 using Store.Shared.Common;
 using Store.Shared.Providers.Interfaces;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace Store.BusinessLogicLayer.Services
                 throw new UserException(errors, ErrorCode.BadRequest);
             }
             //TODO EE: add validation amount
-            //TODO EE: add stripeToken;
+            //TODO EE: add stripeToken; add stripe ui
             var mappedOrder = _mapper.Map<Order>(model);
             mappedOrder.UserId = userId;
             var mappedOrderItem = new List<OrderItem>(mappedOrder.OrderItems);
