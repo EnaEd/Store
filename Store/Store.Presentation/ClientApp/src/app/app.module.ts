@@ -1,3 +1,4 @@
+import { StateModule } from './modules/state/state.module';
 import { BaseGuard } from './guards/base.guard';
 import { BaseModule } from './modules/base/base.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,7 +8,7 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BaseModule],
+  imports: [BrowserModule, AppRoutingModule, BaseModule, StateModule],
   providers: [BaseGuard],
   bootstrap: [AppComponent],
 })
