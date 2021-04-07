@@ -30,7 +30,10 @@ namespace Store.DataAccessLayer.Repositories
             item.Authors.Clear();
             _dbSet.Update(item);
             var result = await _dbSet.Include(edition => edition.Authors).FirstOrDefaultAsync(x => x.Id == item.Id);
-            result.Authors = authors;
+            result.Authors.RemoveAll(x => !authors.Exists(y => y.Id == x.Id));
+            var newAuthors = authors.Where(x => !result.Authors.Exists(y => y.Id == x.Id)).ToList();
+            result.Authors.AddRange(newAuthors);
+
             await SaveChangesAsync();
         }
 
