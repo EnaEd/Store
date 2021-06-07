@@ -28,7 +28,17 @@ namespace Store.BlazorClient.Shared.CustomMainLayout
                 Key = "1",
                 IconName = "BookAnswers"
             };
+            var order = new NavBarItem
+            {
+                Text = "Orders",
+                Url = "orders",
+                NavMatchType = NavMatchType.AnchorOnly,
+                Id = "orders",
+                Key = "2",
+                IconName = "ActivateOrders"
+            };
             _items.Add(books);
+            _items.Add(order);
 
             var footerItem = new NavBarItem
             {

@@ -1,6 +1,10 @@
-﻿using BlazorFluentUI;
+﻿using Blazored.LocalStorage;
+using BlazorFluentUI;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Store.BlazorClient.Services;
+using Store.BlazorClient.Services.Interfaces;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,7 +17,15 @@ namespace Store.BlazorClient
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+
             builder.Services.AddBlazorFluentUI();
+
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, StoreAuthStateProvider>();
+            builder.Services.AddBlazoredLocalStorage();
+
+            builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();

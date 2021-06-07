@@ -57,7 +57,7 @@ namespace Store.Presentation
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
-
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore API", Version = "v1" });
@@ -86,6 +86,7 @@ namespace Store.Presentation
 
             app.UseRouting();
 
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             //custom handler with logger
             app.UseErrorHandler();
 
