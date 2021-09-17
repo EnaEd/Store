@@ -8,7 +8,7 @@ import { BooksComponent } from './books/books.component';
 @NgModule({
   declarations: [BooksComponent],
   imports: [
-    CommonModule,AppRoutingModule
+    CommonModule
   ]
 })
 export class BooksModule { }
