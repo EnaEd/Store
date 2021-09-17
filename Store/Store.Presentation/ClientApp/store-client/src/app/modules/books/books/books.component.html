@@ -1,1 +1,5 @@
-<p>books works!</p>
+<div>
+    <div *ngFor="let item of editions$|async" >
+        <div>title:{{item?.title}}</div>
+    </div>
+</div>

@@ -1,6 +1,13 @@
+import { PrintingEditionModel } from './../../../models/printing-edition.model';
 import { EditionResponseModel } from './../../../models/response/edition-response.model';
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
+import {
+  Action,
+  createSelector,
+  Selector,
+  State,
+  StateContext,
+} from '@ngxs/store';
 import { EditionService } from '../../../services/edition.service';
 import { EditionAction } from './book.actions';
 import { catchError, tap } from 'rxjs/operators';
@@ -18,13 +25,20 @@ export class EditionState {
     private _editionService: EditionService,
     private _toast: ToastrService
   ) {}
+  // selectors
+  static editions() {
+    return createSelector([EditionState], (state: EditionResponseModel) => {
+      return state.data;
+    });
+  }
 
+  // actions
   @Action(EditionAction.FetchAll)
   fetchBooks(
     ctx: StateContext<EditionResponseModel>,
     action: EditionAction.FetchAll
   ) {
-    return this._editionService.FetchBooks(null).pipe(
+    return this._editionService.FetchBooks(action.payload).pipe(
       tap((result) => {
         let state = ctx.getState();
         state = result;
